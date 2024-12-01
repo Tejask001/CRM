@@ -23,13 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header('Content-Type: application/json'); // Only for POST requests
         
 
-       // Supplier variables
-       $supp_first_name = test_input($_POST['supp-first-name']);
-       $supp_middle_name = test_input($_POST['supp-middle-name']);
-       $supp_last_name = test_input($_POST['supp-last-name']);
-       $supp_phone = test_input($_POST['supp-phone']);
-       $supp_email= test_input($_POST['supp-email']);
-       $supp_address= test_input($_POST['supp-address']);
+       // Client variables
+       $client_first_name = test_input($_POST['client-first-name']);
+       $client_middle_name = test_input($_POST['client-middle-name']);
+       $client_last_name = test_input($_POST['client-last-name']);
+       $client_phone = test_input($_POST['client-phone']);
+       $client_email= test_input($_POST['client-email']);
+       $client_address= test_input($_POST['client-address']);
 
        // Company variables
        $comp_first_name= test_input($_POST['comp-first-name']);
@@ -55,24 +55,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
        $remarks = test_input($_POST['remarks']); // Added missing semicolon here
 
        
-    // Supplier details validation
-    if (empty($supp_first_name) || !preg_match("/^[A-Za-z\s]+$/", $supp_first_name)) {
-        $errors['supp-first-name'] = "Please enter a valid first name using alphabets only.";
+    // Client details validation
+    if (empty($client_first_name) || !preg_match("/^[A-Za-z\s]+$/", $client_first_name)) {
+        $errors['client-first-name'] = "Please enter a valid first name using alphabets only.";
     }
-    if (!empty( $supp_middle_name) && !preg_match("/^[A-Za-z\s]+$/",  $supp_middle_name)) {
-        $errors['supp-middle-name'] = "Please use alphabets only for middle name.";
+    if (!empty( $client_middle_name) && !preg_match("/^[A-Za-z\s]+$/",  $client_middle_name)) {
+        $errors['client-middle-name'] = "Please use alphabets only for middle name.";
     }
-    if (empty($supp_last_name) || !preg_match("/^[A-Za-z\s]+$/", $supp_last_name)) {
-        $errors['supp-last-name'] = "Please enter a valid last name using alphabets only.";
+    if (empty($client_last_name) || !preg_match("/^[A-Za-z\s]+$/", $client_last_name)) {
+        $errors['client-last-name'] = "Please enter a valid last name using alphabets only.";
     }
-    if (empty($supp_phone) || !preg_match("/^\d{10}$/", $supp_phone)) {
-        $errors['supp-phone'] = "Please enter a valid 10-digit phone number.";
+    if (empty($client_phone) || !preg_match("/^\d{10}$/", $client_phone)) {
+        $errors['client-phone'] = "Please enter a valid 10-digit phone number.";
     }
-    if (empty($supp_email) || !filter_var($supp_email, FILTER_VALIDATE_EMAIL)) {
-        $errors['supp-email'] = "Please enter a valid email.";
+    if (empty($client_email) || !filter_var($client_email, FILTER_VALIDATE_EMAIL)) {
+        $errors['client-email'] = "Please enter a valid email.";
     }
-    if (empty($supp_address)) {
-        $errors['supp-address'] = "Please enter the supplier's address.";
+    if (empty($client_address)) {
+        $errors['client-address'] = "Please enter the client's address.";
     }
 
     // Company details validation
@@ -127,13 +127,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      // Process form data if no errors
      if (empty($errors)) {
           // Insert or process form data
-          $sql = "UPDATE supplier SET
-first_name = '$supp_first_name',
-middle_name = '$supp_middle_name',
-last_name = '$supp_last_name',
-phone = '$supp_phone',
-email = '$supp_email',
-address = '$supp_address',
+          $sql = "UPDATE client SET
+first_name = '$client_first_name',
+middle_name = '$client_middle_name',
+last_name = '$client_last_name',
+phone = '$client_phone',
+email = '$client_email',
+address = '$client_address',
 comp_first_name = '$comp_first_name',
 comp_middle_name = '$comp_middle_name',
 comp_last_name = '$comp_last_name',

@@ -1,5 +1,5 @@
 <?php
-// edit_supplier.php
+
 if (isset($_GET['trader_id'])) {
     $trader_id = $_GET['trader_id'];
     
@@ -11,8 +11,8 @@ if (isset($_GET['trader_id'])) {
 
     $conn = new mysqli($servername, $username, $password, $dbname);
     
-    // Fetch supplier data
-    $sql = "SELECT * FROM supplier WHERE trader_id = ?";
+    // Fetch client data
+    $sql = "SELECT * FROM client WHERE trader_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $trader_id);
     $stmt->execute();
@@ -21,7 +21,7 @@ if (isset($_GET['trader_id'])) {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
     } else {
-        echo "No supplier found with ID: $trader_id";
+        echo "No client found with ID: $trader_id";
     }
     $stmt->close();
     $conn->close();
@@ -36,7 +36,7 @@ if (isset($_GET['trader_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Supplier</title>
+    <title>Update Client Details</title>
     <style>
     label {
         margin-bottom: 0.5rem;
@@ -46,59 +46,59 @@ if (isset($_GET['trader_id'])) {
 
 <body>
     <div class="container bg-body-tertiary mw-100 h-100">
-        <form action="updateSupplier.php" method="POST" class="w-75 h-100 mx-auto p-3 needs-validation" id="form" novalidate>
+        <form action="updateClient.php" method="POST" class="w-75 h-100 mx-auto p-3 needs-validation" id="form" novalidate>
 
 
-            <!-- supplier details -->
+            <!-- client details -->
 
-            <h1 class="mb-4 ms-3">Update Supplier Details</h1>
+            <h1 class="mb-4 ms-3">Update Client Details</h1>
             <div class="container row">
                 <div class="col mb-3">
-                    <label for="supp-first-name">Supplier's First Name *</label>
-                    <input type="text" class="form-control" id="supp-first-name" name="supp-first-name"
+                    <label for="client-first-name">Client's First Name *</label>
+                    <input type="text" class="form-control" id="client-first-name" namclient-first-name"
                     placeholder="First Name"
                     value="<?php echo htmlspecialchars($row['first_name']); ?>" pattern="^[A-Za-z\s]+$" required>
                     <div class="invalid-feedback">
-                    <?php echo $errors['supp-first-name'] ?? 'Please Use Alphabets Only'; ?>
+                    <?php echo $errors['client-first-name'] ?? 'Please Use Alphabets Only'; ?>
                     </div>
                 </div>
                 <div class="col mb-3">
-                    <label for="supp-middle-name">Supplier's Middle Name</label>
-                    <input type="text" class="form-control" id="supp-middle-name" name="supp-middle-name"
+                    <label for="client-middle-name">Client's Middle Name</label>
+                    <input type="text" class="form-control" id="client-middle-name" name="client-middle-name"
                         placeholder="Middle Name" value="<?php echo htmlspecialchars($row['middle_name']); ?>" pattern="^[A-Za-z\s]+$">
                     <div class="invalid-feedback">
-                    <?php echo $errors['supp-middle-name'] ?? 'Please Use Alphabets Only'; ?>
+                    <?php echo $errors['client-middle-name'] ?? 'Please Use Alphabets Only'; ?>
                     </div>
                 </div>
                 <div class="col mb-3">
-                    <label for="supp-last-name">Supplier's Last Name *</label>
-                    <input type="text" class="form-control" id="supp-last-name" name="supp-last-name"
+                    <label for="client-last-name">Client's Last Name *</label>
+                    <input type="text" class="form-control" id="client-last-name" name="client-last-name"
                         placeholder="Last Name" value="<?php echo htmlspecialchars($row['last_name']); ?>" pattern="^[A-Za-z\s]+$" required>
                     <div class="invalid-feedback">
-                    <?php echo $errors['supp-last-name'] ?? 'Please Use Alphabets Only'; ?>
+                    <?php echo $errors['client-last-name'] ?? 'Please Use Alphabets Only'; ?>
                     </div>
                 </div>
             </div>
             <div class="container row mb-5">
                 <div class="col-md-3 mb-3">
-                    <label for="supp-phone">Supplier's Phone *</label>
-                    <input type="text" class="form-control" id="supp-phone" name="supp-phone" placeholder="Phone Number" value="<?php echo htmlspecialchars($row['phone']); ?>"
+                    <label for="client-phone">Client's Phone *</label>
+                    <input type="text" class="form-control" id="client-phone" name="client-phone" placeholder="Phone Number" value="<?php echo htmlspecialchars($row['phone']); ?>"
                         pattern="^\d{10}$" min="10" max="10" required>
                     <div class="invalid-feedback">
-                    <?php echo $errors['supp-phone'] ?? 'Please Enter 10 Digit Phone Number'; ?>
+                    <?php echo $errors['client-phone'] ?? 'Please Enter 10 Digit Phone Number'; ?>
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="supp-email">Supplier's Email *</label>
-                    <input type="email" class="form-control" id="supp-email" name="supp-email" placeholder="Email" value="<?php echo htmlspecialchars($row['email']); ?>"
+                    <label for="client-email">Client's Email *</label>
+                    <input type="email" class="form-control" id="client-email" name="client-email" placeholder="Email" value="<?php echo htmlspecialchars($row['email']); ?>"
                         required>
                     <div class="invalid-feedback">
-                        <?php echo $errors['supp-email'] ?? 'Please Enter Valid Email'; ?>
+                        <?php echo $errors['client-email'] ?? 'Please Enter Valid Email'; ?>
                     </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="supp-address">Supplier's Address *</label>
-                    <input type="text" class="form-control" id="supp-address" name="supp-address" placeholder="Address" value="<?php echo htmlspecialchars($row['address']); ?>"
+                    <label for="client-address">Client's Address *</label>
+                    <input type="text" class="form-control" id="client-address" name="client-address" placeholder="Address" value="<?php echo htmlspecialchars($row['address']); ?>"
                         required>
                     <div class="invalid-feedback">
                         Please Enter Address
@@ -212,7 +212,7 @@ if (isset($_GET['trader_id'])) {
 
             <div class="container row">
                 <div class="col-md-3 mb-3">
-                    <label for="comp-chemical-license">Supplier's Chemical License *</label>
+                    <label for="comp-chemical-license">Client's Chemical License *</label>
                     <input type="text" class="form-control" id="comp-chemical-license" name="comp-chemical-license"
                         placeholder="Chemical License" value="<?php echo htmlspecialchars($row['chemical_license']); ?>" pattern="^[A-Za-z0-9]+$" maxlength=" 50" required>
                     <div class="invalid-feedback">
@@ -276,7 +276,7 @@ if (isset($_GET['trader_id'])) {
                     <button type="reset" class="btn btn-outline-dark w-75">Reset</button>
                 </div>
                 <div class="col-md-4">
-                <a href="../supplier.php"><button type="button" class="btn btn-outline-danger w-75">Return</button></a>
+                <a href="../client.php"><button type="button" class="btn btn-outline-danger w-75">Return</button></a>
                 </div>
             </div>
         </form>
@@ -286,7 +286,7 @@ if (isset($_GET['trader_id'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    <script src="supplier.js"></script>
+    <script src="client.js"></script>
 </body>
 
 </html>

@@ -15,5 +15,10 @@
                 Clients
             </li>
         </a>
+        <a href="product.php">
+            <li class="list-group-item <?php echo basename($_SERVER['PHP_SELF']) == 'product.php' ? 'active' : ''; ?>">
+                Products
+            </li>
+        </a>
     </ul>
 </div>

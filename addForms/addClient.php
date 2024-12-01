@@ -21,14 +21,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         header('Content-Type: application/json'); // Only for POST requests
 
-       // Supplier variables
-       $supp_first_name = test_input($_POST['supp-first-name']);
-       $supp_middle_name = test_input($_POST['supp-middle-name']);
-       $supp_last_name = test_input($_POST['supp-last-name']);
-       $supp_dob = test_input($_POST['supp-dob']);
-       $supp_phone = test_input($_POST['supp-phone']);
-       $supp_email= test_input($_POST['supp-email']);
-       $supp_address= test_input($_POST['supp-address']);
+       // Clclient variables
+       $client_first_name = test_input($_POST['client-first-name']);
+       $client_middle_name = test_input($_POST['client-middle-name']);
+       $client_last_name = test_input($_POST['client-last-name']);
+       $client_dob = test_input($_POST['client-dob']);
+       $client_phone = test_input($_POST['client-phone']);
+       $client_email= test_input($_POST['client-email']);
+       $client_address= test_input($_POST['client-address']);
 
        // Company variables
        $comp_first_name= test_input($_POST['comp-first-name']);
@@ -56,24 +56,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
        $remarks = test_input($_POST['remarks']); // Added missing semicolon here
 
        
-    // Supplier details validation
-    if (empty($supp_first_name) || !preg_match("/^[A-Za-z\s]+$/", $supp_first_name)) {
-        $errors['supp-first-name'] = "Please enter a valid first name using alphabets only.";
+    // Client details validation
+    if (empty($client_first_name) || !preg_match("/^[A-Za-z\s]+$/", $client_first_name)) {
+        $errors['client-first-name'] = "Please enter a valid first name using alphabets only.";
     }
-    if (!empty( $supp_middle_name) && !preg_match("/^[A-Za-z\s]+$/",  $supp_middle_name)) {
-        $errors['supp-middle-name'] = "Please use alphabets only for middle name.";
+    if (!empty( $client_middle_name) && !preg_match("/^[A-Za-z\s]+$/",  $client_middle_name)) {
+        $errors['client-middle-name'] = "Please use alphabets only for middle name.";
     }
-    if (empty($supp_last_name) || !preg_match("/^[A-Za-z\s]+$/", $supp_last_name)) {
-        $errors['supp-last-name'] = "Please enter a valid last name using alphabets only.";
+    if (empty($client_last_name) || !preg_match("/^[A-Za-z\s]+$/", $client_last_name)) {
+        $errors['client-last-name'] = "Please enter a valid last name using alphabets only.";
     }
-    if (empty($supp_phone) || !preg_match("/^\d{10}$/", $supp_phone)) {
-        $errors['supp-phone'] = "Please enter a valid 10-digit phone number.";
+    if (empty($client_phone) || !preg_match("/^\d{10}$/", $client_phone)) {
+        $errors['client-phone'] = "Please enter a valid 10-digit phone number.";
     }
-    if (empty($supp_email) || !filter_var($supp_email, FILTER_VALIDATE_EMAIL)) {
-        $errors['supp-email'] = "Please enter a valid email.";
+    if (empty($client_email) || !filter_var($client_email, FILTER_VALIDATE_EMAIL)) {
+        $errors['client-email'] = "Please enter a valid email.";
     }
-    if (empty($supp_address)) {
-        $errors['supp-address'] = "Please enter the supplier's address.";
+    if (empty($client_address)) {
+        $errors['client-address'] = "Please enter the client's address.";
     }
 
     // Company details validation
@@ -134,13 +134,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      // Process form data if no errors
      if (empty($errors)) {
           // Insert or process form data
-          $sql = "INSERT INTO `amba_associats`.`supplier` (
+          $sql = "INSERT INTO `amba_associats`.`client` (
             `first_name`, `middle_name`, `last_name`, `phone`, `email`, `address`, 
             `comp_first_name`, `comp_middle_name`, `comp_last_name`, `comp_type`, 
             `manager_name`, `manager_phone`, `manager_email`, `chemical_license`, `comp_email`, `comp_address`, `trader_id`, `gst_no`, `pan_no`, `tan_no`, `website`, `remarks`
         ) VALUES (
-            '$supp_first_name', '$supp_middle_name', '$supp_last_name', 
-            '$supp_phone', '$supp_email', '$supp_address', '$comp_first_name', 
+            '$client_first_name', '$client_middle_name', '$client_last_name', 
+            '$client_phone', '$client_email', '$client_address', '$comp_first_name', 
             '$comp_middle_name', '$comp_last_name', '$comp_type', '$manager_name', 
             '$manager_phone', '$manager_email', '$comp_chemical_license', '$comp_email', '$comp_address', '$comp_trader_id', '$comp_gst_no', '$comp_pan_no', '$comp_tan_no', '$comp_website', '$remarks'
         )";
@@ -179,7 +179,7 @@ function test_input($data) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Supplier</title>
+    <title>Client</title>
     <style>
     label {
         margin-bottom: 0.5rem;
@@ -189,58 +189,58 @@ function test_input($data) {
 
 <body>
     <div class="container bg-body-tertiary mw-100 h-100">
-        <form action="addSupplier.php" method="POST" class="w-75 h-100 mx-auto p-3 needs-validation" id="form" novalidate>
+        <form action="addClient.php" method="POST" class="w-75 h-100 mx-auto p-3 needs-validation" id="form" novalidate>
 
 
-            <!-- supplier details -->
+            <!-- client details -->
 
-            <h1 class="mb-4 ms-3">New Supplier</h1>
+            <h1 class="mb-4 ms-3">New Client</h1>
             <div class="container row">
                 <div class="col mb-3">
-                    <label for="supp-first-name">Supplier's First Name *</label>
-                    <input type="text" class="form-control" id="supp-first-name" name="supp-first-name"
+                    <label for="client-first-name">Client's First Name *</label>
+                    <input type="text" class="form-control" id="client-first-name" name="client-first-name"
                         placeholder="First Name" pattern="^[A-Za-z\s]+$" required>
                     <div class="invalid-feedback">
-                    <?php echo $errors['supp-first-name'] ?? 'Please Use Alphabets Only'; ?>
+                    <?php echo $errors['client-first-name'] ?? 'Please Use Alphabets Only'; ?>
                     </div>
                 </div>
                 <div class="col mb-3">
-                    <label for="supp-middle-name">Supplier's Middle Name</label>
-                    <input type="text" class="form-control" id="supp-middle-name" name="supp-middle-name"
+                    <label for="client-middle-name">Client's Middle Name</label>
+                    <input type="text" class="form-control" id="client-middle-name" name="client-middle-name"
                         placeholder="Middle Name" pattern="^[A-Za-z\s]+$">
                     <div class="invalid-feedback">
-                    <?php echo $errors['supp-middle-name'] ?? 'Please Use Alphabets Only'; ?>
+                    <?php echo $errors['client-middle-name'] ?? 'Please Use Alphabets Only'; ?>
                     </div>
                 </div>
                 <div class="col mb-3">
-                    <label for="supp-last-name">Supplier's Last Name *</label>
-                    <input type="text" class="form-control" id="supp-last-name" name="supp-last-name"
+                    <label for="client-last-name">Client's Last Name *</label>
+                    <input type="text" class="form-control" id="client-last-name" name="client-last-name"
                         placeholder="Last Name" pattern="^[A-Za-z\s]+$" required>
                     <div class="invalid-feedback">
-                    <?php echo $errors['supp-last-name'] ?? 'Please Use Alphabets Only'; ?>
+                    <?php echo $errors['client-last-name'] ?? 'Please Use Alphabets Only'; ?>
                     </div>
                 </div>
             </div>
             <div class="container row mb-5">
                 <div class="col-md-3 mb-3">
-                    <label for="supp-phone">Supplier's Phone *</label>
-                    <input type="text" class="form-control" id="supp-phone" name="supp-phone" placeholder="Phone Number"
+                    <label for="client-phone">Client's Phone *</label>
+                    <input type="text" class="form-control" id="client-phone" name="client-phone" placeholder="Phone Number"
                         pattern="^\d{10}$" min="10" max="10" required>
                     <div class="invalid-feedback">
-                    <?php echo $errors['supp-phone'] ?? 'Please Enter 10 Digit Phone Number'; ?>
+                    <?php echo $errors['client-phone'] ?? 'Please Enter 10 Digit Phone Number'; ?>
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="supp-email">Supplier's Email *</label>
-                    <input type="email" class="form-control" id="supp-email" name="supp-email" placeholder="Email"
+                    <label for="client-email">Client's Email *</label>
+                    <input type="email" class="form-control" id="client-email" name="client-email" placeholder="Email"
                         required>
                     <div class="invalid-feedback">
-                        <?php echo $errors['supp-email'] ?? 'Please Enter Valid Email'; ?>
+                        <?php echo $errors['client-email'] ?? 'Please Enter Valid Email'; ?>
                     </div>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="supp-address">Supplier's Address *</label>
-                    <input type="text" class="form-control" id="supp-address" name="supp-address" placeholder="Address"
+                    <label for="client-address">Client's Address *</label>
+                    <input type="text" class="form-control" id="client-address" name="client-address" placeholder="Address"
                         required>
                     <div class="invalid-feedback">
                         Please Enter Address
@@ -351,7 +351,7 @@ function test_input($data) {
 
             <div class="container row">
                 <div class="col-md-3 mb-3">
-                    <label for="comp-chemical-license">Supplier's Chemical License *</label>
+                    <label for="comp-chemical-license">Client's Chemical License *</label>
                     <input type="text" class="form-control" id="comp-chemical-license" name="comp-chemical-license"
                         placeholder="Chemical License" pattern="^[A-Za-z0-9]+$" maxlength=" 50" required>
                     <div class="invalid-feedback">
@@ -415,7 +415,7 @@ function test_input($data) {
                     <button type="reset" class="btn btn-outline-dark w-75">Reset</button>
                 </div>
                 <div class="col-md-4">
-                <a href="../supplier.php"><button type="button" class="btn btn-outline-danger w-75">Return</button></a>
+                <a href="../client.php"><button type="button" class="btn btn-outline-danger w-75">Return</button></a>
                 </div>
             </div>
         </form>
@@ -425,7 +425,7 @@ function test_input($data) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    <script src="addSupplier.js"></script>
+    <script src="addClient.js"></script>
 </body>
 
 </html>

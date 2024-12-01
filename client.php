@@ -35,7 +35,7 @@ $sql = "
         tan_no,
         remarks
     FROM 
-        supplier
+        client
 ";
 
 $result = $conn->query($sql);
@@ -60,14 +60,14 @@ $result = $conn->query($sql);
 
         <!-- Main Content -->
         <div id="main" class="col-10 p-4">
-            <h2 class="mb-4">Supplier Details</h2>
-            <a href="./addForms/addSupplier.php"><button type="button" class="btn btn-primary mb-4">Add New Supplier</button></a>
+            <h2 class="mb-4">Client Details</h2>
+            <a href="./addForms/addClient.php"><button type="button" class="btn btn-primary mb-4">Add New Client</button></a>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="table-dark">
                         <tr>
                             <th>Edit</th>
-                            <th>Supplier Name</th>              
+                            <th>Client Name</th>              
                             <th>Phone</th>
                             <th>Email</th>
                             <th>Address</th>

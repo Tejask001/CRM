@@ -34,7 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(data.message); // Display success message
                     // form.reset();
                     location.replace("http://localhost:8888/amba/supplier.php");
-                } else if (data.errors) {
+                }
+                else if (data.errors) {
                     handleServerErrors(data.errors);
                 } else {
                     alert(data.message); // Display error message if provided

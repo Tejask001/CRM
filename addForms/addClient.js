@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
         }
-        fetch('updateSupplier.php', {
+        fetch('addClient.php', {
             method: 'POST',
             body: formData
         })
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.success) {
                     alert(data.message); // Display success message
                     // form.reset();
-                    location.replace("http://localhost:8888/amba/supplier.php");
+                    location.replace("http://localhost:8888/amba/client.php");
                 }
                 else if (data.errors) {
                     handleServerErrors(data.errors);
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(data.message); // Display error message if provided
                 }
             })
-        // .catch(error => console.error('Error:', error));
+            .catch(error => console.error('Error:', error));
 
     });
 
