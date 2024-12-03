@@ -20,5 +20,10 @@
                 Products
             </li>
         </a>
+        <a href="orders.php">
+            <li class="list-group-item <?php echo basename($_SERVER['PHP_SELF']) == 'orders.php' ? 'active' : ''; ?>">
+                Orders
+            </li>
+        </a>
     </ul>
 </div>

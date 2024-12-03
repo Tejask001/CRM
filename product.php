@@ -23,13 +23,8 @@ $sql = "
         pp,
         sp,
         mrgp,
-        mos,
         product_life,
-        supplier_name,
-        batch_code,
-        description,
-        uses,
-        precautions
+        batch_code
     FROM 
         product
 ";
@@ -69,13 +64,8 @@ $result = $conn->query($sql);
                             <th>Purchase Price</th>
                             <th>Selling Price</th>
                             <th>Margin</th>
-                            <th>Minimum Order Stock</th>
-                            <th>Product Life</th>
-                            <th>Supplier Name</th>
+                            <th>Product Life (Months)</th>
                             <th>Batch Code</th>
-                            <th>Description</th>
-                            <th>Usage</th>
-                            <th>Precautions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -92,14 +82,8 @@ $result = $conn->query($sql);
                                 echo "<td>" . htmlspecialchars($row['pp']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['sp']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['mrgp']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['mos']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['product_life']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['supplier_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['batch_code']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['description']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['uses']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['precautions']) . "</td>";
-                                echo "</tr>";
                             }
                         } else {
                             echo "<tr><td colspan='14'>No Products found.</td></tr>";
