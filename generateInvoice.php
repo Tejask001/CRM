@@ -22,7 +22,6 @@ $order_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 // Fetch all order items for the given order ID
 $sql = "
     SELECT  
-        orders.id,
         orders.order_id,
         orders.date,
         orders.batch_code,
@@ -100,6 +99,7 @@ $freight_charge = $order['freight'];
 // var_dump($freight_charge);
 // Loop through all items
 do {
+
     // Ensure the values exist before performing calculations
     $quantity = isset($order['quantity']) ? $order['quantity'] : 0;
     $price = isset($order['sp']) ? $order['sp'] : 0;
@@ -111,17 +111,18 @@ do {
     $item_total = $quantity * $price;
     $discount_amount = ($item_total * $discount) / 100;
     $subtotal_item = $item_total - $discount_amount;
-    
+
     $tax_cgst = ($subtotal_item * $cgst) / 100;
     $tax_sgst = ($subtotal_item * $sgst) / 100;
     $tax_igst = ($subtotal_item * $igst) / 100;
-    
+
     $subtotal_after_tax = $subtotal_item + $tax_cgst + $tax_sgst + $tax_igst;
 
     $total_tax_cgst += $tax_cgst;
     $total_tax_sgst += $tax_sgst;
     $total_tax_igst += $tax_igst;
     $subtotal += $subtotal_item;
+
 
     $pdf->Cell(20, 10, $item_number++, 1, 0, 'C');
     $pdf->Cell(50, 10, isset($order['general_name']) ? $order['general_name'] : 'N/A', 1, 0, 'C');
@@ -157,4 +158,3 @@ $pdf->MultiCell(200, 10, 'Amount in Words: ' . convertNumberToWords($grand_total
 
 // Output PDF
 $pdf->Output('I', 'Invoice_' . $order['order_id'] . '.pdf');
-?>

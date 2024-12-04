@@ -41,71 +41,127 @@ while ($row = $products_result->fetch_assoc()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Order</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>Add Order</title>
+    <style>
+        .form-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .read-only {
+            background-color: #EFEEE4;
+            border: 1px solid #EFEEE4;
+        }
+
+        .to-fill {
+            border: 1.75px solid #848884;
+        }
+
+        .cgst,
+        .sgst,
+        .igst {
+            background-color: #fac6c5;
+            border: 1px solid #fac6c5;
+        }
+
+        .billing-amount {
+            background-color: #fce8b2;
+            border: 1px solid #f9d68a;
+        }
+
+        .profit {
+            background-color: #b6f5b3;
+            border: 1px solid #b6f5b3;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container mt-5">
         <h2 class="mb-4">Add Order</h2>
         <form id="addOrderForm" action="saveClientOrder.php" method="post">
-            <!-- Hidden field for order_id -->
+            <!-- Hidden fields for order_id and order_type -->
             <input type="hidden" name="order_id" value="<?php echo $order_id; ?>">
             <input type="hidden" name="order_type" value="<?php echo $order_type; ?>">
 
-            <div class="mb-5">
-                <label for="client_id" class="form-label">Client</label>
-                <select id="client_id" name="client_id" class="form-select" required>
-                    <option value="">Select Client</option>
-                    <?php
-                    $clients_result = $conn->query("SELECT id, CONCAT(comp_first_name, ' ', comp_last_name) AS company_name FROM client");
-                    while ($row = $clients_result->fetch_assoc()) {
-                        echo "<option value='{$row['id']}'>{$row['company_name']}</option>";
-                    }
-                    ?>
-                </select>
+            <!-- Client and Payment Method Selection -->
+            <div class="row mb-4">
+                <div class="mb-3 col-md-4">
+                    <label for="client_id" class="form-label">Client</label>
+                    <select id="client_id" name="client_id" class="form-select to-fill" required>
+                        <option value="">Select Client</option>
+                        <?php
+                        $clients_result = $conn->query("SELECT id, CONCAT(comp_first_name, ' ', comp_middle_name, ' ', comp_last_name) AS company_name FROM client");
+                        while ($row = $clients_result->fetch_assoc()) {
+                            echo "<option value='{$row['id']}'>{$row['company_name']}</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="payment_method" class="form-label">Payment Method</label>
+                    <select name="payment_method" class="form-select payment-method to-fill" required>
+                        <option value="">Select</option>
+                        <option value="upi">UPI</option>
+                        <option value="cash">Cash</option>
+                        <option value="debit-card">Debit Card</option>
+                        <option value="credit-card">Credit Card</option>
+                        <option value="net-banking">Net Banking</option>
+                    </select>
+                </div>
             </div>
 
+            <!-- Order Items Container -->
             <div id="orderItemsContainer">
-                <div class="order-item">
+                <div class="order-item py-4 px-4 mb-4" style="
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+">
                     <!-- Product Row 1 -->
                     <div class="row mb-3">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label for="product" class="form-label">Product</label>
-                            <select name="product[]" class="form-select product-select" required>
+                            <select name="product[]" class="form-select product-select to-fill" required>
                                 <option value="">Select Product</option>
                                 <?php foreach ($products as $product) { ?>
                                     <option value='<?php echo json_encode($product); ?>'>
-                                        <?php echo $product['general_name']; ?>
+                                        <?php echo htmlspecialchars($product['general_name']); ?>
                                     </option>
                                 <?php } ?>
                             </select>
                         </div>
                         <div class="col-md-2">
                             <label for="batch_code" class="form-label">Batch Code</label>
-                            <input type="text" name="batch_code[]" class="form-control batch-code" readonly>
+                            <input type="text" name="batch_code[]" class="form-control batch-code read-only" readonly>
                         </div>
                         <div class="col-md-2">
-                            <label for="price_per_unit" class="form-label">Price Per Unit</label>
-                            <input type="number" name="price_per_unit[]" class="form-control price-per-unit" readonly>
+                            <label for="cost_price_per_unit" class="form-label">Cost Price</label>
+                            <input type="number" name="cost_price_per_unit[]" class="form-control cost-price-per-unit read-only" readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="selling_price_per_unit" class="form-label">Selling Price</label>
+                            <input type="number" name="selling_price_per_unit[]" class="form-control selling-price-per-unit read-only" readonly>
                         </div>
                         <div class="col-md-2">
                             <label for="quantity" class="form-label">Quantity</label>
-                            <input type="number" name="quantity[]" class="form-control quantity" min="1" required>
+                            <input type="number" name="quantity[]" class="form-control quantity to-fill" min="1" required>
                         </div>
-                        <div class="col-md-2">
-                            <label for="discount" class="form-label">Discount (%)</label>
-                            <input type="number" name="discount[]" class="form-control discount" min="0" required>
+                        <div class="col-md-1 d-flex align-items-end">
+                            <button type="button" class="btn btn-danger remove-row">Remove</button>
                         </div>
                     </div>
 
                     <!-- Product Row 2 -->
                     <div class="row mb-3">
                         <div class="col-md-2">
+                            <label for="discount" class="form-label">Discount (%)</label>
+                            <input type="number" name="discount[]" class="form-control discount to-fill" min="0" required>
+                        </div>
+                        <div class="col-md-2">
                             <label for="tax_type" class="form-label">Tax Type</label>
-                            <select name="tax_type[]" class="form-select tax-type" required>
+                            <select name="tax_type[]" class="form-select tax-type to-fill" required>
                                 <option value="">Select</option>
                                 <option value="in_state">In State</option>
                                 <option value="out_of_state">Out of State</option>
@@ -113,7 +169,7 @@ while ($row = $products_result->fetch_assoc()) {
                         </div>
                         <div class="col-md-2">
                             <label for="tax_amount" class="form-label">Tax Amount (%)</label>
-                            <input type="number" name="tax_amount[]" class="form-control tax-amount" min="0" required>
+                            <input type="number" name="tax_amount[]" class="form-control tax-amount to-fill" min="0" required>
                         </div>
                         <div class="col-md-2">
                             <label for="cgst" class="form-label">CGST</label>
@@ -132,130 +188,67 @@ while ($row = $products_result->fetch_assoc()) {
                     <!-- Product Row 3 -->
                     <div class="row mb-5">
                         <div class="col-md-3">
-                            <label for="freight" class="form-label">Freight</label>
-                            <input type="number" name="freight[]" class="form-control freight" min="0" required>
+                            <label for="freight" class="form-label">Freight Charges</label>
+                            <input type="number" name="freight[]" class="form-control freight to-fill" min="0" required>
                         </div>
                         <div class="col-md-3">
                             <label for="billing_amount" class="form-label">Billing Amount</label>
                             <input type="number" name="billing_amount[]" class="form-control billing-amount" readonly>
                         </div>
-                        <div class="col-md-6 d-flex align-items-end">
-                            <button type="button" class="btn btn-danger remove-row">Remove</button>
+                        <div class="col-md-3">
+                            <label for="profit" class="form-label">Profit</label>
+                            <input type="number" name="profit[]" class="form-control profit" readonly>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <!-- The remove button is moved to the first row for better UX -->
                         </div>
                     </div>
                 </div>
             </div>
 
-            <button type="button" class="btn btn-secondary" id="addRow">Add Item</button>
-            <button type="submit" class="btn btn-primary mx-2">Save Order</button>
+            <!-- Advance and Due Amounts -->
+            <div class="row mb-4">
+                <div class="mb-3 col-md-4">
+                    <label for="advance" class="form-label">Advance</label>
+                    <input type="number" id="advance" name="advance" class="form-control to-fill" min="0" required>
+                </div>
+                <div class="mb-3 col-md-4">
+                    <label for="due" class="form-label">Due</label>
+                    <input type="number" id="due" name="due" class="form-control read-only" readonly>
+                </div>
+            </div>
+
+            <!-- Add Row and Submit Buttons -->
+            <button type="button" class="btn btn-secondary mb-4" id="addRow">Add Item</button>
+            <button type="submit" class="btn btn-primary mx-2 mb-4">Save Order</button>
         </form>
     </div>
 
     <script>
-        $(document).ready(function () {
-            // Add a new row
-            $('#addRow').click(function () {
-                $('#orderItemsContainer').append(`
-                    <div class="order-item">
-                        <!-- Product Row 1 -->
-                        <div class="row mb-3">
-                            <div class="col-md-2">
-                                <label for="product" class="form-label">Product</label>
-                                <select name="product[]" class="form-select product-select" required>
-                                    <option value="">Select Product</option>
-                                    <?php foreach ($products as $product) { ?>
-                                        <option value='<?php echo json_encode($product); ?>'>
-                                            <?php echo $product['general_name']; ?>
-                                        </option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="batch_code" class="form-label">Batch Code</label>
-                                <input type="text" name="batch_code[]" class="form-control batch-code" readonly>
-                            </div>
-                             <div class="col-md-2">
-                                <label for="price_per_unit" class="form-label">Price Per Unit</label>
-                                <input type="number" name="price_per_unit[]" class="form-control price-per-unit" readonly>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="quantity" class="form-label">Quantity</label>
-                                <input type="number" name="quantity[]" class="form-control quantity" min="1" required>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="discount" class="form-label">Discount (%)</label>
-                                <input type="number" name="discount[]" class="form-control discount" min="0" required>
-                            </div>
-                        </div>
+        $(document).ready(function() {
+            // Function to calculate the total due
+            function calculateDue() {
+                let totalBillingAmount = 0;
 
-                        <!-- Product Row 2 -->
-                        <div class="row mb-3">
-                            <div class="col-md-2">
-                                <label for="tax_type" class="form-label">Tax Type</label>
-                                <select name="tax_type[]" class="form-select tax-type" required>
-                                    <option value="">Select</option>
-                                    <option value="in_state">In State</option>
-                                    <option value="out_of_state">Out of State</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="tax_amount" class="form-label">Tax Amount (%)</label>
-                                <input type="number" name="tax_amount[]" class="form-control tax-amount" min="0" required>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="cgst" class="form-label">CGST</label>
-                                <input type="number" name="cgst[]" class="form-control cgst" readonly>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="sgst" class="form-label">SGST</label>
-                                <input type="number" name="sgst[]" class="form-control sgst" readonly>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="igst" class="form-label">IGST</label>
-                                <input type="number" name="igst[]" class="form-control igst" readonly>
-                            </div>
-                            
-                            
-                        </div>
+                // Sum up all billing_amount inputs
+                $('.billing-amount').each(function() {
+                    const value = parseFloat($(this).val()) || 0;
+                    totalBillingAmount += value;
+                });
 
-                        <!-- Product Row 3 -->
-                        <div class="row mb-5">
-                            <div class="col-md-3">
-                                <label for="freight" class="form-label">Freight</label>
-                                <input type="number" name="freight[]" class="form-control freight" min="0" required>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="billing_amount" class="form-label">Billing Amount</label>
-                                <input type="number" name="billing_amount[]" class="form-control billing-amount" readonly>
-                            </div>
-                            <div class="col-md-6 d-flex align-items-end">
-                                <button type="button" class="btn btn-danger remove-row">Remove</button>
-                            </div>
-                        </div>
-                    </div>
-                `);
-            });
+                // Get the advance value
+                const advance = parseFloat($('#advance').val()) || 0;
 
-            // Remove a row
-            $(document).on('click', '.remove-row', function () {
-                $(this).closest('.order-item').remove();
-            });
+                // Calculate the due amount
+                const due = totalBillingAmount - advance;
 
-            // Update fields dynamically when a product is selected
-            $(document).on('change', '.product-select', function () {
-                const productData = $(this).val();
-                if (productData) {
-                    const product = JSON.parse(productData);
-                    const row = $(this).closest('.order-item');
-                    row.find('.batch-code').val(product.batch_code);
-                    row.find('.price-per-unit').val(product.sp); 
-                }
-            });
+                // Update the due input
+                $('#due').val(due.toFixed(2));
+            }
 
-            // Update fields dynamically when other fields change
-            $(document).on('change', '.quantity, .price-per-unit, .discount, .freight, .tax-type, .tax-amount', function () {
-                const row = $(this).closest('.order-item');
-                const pricePerUnit = parseFloat(row.find('.price-per-unit').val()) || 0;
+            // Function to calculate billing amount and other fields
+            function calculateBilling(row) {
+                const pricePerUnit = parseFloat(row.find('.selling-price-per-unit').val()) || 0;
                 const quantity = parseFloat(row.find('.quantity').val()) || 0;
                 const discount = parseFloat(row.find('.discount').val()) || 0;
                 const freight = parseFloat(row.find('.freight').val()) || 0;
@@ -267,7 +260,9 @@ while ($row = $products_result->fetch_assoc()) {
                 const totalDiscount = (discount / 100) * itemTotal;
                 const itemTotalAfterDiscount = itemTotal - totalDiscount;
 
-                let cgst = 0, sgst = 0, igst = 0;
+                let cgst = 0,
+                    sgst = 0,
+                    igst = 0;
                 if (taxType === 'in_state') {
                     cgst = sgst = (taxAmount / 2) * itemTotalAfterDiscount / 100;
                 } else if (taxType === 'out_of_state') {
@@ -283,7 +278,137 @@ while ($row = $products_result->fetch_assoc()) {
                 row.find('.sgst').val(sgst.toFixed(2));
                 row.find('.igst').val(igst.toFixed(2));
                 row.find('.billing-amount').val(billingAmount.toFixed(2));
+                row.find('.profit').val(itemTotalAfterDiscount.toFixed(2));
+
+                // After updating billing amount, recalculate due
+                calculateDue();
+            }
+
+            // Event listener for changes in product selection
+            $(document).on('change', '.product-select', function() {
+                const productData = $(this).val();
+                if (productData) {
+                    const product = JSON.parse(productData);
+                    const row = $(this).closest('.order-item');
+                    row.find('.batch-code').val(product.batch_code);
+                    row.find('.cost-price-per-unit').val(product.pp);
+                    row.find('.selling-price-per-unit').val(product.sp);
+
+                    // After updating selling price, recalculate billing
+                    calculateBilling(row);
+                }
             });
+
+            // Event listener for changes in quantity, selling price, discount, freight, tax type, tax amount
+            $(document).on('input change', '.quantity, .selling-price-per-unit, .discount, .freight, .tax-type, .tax-amount', function() {
+                const row = $(this).closest('.order-item');
+                calculateBilling(row);
+            });
+
+            // Listen for changes in billing_amount and advance inputs to calculate due
+            $(document).on('input', '.billing-amount, #advance', calculateDue);
+
+            // Add a new row
+            $('#addRow').click(function() {
+                const newOrderItem = `
+                    <div class="order-item py-4 px-4 mb-4" style="box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;">
+                        <!-- Product Row 1 -->
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Product</label>
+                                <select name="product[]" class="form-select product-select to-fill" required>
+                                    <option value="">Select Product</option>
+                                    <?php foreach ($products as $product) { ?>
+                                        <option value='<?php echo json_encode($product); ?>'>
+                                            <?php echo htmlspecialchars($product['general_name']); ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Batch Code</label>
+                                <input type="text" name="batch_code[]" class="form-control batch-code read-only" readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Cost Price</label>
+                                <input type="number" name="cost_price_per_unit[]" class="form-control cost-price-per-unit read-only" readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Selling Price</label>
+                                <input type="number" name="selling_price_per_unit[]" class="form-control selling-price-per-unit read-only" readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Quantity</label>
+                                <input type="number" name="quantity[]" class="form-control quantity to-fill" min="1" required>
+                            </div>
+                            <div class="col-md-1 d-flex align-items-end">
+                                <button type="button" class="btn btn-danger remove-row">Remove</button>
+                            </div>
+                        </div>
+
+                        <!-- Product Row 2 -->
+                        <div class="row mb-3">
+                            <div class="col-md-2">
+                                <label class="form-label">Discount (%)</label>
+                                <input type="number" name="discount[]" class="form-control discount to-fill" min="0" required>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Tax Type</label>
+                                <select name="tax_type[]" class="form-select tax-type to-fill" required>
+                                    <option value="">Select</option>
+                                    <option value="in_state">In State</option>
+                                    <option value="out_of_state">Out of State</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Tax Amount (%)</label>
+                                <input type="number" name="tax_amount[]" class="form-control tax-amount to-fill" min="0" required>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">CGST</label>
+                                <input type="number" name="cgst[]" class="form-control cgst" readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">SGST</label>
+                                <input type="number" name="sgst[]" class="form-control sgst" readonly>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">IGST</label>
+                                <input type="number" name="igst[]" class="form-control igst" readonly>
+                            </div>
+                        </div>
+
+                        <!-- Product Row 3 -->
+                        <div class="row mb-5">
+                            <div class="col-md-3">
+                                <label class="form-label">Freight Charges</label>
+                                <input type="number" name="freight[]" class="form-control freight to-fill" min="0" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Billing Amount</label>
+                                <input type="number" name="billing_amount[]" class="form-control billing-amount" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Profit</label>
+                                <input type="number" name="profit[]" class="form-control profit" readonly>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <!-- Optionally, you can add more buttons or information here -->
+                            </div>
+                        </div>
+                    </div>
+                `;
+                $('#orderItemsContainer').append(newOrderItem);
+            });
+
+            // Remove a row and recalculate due
+            $(document).on('click', '.remove-row', function() {
+                $(this).closest('.order-item').remove();
+                calculateDue();
+            });
+
+            // Initial calculation in case there are pre-filled billing amounts
+            calculateDue();
         });
     </script>
 </body>

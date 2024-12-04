@@ -40,7 +40,7 @@ $sql = "
         orders
     LEFT JOIN client ON orders.client_id = client.id
     LEFT JOIN product ON orders.batch_code = product.batch_code
-    ORDER BY orders.order_id
+    ORDER BY orders.date
 ";
 
 $result = $conn->query($sql);
@@ -76,10 +76,10 @@ if (!$result) {
                     <thead class="table-dark">
                         <tr>
                             <th>Actions</th>
-                            <th>Order ID</th> 
-                            <th>Order Date</th>  
+                            <th>Order ID</th>
+                            <th>Order Date</th>
                             <th>Party Name</th>
-                            <th>Party GST No</th>            
+                            <th>Party GST No</th>
                             <th>Batch Code</th>
                             <th>Product Name</th>
                             <th>Size</th>

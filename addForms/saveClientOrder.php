@@ -13,15 +13,19 @@ if ($conn->connect_error) {
 // Get the posted data
 $order_id = $_POST['order_id'];
 $client_id = $_POST['client_id'];
+$payment_method = $_POST['payment_method'];
+$advance = $_POST['advance'];
+$due = $_POST['due'];
 $batch_codes = $_POST['batch_code'];
 $quantities = $_POST['quantity'];
 $discounts = $_POST['discount'];
 $freights = $_POST['freight'];
-$prices_per_unit = $_POST['price_per_unit'];
+$prices_per_unit = $_POST['selling_price_per_unit'];
 $order_type = $_POST['order_type'];  // Added order_type (Sale or Purchase)
 
 // Initialize supplier_id as NULL
 $supplier_id = null;
+$total_amount = $advance + $due;
 
 // CGST, SGST, IGST, and Billing Amount
 $cgst = isset($_POST['cgst']) ? $_POST['cgst'] : [];
@@ -63,11 +67,15 @@ for ($i = 0; $i < count($batch_codes); $i++) {
     $supplier_id = NULL; // You may want to set this based on conditions
 
     // Prepare the SQL query by directly inserting the values into the statement
-    $sql = "INSERT INTO orders (order_id, client_id, batch_code, quantity, discount, freight, cgst, sgst, igst, billing_amount, type, supplier_id, date) 
+    $order_sql = "INSERT INTO orders (order_id, client_id, batch_code, quantity, discount, freight, cgst, sgst, igst, billing_amount, type, supplier_id, date) 
             VALUES ('$order_id', '$client_id', '$batch_code', $quantity, $discount, $freight, $cgst_value, $sgst_value, $igst_value, $billing_amount_value, '$order_type', NULL, NOW())";
+    if (!$conn->query($order_sql)) {
+        die("Error inserting order: " . $conn->error);
+    }
 
-    // Execute the SQL statement
-    if (!$conn->query($sql)) {
+    //update payment table
+    $payment_sql = "INSERT INTO payment (order_id, payment_method, total_amount, advance, due) VALUES ('$order_id', '$payment_method', '$total_amount', '$advance', '$due')";
+    if (!$conn->query($payment_sql)) {
         die("Error inserting order: " . $conn->error);
     }
 
@@ -80,4 +88,3 @@ for ($i = 0; $i < count($batch_codes); $i++) {
 
 echo "Order saved successfully!";
 $conn->close();
-?>
