@@ -46,6 +46,10 @@ while ($row = $products_result->fetch_assoc()) {
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
+        body {
+            background-color: var(--bs-gray-100);
+        }
+
         .form-label {
             font-weight: bold;
             color: #333;
@@ -62,7 +66,8 @@ while ($row = $products_result->fetch_assoc()) {
 
         .cgst,
         .sgst,
-        .igst {
+        .igst,
+        .due {
             background-color: #fac6c5;
             border: 1px solid #fac6c5;
         }
@@ -101,7 +106,7 @@ while ($row = $products_result->fetch_assoc()) {
                         ?>
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="payment_method" class="form-label">Payment Method</label>
                     <select name="payment_method" class="form-select payment-method to-fill" required>
                         <option value="">Select</option>
@@ -112,12 +117,20 @@ while ($row = $products_result->fetch_assoc()) {
                         <option value="net-banking">Net Banking</option>
                     </select>
                 </div>
+                <div class="mb-3 col-md-2">
+                    <label for="advance" class="form-label">Advance</label>
+                    <input type="number" id="advance" name="advance" class="form-control to-fill" min="0" required>
+                </div>
+                <div class="mb-3 col-md-2">
+                    <label for="due" class="form-label">Due</label>
+                    <input type="number" id="due" name="due" class="form-control due read-only" readonly>
+                </div>
             </div>
 
             <!-- Order Items Container -->
             <div id="orderItemsContainer">
                 <div class="order-item py-4 px-4 mb-4" style="
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px; background-color: white;
 ">
                     <!-- Product Row 1 -->
                     <div class="row mb-3">
@@ -147,9 +160,6 @@ while ($row = $products_result->fetch_assoc()) {
                         <div class="col-md-2">
                             <label for="quantity" class="form-label">Quantity</label>
                             <input type="number" name="quantity[]" class="form-control quantity to-fill" min="1" required>
-                        </div>
-                        <div class="col-md-1 d-flex align-items-end">
-                            <button type="button" class="btn btn-danger remove-row">Remove</button>
                         </div>
                     </div>
 
@@ -200,21 +210,11 @@ while ($row = $products_result->fetch_assoc()) {
                             <input type="number" name="profit[]" class="form-control profit" readonly>
                         </div>
                         <div class="col-md-3 d-flex align-items-end">
-                            <!-- The remove button is moved to the first row for better UX -->
+                            <div class="col-md-1 d-flex align-items-end">
+                                <button type="button" class="btn btn-danger remove-row">Remove</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Advance and Due Amounts -->
-            <div class="row mb-4">
-                <div class="mb-3 col-md-4">
-                    <label for="advance" class="form-label">Advance</label>
-                    <input type="number" id="advance" name="advance" class="form-control to-fill" min="0" required>
-                </div>
-                <div class="mb-3 col-md-4">
-                    <label for="due" class="form-label">Due</label>
-                    <input type="number" id="due" name="due" class="form-control read-only" readonly>
                 </div>
             </div>
 
@@ -311,7 +311,7 @@ while ($row = $products_result->fetch_assoc()) {
             // Add a new row
             $('#addRow').click(function() {
                 const newOrderItem = `
-                    <div class="order-item py-4 px-4 mb-4" style="box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;">
+                    <div class="order-item py-4 px-4 mb-4" style="box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;background-color: white;">
                         <!-- Product Row 1 -->
                         <div class="row mb-3">
                             <div class="col-md-3">
@@ -340,9 +340,6 @@ while ($row = $products_result->fetch_assoc()) {
                             <div class="col-md-2">
                                 <label class="form-label">Quantity</label>
                                 <input type="number" name="quantity[]" class="form-control quantity to-fill" min="1" required>
-                            </div>
-                            <div class="col-md-1 d-flex align-items-end">
-                                <button type="button" class="btn btn-danger remove-row">Remove</button>
                             </div>
                         </div>
 
@@ -393,7 +390,9 @@ while ($row = $products_result->fetch_assoc()) {
                                 <input type="number" name="profit[]" class="form-control profit" readonly>
                             </div>
                             <div class="col-md-3 d-flex align-items-end">
-                                <!-- Optionally, you can add more buttons or information here -->
+                                <div class="col-md-1 d-flex align-items-end">
+                            <button type="button" class="btn btn-danger remove-row">Remove</button>
+                        </div>
                             </div>
                         </div>
                     </div>

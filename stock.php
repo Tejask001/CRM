@@ -13,20 +13,20 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch product details
+// Fetch product and stock details
 $sql = "
     SELECT 
-        product_code,
-        general_name,
-        chemical_name,
-        chemical_size,
-        pp,
-        sp,
-        mrgp,
-        product_life,
-        batch_code
+        product.product_code,
+        product.general_name,
+        product.chemical_name,
+        product.chemical_size,
+        product.product_life,
+        stock.batch_code,
+        stock.quantity
     FROM 
         product
+    JOIN 
+        stock ON product.batch_code = stock.batch_code
 ";
 
 $result = $conn->query($sql);
@@ -41,7 +41,7 @@ $result = $conn->query($sql);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="./supplier.css">
-    <title>Amba Associats</title>
+    <title>Amba Associats - Stock Details</title>
 </head>
 
 <body>
@@ -51,21 +51,18 @@ $result = $conn->query($sql);
 
         <!-- Main Content -->
         <div id="main" class="col-10 p-4">
-            <h2 class="mb-4">Product Details</h2>
-            <a href="./addForms/addProduct.php"><button type="button" class="btn btn-primary mb-4">Add New Product</button></a>
+            <h2 class="mb-4">Stock Details</h2>
+            <a href="./updateForms/updateStock.php"><button type="button" class="btn btn-primary mb-4">Update Stock</button></a>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="table-dark">
                         <tr>
-                            <th>Product Code</th>
                             <th>Batch Code</th>
                             <th>General Name</th>
                             <th>Chemical Name</th>
                             <th>Chemical Size</th>
-                            <th>Purchase Price</th>
-                            <th>Selling Price</th>
-                            <th>Margin</th>
                             <th>Product Life (Months)</th>
+                            <th>Stock Quantity</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,18 +72,16 @@ $result = $conn->query($sql);
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
-                                echo "<td>" . htmlspecialchars($row['product_code']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['batch_code']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['general_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['chemical_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['chemical_size']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['pp']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['sp']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['mrgp']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['product_life']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['quantity']) . "</td>";
+                                echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='14'>No Products found.</td></tr>";
+                            echo "<tr><td colspan='10'>No stock data found.</td></tr>";
                         }
 
                         // Close the connection

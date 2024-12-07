@@ -79,8 +79,7 @@ if (!$result) {
                             <th>Order ID</th>
                             <th>Order Date</th>
                             <th>Party Name</th>
-                            <th>Party GST No</th>
-                            <th>Batch Code</th>
+                            <th>Product Batch Code</th>
                             <th>Product Name</th>
                             <th>Size</th>
                             <th>Quantity</th>
@@ -88,10 +87,10 @@ if (!$result) {
                             <th>Price per Unit</th>
                             <th>Selling Price</th>
                             <th>Discount</th>
-                            <th>Freight</th>
                             <th>CGST</th>
                             <th>SGST</th>
                             <th>IGST</th>
+                            <th>Freight</th>
                             <th>Billing Amount</th>
                         </tr>
                     </thead>
@@ -106,7 +105,6 @@ if (!$result) {
                                 echo "<td>" . htmlspecialchars($row['order_id']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['date']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['company_name']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['gst_no']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['batch_code']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['general_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['chemical_size']) . "</td>";
@@ -115,10 +113,10 @@ if (!$result) {
                                 echo "<td>" . htmlspecialchars($row['pp']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['sp']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['discount']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['freight']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['cgst']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['sgst']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['igst']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['freight']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['billing_amount']) . "</td>";
                             }
                         } else {

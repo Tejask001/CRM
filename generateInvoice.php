@@ -112,9 +112,9 @@ do {
     $discount_amount = ($item_total * $discount) / 100;
     $subtotal_item = $item_total - $discount_amount;
 
-    $tax_cgst = ($subtotal_item * $cgst) / 100;
-    $tax_sgst = ($subtotal_item * $sgst) / 100;
-    $tax_igst = ($subtotal_item * $igst) / 100;
+    $tax_cgst = $cgst;
+    $tax_sgst = $sgst;
+    $tax_igst = $igst;
 
     $subtotal_after_tax = $subtotal_item + $tax_cgst + $tax_sgst + $tax_igst;
 
