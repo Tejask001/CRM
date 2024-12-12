@@ -12,7 +12,7 @@ $dbname = "amba_associats"; // Your database name
 // Create connection
 $con = new mysqli($servername, $username, $password, $dbname);
 // Check for connection success
-if($con->connect_error){
+if ($con->connect_error) {
     die("Connection to this database failed due to " . $con->connect_error);
 }
 
@@ -20,46 +20,46 @@ $errors = []; // Array to store validation error messages
 // Check if form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        header('Content-Type: application/json'); // Only for POST requests
-        
+    header('Content-Type: application/json'); // Only for POST requests
 
-       // Supplier variables
-       $supp_first_name = test_input($_POST['supp-first-name']);
-       $supp_middle_name = test_input($_POST['supp-middle-name']);
-       $supp_last_name = test_input($_POST['supp-last-name']);
-       $supp_phone = test_input($_POST['supp-phone']);
-       $supp_email= test_input($_POST['supp-email']);
-       $supp_address= test_input($_POST['supp-address']);
 
-       // Company variables
-       $comp_first_name= test_input($_POST['comp-first-name']);
-       $comp_middle_name= test_input($_POST['comp-middle-name']);
-       $comp_last_name= test_input($_POST['comp-last-name']);
-       $comp_type= test_input($_POST['comp-type']);
-       $comp_email= test_input($_POST['comp-email']);
-       $comp_website= test_input($_POST['comp-url']);
-       $comp_address= test_input($_POST['comp-address']);
+    // Supplier variables
+    $supp_first_name = test_input($_POST['supp-first-name']);
+    $supp_middle_name = test_input($_POST['supp-middle-name']);
+    $supp_last_name = test_input($_POST['supp-last-name']);
+    $supp_phone = test_input($_POST['supp-phone']);
+    $supp_email = test_input($_POST['supp-email']);
+    $supp_address = test_input($_POST['supp-address']);
 
-       // Manager variables
-       $manager_name = test_input($_POST['manager-name']);
-       $manager_phone = test_input($_POST['manager-phone']);
-       $manager_email = test_input($_POST['manager-email']);
+    // Company variables
+    $comp_first_name = test_input($_POST['comp-first-name']);
+    $comp_middle_name = test_input($_POST['comp-middle-name']);
+    $comp_last_name = test_input($_POST['comp-last-name']);
+    $comp_type = test_input($_POST['comp-type']);
+    $comp_email = test_input($_POST['comp-email']);
+    $comp_website = test_input($_POST['comp-url']);
+    $comp_address = test_input($_POST['comp-address']);
 
-       // Company licensing variables
-       $comp_chemical_license = test_input($_POST['comp-chemical-license']);
-       $comp_trader_id = test_input($_POST['comp-trader-id']);
-       $comp_gst_no = test_input($_POST['comp-gst-no']);
-       $comp_tan_no = test_input($_POST['comp-tan-no']);
-       $comp_pan_no = test_input($_POST['comp-pan-no']);
+    // Manager variables
+    $manager_name = test_input($_POST['manager-name']);
+    $manager_phone = test_input($_POST['manager-phone']);
+    $manager_email = test_input($_POST['manager-email']);
 
-       $remarks = test_input($_POST['remarks']); // Added missing semicolon here
+    // Company licensing variables
+    $comp_chemical_license = test_input($_POST['comp-chemical-license']);
+    $comp_trader_id = test_input($_POST['comp-trader-id']);
+    $comp_gst_no = test_input($_POST['comp-gst-no']);
+    $comp_tan_no = test_input($_POST['comp-tan-no']);
+    $comp_pan_no = test_input($_POST['comp-pan-no']);
 
-       
+    $remarks = test_input($_POST['remarks']); // Added missing semicolon here
+
+
     // Supplier details validation
     if (empty($supp_first_name) || !preg_match("/^[A-Za-z\s]+$/", $supp_first_name)) {
         $errors['supp-first-name'] = "Please enter a valid first name using alphabets only.";
     }
-    if (!empty( $supp_middle_name) && !preg_match("/^[A-Za-z\s]+$/",  $supp_middle_name)) {
+    if (!empty($supp_middle_name) && !preg_match("/^[A-Za-z\s]+$/",  $supp_middle_name)) {
         $errors['supp-middle-name'] = "Please use alphabets only for middle name.";
     }
     if (empty($supp_last_name) || !preg_match("/^[A-Za-z\s]+$/", $supp_last_name)) {
@@ -124,10 +124,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 
-     // Process form data if no errors
-     if (empty($errors)) {
-          // Insert or process form data
-          $sql = "UPDATE supplier SET
+    // Process form data if no errors
+    if (empty($errors)) {
+        // Insert or process form data
+        $sql = "UPDATE supplier SET
 first_name = '$supp_first_name',
 middle_name = '$supp_middle_name',
 last_name = '$supp_last_name',
@@ -152,9 +152,9 @@ website = '$comp_website',
 remarks = '$remarks'
 WHERE trader_id = '$comp_trader_id'";
 
-         // Execute the query
-         if ($con->query($sql) === true) {
-            echo json_encode(['success' => true, 'message' => 'Submission Successful']);       
+        // Execute the query
+        if ($con->query($sql) === true) {
+            echo json_encode(['success' => true, 'message' => 'Submission Successful']);
         } else {
             //echo json_encode(['success' => false, 'message' => 'Database error: ' . strip_tags($con->error)]);
             echo "$con->error";
@@ -164,10 +164,11 @@ WHERE trader_id = '$comp_trader_id'";
         echo json_encode(['success' => false, 'errors' => strip_tags($errors)]);
     }
 
-    exit(); 
+    exit();
 }
 
-function test_input($data) {
+function test_input($data)
+{
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);

@@ -79,10 +79,10 @@ for ($i = 0; $i < count($batch_codes); $i++) {
         die("Error inserting order: " . $conn->error);
     }
 
-    // $revenue_sql = "INSERT INTO revenue (order_id, client_id, supplier_id, total_amount, amount_received, amount_remaining, amount_paid) VALUES ('$order_id', '$payment_method', '$total_amount', '$advance', '$due')";
-    // if (!$conn->query($payment_sql)) {
-    //     die("Error inserting order: " . $conn->error);
-    // }
+    $revenue_sql = "INSERT INTO revenue (order_id, client_id, supplier_id, total_amount, amount_received, amount_remaining, amount_paid, total_revenue) VALUES ('$order_id', '$client_id', NULL, '$total_amount', '$advance', '$due', 0, '$advance')";
+    if (!$conn->query($revenue_sql)) {
+        die("Error inserting order: " . $conn->error);
+    }
 
     // Deduct the quantity from stock after the order is inserted
     $update_stock_sql = "UPDATE stock SET quantity = quantity - $quantity WHERE batch_code = '$batch_code'";

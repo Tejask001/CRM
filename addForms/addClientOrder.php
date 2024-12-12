@@ -93,7 +93,7 @@ while ($row = $products_result->fetch_assoc()) {
             <input type="hidden" name="order_type" value="<?php echo $order_type; ?>">
 
             <!-- Client and Payment Method Selection -->
-            <div class="row mb-4">
+            <div class="row mb-4" style="position: sticky; top: 0;background: var(--bs-gray-100);">
                 <div class="mb-3 col-md-4">
                     <label for="client_id" class="form-label">Client</label>
                     <select id="client_id" name="client_id" class="form-select to-fill" required>

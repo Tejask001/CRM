@@ -16,17 +16,16 @@ if ($conn->connect_error) {
 // Fetch product details
 $sql = "
     SELECT 
-        product_code,
-        general_name,
-        chemical_name,
-        chemical_size,
-        pp,
-        sp,
-        mrgp,
-        product_life,
-        batch_code
+        order_id,
+        client_id,
+        supplier_id,
+        total_amount,
+        amount_received,
+        amount_remaining,
+        amount_paid,
+        total_revenue
     FROM 
-        product
+        revenue
 ";
 
 $result = $conn->query($sql);
@@ -57,15 +56,12 @@ $result = $conn->query($sql);
                 <table class="table table-striped">
                     <thead class="table-dark">
                         <tr>
-                            <th>Product Code</th>
-                            <th>Batch Code</th>
-                            <th>General Name</th>
-                            <th>Chemical Name</th>
-                            <th>Chemical Size</th>
-                            <th>Purchase Price</th>
-                            <th>Selling Price</th>
-                            <th>Margin</th>
-                            <th>Product Life (Months)</th>
+                            <th>Order ID</th>
+                            <th>Total Amount</th>
+                            <th>Amount Received</th>
+                            <th>Amount Remaining</th>
+                            <th>Amount Paid</th>
+                            <th>Total Revenue</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,18 +71,16 @@ $result = $conn->query($sql);
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
-                                echo "<td>" . htmlspecialchars($row['product_code']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['batch_code']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['general_name']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['chemical_name']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['chemical_size']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['pp']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['sp']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['mrgp']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['product_life']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['order_id']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['total_amount']) . "</td>";
+                                echo "<td>" . ($row['client_id'] === null ? '-' : htmlspecialchars($row['amount_received'])) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['amount_remaining']) . "</td>";
+                                echo "<td>" . ($row['supplier_id'] === null ? '-' : htmlspecialchars($row['amount_paid'])) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['total_revenue']) . "</td>";
+                                echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='14'>No Products found.</td></tr>";
+                            echo "<tr><td colspan='6'>No Products found.</td></tr>";
                         }
 
                         // Close the connection

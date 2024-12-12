@@ -5,6 +5,31 @@
         <h4>Amba Associats</h4>
     </div>
     <ul class="list-group list-group-flush">
+        <a href="revenue.php">
+            <li class="list-group-item <?php echo basename($_SERVER['PHP_SELF']) == 'revenue.php' ? 'active' : ''; ?>">
+                Revenue
+            </li>
+        </a>
+        <a href="orders.php">
+            <li class="list-group-item <?php echo basename($_SERVER['PHP_SELF']) == 'orders.php' ? 'active' : ''; ?>">
+                Orders
+            </li>
+        </a>
+        <a href="logistics.php">
+            <li class="list-group-item <?php echo basename($_SERVER['PHP_SELF']) == 'logistics.php' ? 'active' : ''; ?>">
+                Logistics
+            </li>
+        </a>
+        <a href="stock.php">
+            <li class="list-group-item <?php echo basename($_SERVER['PHP_SELF']) == 'stock.php' ? 'active' : ''; ?>">
+                Stock
+            </li>
+        </a>
+        <a href="product.php">
+            <li class="list-group-item <?php echo basename($_SERVER['PHP_SELF']) == 'product.php' ? 'active' : ''; ?>">
+                Products
+            </li>
+        </a>
         <a href="supplier.php">
             <li class="list-group-item <?php echo basename($_SERVER['PHP_SELF']) == 'supplier.php' ? 'active' : ''; ?>">
                 Suppliers
@@ -13,21 +38,6 @@
         <a href="client.php">
             <li class="list-group-item <?php echo basename($_SERVER['PHP_SELF']) == 'client.php' ? 'active' : ''; ?>">
                 Clients
-            </li>
-        </a>
-        <a href="product.php">
-            <li class="list-group-item <?php echo basename($_SERVER['PHP_SELF']) == 'product.php' ? 'active' : ''; ?>">
-                Products
-            </li>
-        </a>
-        <a href="stock.php">
-            <li class="list-group-item <?php echo basename($_SERVER['PHP_SELF']) == 'stock.php' ? 'active' : ''; ?>">
-                Stock
-            </li>
-        </a>
-        <a href="orders.php">
-            <li class="list-group-item <?php echo basename($_SERVER['PHP_SELF']) == 'orders.php' ? 'active' : ''; ?>">
-                Orders
             </li>
         </a>
     </ul>
