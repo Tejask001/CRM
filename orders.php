@@ -13,33 +13,33 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch supplier details
+// Fetch order details
 $sql = "
     SELECT 
         orders.id,
         orders.order_id,
         orders.date,
-        orders.batch_code,
-        orders.quantity,
+        order_items.batch_code,
+        order_items.quantity,
         orders.type,
         orders.client_id,
         orders.supplier_id,
-        orders.discount,
-        orders.freight,
-        orders.cgst,
-        orders.sgst,
-        orders.igst,
-        orders.billing_amount,
+        order_items.discount,
+        order_items.freight,
+        order_items.cgst,
+        order_items.sgst,
+        order_items.igst,
+        order_items.billing_amount,
         CONCAT_WS(' ', client.comp_first_name, client.comp_middle_name, client.comp_last_name) AS company_name,
-        client.gst_no,
         product.general_name,
         product.chemical_size,
         product.pp,
         product.sp
     FROM 
         orders
+    LEFT JOIN order_items ON orders.order_id = order_items.order_id
     LEFT JOIN client ON orders.client_id = client.id
-    LEFT JOIN product ON orders.batch_code = product.batch_code
+    LEFT JOIN product ON order_items.batch_code = product.batch_code
     ORDER BY orders.date
 ";
 

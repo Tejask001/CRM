@@ -67,19 +67,19 @@ for ($i = 0; $i < count($batch_codes); $i++) {
     $supplier_id = NULL; // You may want to set this based on conditions
 
     // Prepare the SQL query by directly inserting the values into the statement
-    $order_sql = "INSERT INTO orders (order_id, client_id, batch_code, quantity, discount, freight, cgst, sgst, igst, billing_amount, type, supplier_id, date) 
-            VALUES ('$order_id', '$client_id', '$batch_code', $quantity, $discount, $freight, $cgst_value, $sgst_value, $igst_value, $billing_amount_value, '$order_type', NULL, NOW())";
+    $order_sql = "INSERT INTO orders (order_id, type, client_id, supplier_id, payment_method, advance, due, total_amount,date) 
+            VALUES ('$order_id', '$order_type', $client_id, NULL, '$payment_method', $advance, $due, $total_amount, NOW())";
     if (!$conn->query($order_sql)) {
         die("Error inserting order: " . $conn->error);
     }
 
     //update payment table
-    $payment_sql = "INSERT INTO payment (order_id, payment_method, total_amount, advance, due) VALUES ('$order_id', '$payment_method', '$total_amount', '$advance', '$due')";
-    if (!$conn->query($payment_sql)) {
+    $order_items_sql = "INSERT INTO order_items (order_id, batch_code, quantity, discount, cgst, sgst, igst, freight, billing_amount) VALUES ('$order_id', '$batch_code', $quantity, $discount, $cgst_value, $sgst_value, $igst_value, $freight, $billing_amount_value)";
+    if (!$conn->query($order_items_sql)) {
         die("Error inserting order: " . $conn->error);
     }
 
-    $revenue_sql = "INSERT INTO revenue (order_id, client_id, supplier_id, total_amount, amount_received, amount_remaining, amount_paid, total_revenue) VALUES ('$order_id', '$client_id', NULL, '$total_amount', '$advance', '$due', 0, '$advance')";
+    $revenue_sql = "INSERT INTO revenue (order_id, client_id, supplier_id, total_amount, amount_received, amount_remaining, amount_paid, total_revenue) VALUES ('$order_id', $client_id, NULL, $total_amount, $advance, $due, 0, $advance)";
     if (!$conn->query($revenue_sql)) {
         die("Error inserting order: " . $conn->error);
     }
@@ -92,4 +92,5 @@ for ($i = 0; $i < count($batch_codes); $i++) {
 }
 
 echo "Order saved successfully!";
+
 $conn->close();
