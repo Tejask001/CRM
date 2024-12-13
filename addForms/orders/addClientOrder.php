@@ -55,8 +55,14 @@ while ($row = $products_result->fetch_assoc()) {
             color: #333;
         }
 
+        .order-item {
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+            background-color: white;
+            border: 2px solid var(--bs-primary);
+        }
+
         .read-only {
-            background-color: #EFEEE4;
+            /* background-color: #EFEEE4; */
             border: 1px solid #EFEEE4;
         }
 
@@ -64,21 +70,19 @@ while ($row = $products_result->fetch_assoc()) {
             border: 1.75px solid #848884;
         }
 
-        .cgst,
-        .sgst,
-        .igst,
+
         .due {
-            background-color: #fac6c5;
+            color: red;
             border: 1px solid #fac6c5;
         }
 
-        .billing-amount {
+        /* .billing-amount {
             background-color: #fce8b2;
             border: 1px solid #f9d68a;
-        }
+        } */
 
         .profit {
-            background-color: #b6f5b3;
+            color: green;
             border: 1px solid #b6f5b3;
         }
     </style>
@@ -119,19 +123,23 @@ while ($row = $products_result->fetch_assoc()) {
                 </div>
                 <div class="mb-3 col-md-2">
                     <label for="advance" class="form-label">Advance</label>
-                    <input type="number" id="advance" name="advance" class="form-control to-fill" min="0" required>
+                    <div class="input-group">
+                        <span class="input-group-text">₹</span>
+                        <input type="number" id="advance" name="advance" class="form-control to-fill" min="0" required>
+                    </div>
                 </div>
                 <div class="mb-3 col-md-2">
                     <label for="due" class="form-label">Due</label>
-                    <input type="number" id="due" name="due" class="form-control due read-only" readonly>
+                    <div class="input-group">
+                        <span class="input-group-text">₹</span>
+                        <input type="number" id="due" name="due" class="form-control due read-only" readonly>
+                    </div>
                 </div>
             </div>
 
             <!-- Order Items Container -->
             <div id="orderItemsContainer">
-                <div class="order-item py-4 px-4 mb-4" style="
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px; background-color: white;
-">
+                <div class="order-item py-4 px-4 mb-4">
                     <!-- Product Row 1 -->
                     <div class="row mb-3">
                         <div class="col-md-3">
@@ -151,11 +159,17 @@ while ($row = $products_result->fetch_assoc()) {
                         </div>
                         <div class="col-md-2">
                             <label for="cost_price_per_unit" class="form-label">Cost Price</label>
-                            <input type="number" name="cost_price_per_unit[]" class="form-control cost-price-per-unit read-only" readonly>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" name="cost_price_per_unit[]" class="form-control cost-price-per-unit read-only" readonly>
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <label for="selling_price_per_unit" class="form-label">Selling Price</label>
-                            <input type="number" name="selling_price_per_unit[]" class="form-control selling-price-per-unit read-only" readonly>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" name="selling_price_per_unit[]" class="form-control selling-price-per-unit read-only" readonly>
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <label for="quantity" class="form-label">Quantity</label>
@@ -183,29 +197,41 @@ while ($row = $products_result->fetch_assoc()) {
                         </div>
                         <div class="col-md-2">
                             <label for="cgst" class="form-label">CGST</label>
-                            <input type="number" name="cgst[]" class="form-control cgst" readonly>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" name="cgst[]" class="form-control cgst" readonly>
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <label for="sgst" class="form-label">SGST</label>
-                            <input type="number" name="sgst[]" class="form-control sgst" readonly>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" name="sgst[]" class="form-control sgst" readonly>
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <label for="igst" class="form-label">IGST</label>
-                            <input type="number" name="igst[]" class="form-control igst" readonly>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" name="igst[]" class="form-control igst" readonly>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Product Row 3 -->
                     <div class="row mb-5">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="freight" class="form-label">Freight Charges</label>
-                            <input type="number" name="freight[]" class="form-control freight to-fill" min="0" required>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" name="freight[]" class="form-control freight to-fill" min="0" required>
+                            </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="billing_amount" class="form-label">Billing Amount</label>
                             <input type="number" name="billing_amount[]" class="form-control billing-amount" readonly>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="profit" class="form-label">Profit</label>
                             <input type="number" name="profit[]" class="form-control profit" readonly>
                         </div>
@@ -219,8 +245,8 @@ while ($row = $products_result->fetch_assoc()) {
             </div>
 
             <!-- Add Row and Submit Buttons -->
-            <button type="button" class="btn btn-secondary mb-4" id="addRow">Add Item</button>
-            <button type="submit" class="btn btn-primary mx-2 mb-4">Save Order</button>
+            <button type="button" class="btn btn-primary mb-4" id="addRow">Add Item</button>
+            <button type="submit" class="btn btn-success mx-2 mb-4">Save Order</button>
         </form>
     </div>
 
@@ -311,7 +337,7 @@ while ($row = $products_result->fetch_assoc()) {
             // Add a new row
             $('#addRow').click(function() {
                 const newOrderItem = `
-                    <div class="order-item py-4 px-4 mb-4" style="box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;background-color: white;">
+                    <div class="order-item py-4 px-4 mb-4">
                         <!-- Product Row 1 -->
                         <div class="row mb-3">
                             <div class="col-md-3">

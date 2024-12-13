@@ -28,12 +28,11 @@ if (isset($_GET['order_id'])) {
     $products = $conn->query("
         SELECT 
             product.general_name,
-            orders.batch_code,
-            orders.quantity
-        FROM orders
-        JOIN product ON orders.batch_code = product.batch_code
-        WHERE order_id = '$order_id'
-        GROUP BY order_id
+            order_items.batch_code,
+            order_items.quantity
+        FROM order_items
+        JOIN product ON order_items.batch_code = product.batch_code
+        WHERE order_items.order_id = '$order_id'
     ");
 
     $productList = [];
@@ -43,8 +42,8 @@ if (isset($_GET['order_id'])) {
 
     // Response
     echo json_encode([
-        'order_date' => $orderDetails['order_date'],
-        'client_name' => $orderDetails['client_name'],
+        'order_date' => $orderDetails['order_date'] ?? 'N/A', // Handle missing data gracefully
+        'client_name' => $orderDetails['client_name'] ?? 'N/A',
         'products' => $productList
     ]);
 }

@@ -61,7 +61,7 @@ $result = $conn->query($sql);
         <!-- Main Content -->
         <div id="main" class="col-10 p-4">
             <h2 class="mb-4">Supplier Details</h2>
-            <a href="./addForms/addSupplier.php"><button type="button" class="btn btn-primary mb-4">Add New Supplier</button></a>
+            <a href="./addForms/supplier/addSupplier.php"><button type="button" class="btn btn-primary mb-4">Add New Supplier</button></a>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="table-dark">

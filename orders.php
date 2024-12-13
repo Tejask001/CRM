@@ -70,7 +70,7 @@ if (!$result) {
         <!-- Main Content -->
         <div id="main" class="col-10 p-4">
             <h2 class="mb-4">Order Details</h2>
-            <a href="./addForms/addClientOrder.php"><button type="button" class="btn btn-primary mb-4">Add New Client Order</button></a>
+            <a href="./addForms/orders/addClientOrder.php"><button type="button" class="btn btn-primary mb-4">Add New Client Order</button></a>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="table-dark">

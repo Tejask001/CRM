@@ -52,7 +52,7 @@ $result = $conn->query($sql);
         <!-- Main Content -->
         <div id="main" class="col-10 p-4">
             <h2 class="mb-4">Product Details</h2>
-            <a href="./addForms/addProduct.php"><button type="button" class="btn btn-primary mb-4">Add New Product</button></a>
+            <a href="./addForms/product/addProduct.php"><button type="button" class="btn btn-primary mb-4">Add New Product</button></a>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="table-dark">

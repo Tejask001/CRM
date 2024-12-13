@@ -61,7 +61,7 @@ $result = $conn->query($sql);
         <!-- Main Content -->
         <div id="main" class="col-10 p-4">
             <h2 class="mb-4">Client Details</h2>
-            <a href="./addForms/addClient.php"><button type="button" class="btn btn-primary mb-4">Add New Client</button></a>
+            <a href="./addForms/client/addClient.php"><button type="button" class="btn btn-primary mb-4">Add New Client</button></a>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="table-dark">
