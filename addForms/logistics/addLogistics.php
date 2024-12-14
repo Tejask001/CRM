@@ -20,9 +20,34 @@ $orderIds = $conn->query("SELECT DISTINCT order_id FROM orders");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Details</title>
+    <title>Logistics Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: var(--bs-gray-100);
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .logistics-card {
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+            background-color: white;
+            border: 2px solid var(--bs-primary);
+        }
+
+        .read-only {
+            /* background-color: #EFEEE4; */
+            border: 1px solid #EFEEE4;
+        }
+
+        .to-fill {
+            border: 1.75px solid #848884;
+        }
+    </style>
 </head>
 
 <body>
@@ -58,6 +83,61 @@ $orderIds = $conn->query("SELECT DISTINCT order_id FROM orders");
                 <tbody id="productList">
                 </tbody>
             </table>
+
+
+            <!-- Order Items Container -->
+            <div id="logisticsContainer">
+                <div class="logistics-card py-4 px-4 mb-4">
+                    <!-- Row 1 -->
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="vehicle_no" class="form-label">Vehicle Number*</label>
+                            <input type="text" name="vehicle_no" class="form-control to-fill" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="driver_name" class="form-label">Driver Name</label>
+                            <input type="text" name="driver_name" class="form-control to-fill" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="driver_gst_no" class="form-label">Driver GST No*</label>
+                            <input type="text" name="driver_gst_no" class="form-control to-fill" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="estimated_date" class="form-label">Estimate Delivery Date*</label>
+                            <input type="date" name="estimated_date" class="form-control to-fill" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="is_transferred" class="form-label">Freight Transferred?</label>
+                            <select id="freightTransferred" name="is_transferred" class="form-select to-fill" required>
+                                <option value="">Select</option>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div id="row2" style="display: none;" class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="client_vehicle_no" class="form-label">Client Vehicle Number</label>
+                            <input type="text" name="client_vehicle_no" class="form-control to-fill" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="client_driver_name" class="form-label">Client Driver Name</label>
+                            <input type="text" name="client_driver_name" class="form-control to-fill" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="client_driver_gst_no" class="form-label">Driver GST No</label>
+                            <input type="text" name="client_driver_gst_no" class="form-control to-fill" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="driver_gst_no" class="form-label">Estimate Delivery Date</label>
+                            <input type="date" name="transfer_date" class="form-control to-fill" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success mx-2 mb-4">Save</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -86,6 +166,15 @@ $orderIds = $conn->query("SELECT DISTINCT order_id FROM orders");
                         });
 
                         document.getElementById('orderDetails').style.display = 'block';
+                        document.getElementById('freightTransferred').addEventListener('change', function() {
+                            const productRow2 = document.getElementById('row2');
+                            if (this.value === 'yes') {
+                                productRow2.style.display = 'flex'; // Show the row
+                            } else {
+                                productRow2.style.display = 'none'; // Hide the row
+                            }
+                        });
+
                     })
                     .catch(error => console.error('Error:', error));
             } else {

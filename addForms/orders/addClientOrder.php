@@ -73,7 +73,7 @@ while ($row = $products_result->fetch_assoc()) {
 
         .due {
             color: red;
-            border: 1px solid #fac6c5;
+            border: 1px solid #848884;
         }
 
         /* .billing-amount {
@@ -83,7 +83,7 @@ while ($row = $products_result->fetch_assoc()) {
 
         .profit {
             color: green;
-            border: 1px solid #b6f5b3;
+            border: 1px solid #848884;
         }
     </style>
 </head>
@@ -136,6 +136,8 @@ while ($row = $products_result->fetch_assoc()) {
                     </div>
                 </div>
             </div>
+
+
 
             <!-- Order Items Container -->
             <div id="orderItemsContainer">
@@ -229,15 +231,21 @@ while ($row = $products_result->fetch_assoc()) {
                         </div>
                         <div class="col-md-2">
                             <label for="billing_amount" class="form-label">Billing Amount</label>
-                            <input type="number" name="billing_amount[]" class="form-control billing-amount" readonly>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" name="billing_amount[]" class="form-control billing-amount" readonly>
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <label for="profit" class="form-label">Profit</label>
-                            <input type="number" name="profit[]" class="form-control profit" readonly>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" name="profit[]" class="form-control profit" readonly>
+                            </div>
                         </div>
                         <div class="col-md-3 d-flex align-items-end">
-                            <div class="col-md-1 d-flex align-items-end">
-                                <button type="button" class="btn btn-danger remove-row">Remove</button>
+                            <div class="d-flex align-items-end">
+                                <button type="button" class="btn btn-danger remove-row">Remove Item</button>
                             </div>
                         </div>
                     </div>
@@ -337,91 +345,117 @@ while ($row = $products_result->fetch_assoc()) {
             // Add a new row
             $('#addRow').click(function() {
                 const newOrderItem = `
-                    <div class="order-item py-4 px-4 mb-4">
-                        <!-- Product Row 1 -->
-                        <div class="row mb-3">
-                            <div class="col-md-3">
-                                <label class="form-label">Product</label>
-                                <select name="product[]" class="form-select product-select to-fill" required>
-                                    <option value="">Select Product</option>
-                                    <?php foreach ($products as $product) { ?>
-                                        <option value='<?php echo json_encode($product); ?>'>
-                                            <?php echo htmlspecialchars($product['general_name']); ?>
-                                        </option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <label class="form-label">Batch Code</label>
-                                <input type="text" name="batch_code[]" class="form-control batch-code read-only" readonly>
-                            </div>
-                            <div class="col-md-2">
-                                <label class="form-label">Cost Price</label>
+                    <div id="orderItemsContainer">
+                <div class="order-item py-4 px-4 mb-4">
+                    <!-- Product Row 1 -->
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="product" class="form-label">Product</label>
+                            <select name="product[]" class="form-select product-select to-fill" required>
+                                <option value="">Select Product</option>
+                                <?php foreach ($products as $product) { ?>
+                                    <option value='<?php echo json_encode($product); ?>'>
+                                        <?php echo htmlspecialchars($product['general_name']); ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="batch_code" class="form-label">Batch Code</label>
+                            <input type="text" name="batch_code[]" class="form-control batch-code read-only" readonly>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="cost_price_per_unit" class="form-label">Cost Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
                                 <input type="number" name="cost_price_per_unit[]" class="form-control cost-price-per-unit read-only" readonly>
                             </div>
-                            <div class="col-md-2">
-                                <label class="form-label">Selling Price</label>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="selling_price_per_unit" class="form-label">Selling Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
                                 <input type="number" name="selling_price_per_unit[]" class="form-control selling-price-per-unit read-only" readonly>
                             </div>
-                            <div class="col-md-2">
-                                <label class="form-label">Quantity</label>
-                                <input type="number" name="quantity[]" class="form-control quantity to-fill" min="1" required>
-                            </div>
                         </div>
+                        <div class="col-md-2">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" name="quantity[]" class="form-control quantity to-fill" min="1" required>
+                        </div>
+                    </div>
 
-                        <!-- Product Row 2 -->
-                        <div class="row mb-3">
-                            <div class="col-md-2">
-                                <label class="form-label">Discount (%)</label>
-                                <input type="number" name="discount[]" class="form-control discount to-fill" min="0" required>
-                            </div>
-                            <div class="col-md-2">
-                                <label class="form-label">Tax Type</label>
-                                <select name="tax_type[]" class="form-select tax-type to-fill" required>
-                                    <option value="">Select</option>
-                                    <option value="in_state">In State</option>
-                                    <option value="out_of_state">Out of State</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <label class="form-label">Tax Amount (%)</label>
-                                <input type="number" name="tax_amount[]" class="form-control tax-amount to-fill" min="0" required>
-                            </div>
-                            <div class="col-md-2">
-                                <label class="form-label">CGST</label>
+                    <!-- Product Row 2 -->
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <label for="discount" class="form-label">Discount (%)</label>
+                            <input type="number" name="discount[]" class="form-control discount to-fill" min="0" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="tax_type" class="form-label">Tax Type</label>
+                            <select name="tax_type[]" class="form-select tax-type to-fill" required>
+                                <option value="">Select</option>
+                                <option value="in_state">In State</option>
+                                <option value="out_of_state">Out of State</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="tax_amount" class="form-label">Tax Amount (%)</label>
+                            <input type="number" name="tax_amount[]" class="form-control tax-amount to-fill" min="0" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="cgst" class="form-label">CGST</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
                                 <input type="number" name="cgst[]" class="form-control cgst" readonly>
                             </div>
-                            <div class="col-md-2">
-                                <label class="form-label">SGST</label>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="sgst" class="form-label">SGST</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
                                 <input type="number" name="sgst[]" class="form-control sgst" readonly>
                             </div>
-                            <div class="col-md-2">
-                                <label class="form-label">IGST</label>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="igst" class="form-label">IGST</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
                                 <input type="number" name="igst[]" class="form-control igst" readonly>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Product Row 3 -->
-                        <div class="row mb-5">
-                            <div class="col-md-3">
-                                <label class="form-label">Freight Charges</label>
+                    <!-- Product Row 3 -->
+                    <div class="row mb-5">
+                        <div class="col-md-2">
+                            <label for="freight" class="form-label">Freight Charges</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
                                 <input type="number" name="freight[]" class="form-control freight to-fill" min="0" required>
                             </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Billing Amount</label>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="billing_amount" class="form-label">Billing Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
                                 <input type="number" name="billing_amount[]" class="form-control billing-amount" readonly>
                             </div>
-                            <div class="col-md-3">
-                                <label class="form-label">Profit</label>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="profit" class="form-label">Profit</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
                                 <input type="number" name="profit[]" class="form-control profit" readonly>
                             </div>
-                            <div class="col-md-3 d-flex align-items-end">
-                                <div class="col-md-1 d-flex align-items-end">
-                            <button type="button" class="btn btn-danger remove-row">Remove</button>
                         </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <div class="d-flex align-items-end">
+                                <button type="button" class="btn btn-danger remove-row">Remove Item</button>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
                 `;
                 $('#orderItemsContainer').append(newOrderItem);
             });

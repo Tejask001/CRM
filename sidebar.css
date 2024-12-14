@@ -8,21 +8,36 @@ body {
     height: 100;
 }
 
+#sidebar {
+    width: 100%;
+}
+
+#sidebar img {
+    width: 100px;
+}
+
+#sidebar h4 {
+    font-size: 32px;
+}
+
+
 #sidebar .list-group-item {
     border: 0;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-left: auto;
     margin-right: auto;
-    width: 80%;
-    padding: 12px 20px;
-    font-size: 1.1rem;
+    margin-top: 2.5px;
+    margin-bottom: 2.5px;
+    width: 90%;
+    /* padding: 9px 20px; */
+    font-size: 20px;
     background-color: var(--bs-dark-rgb);
     color: white;
 }
 
 #sidebar .list-group-item:hover {
-    background-color: var(--bs-secondary);
-    color: white;
+    /* background-color: var(--bs-secondary);
+    color: white; */
     cursor: pointer;
 }
 
@@ -33,4 +48,8 @@ body {
 
 #sidebar a {
     text-decoration: none;
+}
+
+#sidebar svg {
+    margin-right: 10px;
 }
