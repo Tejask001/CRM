@@ -56,7 +56,7 @@ $result = $conn->query($sql);
 
         <!-- Main Content -->
         <div id="main" class="col-9">
-            <h2 class="mb-4">Logistics Details</h2>
+            <h2 class="mb-4 mt-4">Logistics Details</h2>
             <a href="./addForms/logistics/addLogistics.php"><button type="button" class="btn btn-primary mb-4">Add New Logistics</button></a>
             <div class="table-responsive">
                 <table class="table table-striped">

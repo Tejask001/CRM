@@ -52,7 +52,7 @@ $result = $conn->query($sql);
 
         <!-- Main Content -->
         <div id="main" class="col-9">
-            <h2 class="mb-4">Revenue Details</h2>
+            <h2 class="mb-4 mt-4">Revenue Details</h2>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="table-dark">

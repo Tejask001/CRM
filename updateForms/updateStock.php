@@ -135,9 +135,8 @@ $conn->close();
             </div>
 
             <!-- Add Row and Submit Buttons -->
-            <button type="button" class="btn btn-secondary mb-4" id="addRow">Add Item</button>
-            <button type="submit" class="btn btn-success mx-2 mb-4">Save</button>
-            <a href="../stock.php"><button type="button" class="btn btn-outline-danger  mb-4">Return</button></a>
+            <button type="button" class="btn btn-secondary mb-4 w-25" id="addRow">Add Item</button>
+            <button type="submit" class="btn btn-success mx-2 mb-4 w-25">Save</button>
         </form>
     </div>
 
