@@ -293,26 +293,27 @@ while ($row = $products_result->fetch_assoc()) {
                 const itemTotal = pricePerUnit * quantity;
                 const totalDiscount = (discount / 100) * itemTotal;
                 const itemTotalAfterDiscount = itemTotal - totalDiscount;
+                const totalAfterFreight = itemTotalAfterDiscount + freight;
 
                 let cgst = 0,
                     sgst = 0,
                     igst = 0;
                 if (taxType === 'in_state') {
-                    cgst = sgst = (taxAmount / 2) * itemTotalAfterDiscount / 100;
+                    cgst = sgst = (taxAmount / 2) * totalAfterFreight / 100;
                 } else if (taxType === 'out_of_state') {
-                    igst = (taxAmount * itemTotalAfterDiscount) / 100;
+                    igst = (taxAmount * totalAfterFreight) / 100;
                 }
 
                 // Calculate the billing amount
                 const taxTotal = cgst + sgst + igst;
-                const billingAmount = itemTotalAfterDiscount + freight + taxTotal;
+                const billingAmount = totalAfterFreight + taxTotal;
 
                 // Update the tax fields and billing amount
                 row.find('.cgst').val(cgst.toFixed(2));
                 row.find('.sgst').val(sgst.toFixed(2));
                 row.find('.igst').val(igst.toFixed(2));
                 row.find('.billing-amount').val(billingAmount.toFixed(2));
-                row.find('.profit').val(itemTotalAfterDiscount.toFixed(2));
+                row.find('.profit').val(totalAfterFreight.toFixed(2));
 
                 // After updating billing amount, recalculate due
                 calculateDue();

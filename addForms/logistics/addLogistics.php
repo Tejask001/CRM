@@ -54,7 +54,7 @@ $orderIds = $conn->query("SELECT DISTINCT order_id FROM orders");
     <div class="container mt-5">
         <h2 class="mb-4">Order Details</h2>
         <!-- Dropdown to select Order ID -->
-        <div class="mb-3">
+        <div class="col-md-3 mb-3">
             <label for="orderSelect" class="form-label">Select Order ID</label>
             <select id="orderSelect" class="form-select">
                 <option value="">Select an Order</option>
@@ -69,8 +69,10 @@ $orderIds = $conn->query("SELECT DISTINCT order_id FROM orders");
         <!-- Display Order Details -->
         <div id="orderDetails" style="display: none;">
             <h4>Order Information</h4>
-            <p><strong>Date:</strong> <span id="orderDate"></span></p>
-            <p><strong>Client Name:</strong> <span id="clientName"></span></p>
+            <div class="order-info" style="display: flex;">
+                <p><strong>Date:</strong> <span id="orderDate"></span></p>
+                <p style="margin-left: 20px;"><strong>Client Name:</strong> <span id="clientName"></span></p>
+            </div>
             <h5>Products in the Order</h5>
             <table class="table table-bordered">
                 <thead>
@@ -90,13 +92,17 @@ $orderIds = $conn->query("SELECT DISTINCT order_id FROM orders");
                 <div class="logistics-card py-4 px-4 mb-4">
                     <!-- Row 1 -->
                     <div class="row mb-3">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="vehicle_no" class="form-label">Vehicle Number*</label>
                             <input type="text" name="vehicle_no" class="form-control to-fill" required>
                         </div>
                         <div class="col-md-2">
-                            <label for="driver_name" class="form-label">Driver Name</label>
+                            <label for="driver_name" class="form-label">Driver Name*</label>
                             <input type="text" name="driver_name" class="form-control to-fill" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="driver_phone" class="form-label">Driver Phone No*</label>
+                            <input type="text" name="driver_phone" class="form-control to-fill" required>
                         </div>
                         <div class="col-md-2">
                             <label for="driver_gst_no" class="form-label">Driver GST No*</label>
@@ -107,7 +113,7 @@ $orderIds = $conn->query("SELECT DISTINCT order_id FROM orders");
                             <input type="date" name="estimated_date" class="form-control to-fill" required>
                         </div>
                         <div class="col-md-2">
-                            <label for="is_transferred" class="form-label">Freight Transferred?</label>
+                            <label for="is_transferred" class="form-label">Freight Transferred?*</label>
                             <select id="freightTransferred" name="is_transferred" class="form-select to-fill" required>
                                 <option value="">Select</option>
                                 <option value="no">No</option>
@@ -127,11 +133,15 @@ $orderIds = $conn->query("SELECT DISTINCT order_id FROM orders");
                             <input type="text" name="client_driver_name" class="form-control to-fill" required>
                         </div>
                         <div class="col-md-2">
-                            <label for="client_driver_gst_no" class="form-label">Driver GST No</label>
+                            <label for="client_driver_phone" class="form-label">Client Driver Phone No</label>
+                            <input type="text" name="client_driver_phone" class="form-control to-fill" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="client_driver_gst_no" class="form-label">Client Driver GST No</label>
                             <input type="text" name="client_driver_gst_no" class="form-control to-fill" required>
                         </div>
                         <div class="col-md-2">
-                            <label for="driver_gst_no" class="form-label">Estimate Delivery Date</label>
+                            <label for="driver_gst_no" class="form-label">Tranfer Date</label>
                             <input type="date" name="transfer_date" class="form-control to-fill" required>
                         </div>
                     </div>
