@@ -66,6 +66,21 @@ $sql = "
 ";
 
 $result = $conn->query($sql);
+
+// Fetch revenue summary
+$summarySql = "
+    SELECT 
+        SUM(revenue.total_revenue) AS total_revenue,
+        SUM(revenue.total_amount - revenue.amount_paid) AS gross_profit,
+        SUM(revenue.amount_received - revenue.amount_paid) AS net_profit
+    FROM 
+        revenue
+    LEFT JOIN orders ON revenue.order_id = orders.order_id
+    $whereClause
+";
+
+$summaryResult = $conn->query($summarySql);
+$summary = $summaryResult->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -87,7 +102,41 @@ $result = $conn->query($sql);
             <?php include("sidebar.php") ?>
         </div>
         <div class="col-9">
-            <h2 class=" mb-4">Revenue Reports</h2>
+            <h2 class="mb-4">Revenue Reports</h2>
+
+            <!-- Revenue Summary Cards -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card text-white bg-primary">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Revenue</h5>
+                            <p class="card-text fs-4">
+                                ₹<?php echo number_format($summary['total_revenue'] ?? 0, 2); ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white bg-success">
+                        <div class="card-body">
+                            <h5 class="card-title">Gross Profit</h5>
+                            <p class="card-text fs-4">
+                                ₹<?php echo number_format($summary['gross_profit'] ?? 0, 2); ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white bg-info">
+                        <div class="card-body">
+                            <h5 class="card-title">Net Profit</h5>
+                            <p class="card-text fs-4">
+                                ₹<?php echo number_format($summary['net_profit'] ?? 0, 2); ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Filter Form -->
             <form method="POST" class="mb-4">
@@ -124,6 +173,8 @@ $result = $conn->query($sql);
                     <thead class="table-dark">
                         <tr>
                             <th>Order ID</th>
+                            <th>Order Date</th>
+                            <th>Order Type</th>
                             <th>Total Amount</th>
                             <th>Amount Received</th>
                             <th>Amount Remaining</th>
@@ -135,21 +186,26 @@ $result = $conn->query($sql);
                         <?php
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
+                                $orderType = $row['amount_paid'] === '0' ? 'Sale' : 'Purchase';
+                                $orderColor = $row['amount_paid'] === '0' ? 'text-success' : 'text-danger';
                                 echo "<tr>";
-                                echo "<td>" . htmlspecialchars($row['order_id']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['total_amount']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['amount_received']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['amount_remaining']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['amount_paid']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['total_revenue']) . "</td>";
+                                echo "<td class='text-center'>" . htmlspecialchars($row['order_id']) . "</td>";
+                                echo "<td class='text-center'>" . htmlspecialchars($row['date']) . "</td>";
+                                echo "<td class='text-center $orderColor'>" . htmlspecialchars($orderType) . "</td>";
+                                echo "<td class='text-center'>" . htmlspecialchars($row['total_amount']) . "</td>";
+                                echo "<td class='text-center'>" . htmlspecialchars($row['amount_received']) . "</td>";
+                                echo "<td class='text-center'>" . htmlspecialchars($row['amount_remaining']) . "</td>";
+                                echo "<td class='text-center'>" . htmlspecialchars($row['amount_paid']) . "</td>";
+                                echo "<td class='text-center'>" . htmlspecialchars($row['total_revenue']) . "</td>";
                                 echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='6'>No records found.</td></tr>";
+                            echo "<tr><td colspan='8' class='text-center'>No records found.</td></tr>";
                         }
-                        $conn->close();
                         ?>
                     </tbody>
+
+
                 </table>
             </div>
         </div>
