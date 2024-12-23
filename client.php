@@ -68,25 +68,25 @@ $result = $conn->query($sql);
                 <table class="table table-striped">
                     <thead class="table-dark">
                         <tr>
-                            <th>Edit</th>
-                            <th>Client Name</th>
+                            <th>Actions</th>
+                            <!-- <th>Client Name</th>
                             <th>Phone</th>
                             <th>Email</th>
-                            <th>Address</th>
+                            <th>Address</th> -->
                             <th>Company Name</th>
                             <th>Company Type</th>
-                            <th>Company Website</th>
+                            <th>Company Address</th>
+                            <!-- <th>Company Website</th> -->
                             <th>Manager Name</th>
                             <th>Manager Phone</th>
-                            <th>Manager Email</th>
+                            <!-- <th>Manager Email</th> -->
                             <th>Chemical License</th>
-                            <th>Company Email</th>
-                            <th>Company Address</th>
-                            <th>Trader ID</th>
+                            <!-- <th>Company Email</th> -->
+                            <!-- <th>Trader ID</th> -->
                             <th>GST No</th>
                             <th>PAN No</th>
                             <th>TAN No</th>
-                            <th>Remarks</th>
+                            <!-- <th>Remarks</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -96,25 +96,34 @@ $result = $conn->query($sql);
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
-                                echo "<td><a href='./updateForms/editSupplier.php?trader_id=" . urlencode($row['trader_id']) . "'><button type='button' class='btn btn-danger'>Edit</button></a></td>";
-                                echo "<td>" . htmlspecialchars($row['full_name']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['phone']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['email']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['address']) . "</td>";
+                                echo "<td style=\"display: flex; flex-direction: column; align-items: center; padding: 10px;\">
+    <a style=\"margin-bottom: 5px;\" href='./updateForms/editSupplier.php?trader_id=" . urlencode($row['trader_id']) . "'>
+        <button type='button' class='btn btn-danger'>Edit</button>
+    </a>
+    <a href='./clientDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
+        <button type='button' class='btn btn-primary'>Details</button>
+    </a>
+</td>";
+
+                                // echo "<td>" . htmlspecialchars($row['full_name']) . "</td>";
+                                // echo "<td>" . htmlspecialchars($row['phone']) . "</td>";
+                                // echo "<td>" . htmlspecialchars($row['email']) . "</td>";
+                                // echo "<td>" . htmlspecialchars($row['address']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['company_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['comp_type']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['website']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['comp_address']) . "</td>";
+                                // echo "<td>" . htmlspecialchars($row['website']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['manager_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['manager_phone']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['manager_email']) . "</td>";
+                                // echo "<td>" . htmlspecialchars($row['manager_email']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['chemical_license']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['comp_email']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['comp_address']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['trader_id']) . "</td>";
+                                // echo "<td>" . htmlspecialchars($row['comp_email']) . "</td>";
+                                // echo "<td>" . htmlspecialchars($row['comp_address']) . "</td>";
+                                // echo "<td>" . htmlspecialchars($row['trader_id']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['gst_no']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['pan_no']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['tan_no']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['remarks']) . "</td>";
+                                // echo "<td>" . htmlspecialchars($row['remarks']) . "</td>";
                                 echo "</tr>";
                             }
                         } else {

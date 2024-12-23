@@ -13,33 +13,53 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// // Fetch order details
+// $sql = "
+//     SELECT 
+//         orders.id,
+//         orders.order_id,
+//         orders.date,
+//         order_items.batch_code,
+//         order_items.quantity,
+//         orders.type,
+//         orders.client_id,
+//         orders.supplier_id,
+//         order_items.discount,
+//         order_items.freight,
+//         order_items.cgst,
+//         order_items.sgst,
+//         order_items.igst,
+//         order_items.billing_amount,
+//         CONCAT_WS(' ', client.comp_first_name, client.comp_middle_name, client.comp_last_name) AS company_name,
+//         product.general_name,
+//         product.chemical_size,
+//         product.pp,
+//         product.sp
+//     FROM 
+//         orders
+//     LEFT JOIN order_items ON orders.order_id = order_items.order_id
+//     LEFT JOIN client ON orders.client_id = client.id
+//     LEFT JOIN product ON order_items.batch_code = product.batch_code
+//     ORDER BY orders.date
+// ";
+
 // Fetch order details
 $sql = "
     SELECT 
         orders.id,
         orders.order_id,
         orders.date,
-        order_items.batch_code,
-        order_items.quantity,
         orders.type,
         orders.client_id,
         orders.supplier_id,
-        order_items.discount,
-        order_items.freight,
-        order_items.cgst,
-        order_items.sgst,
-        order_items.igst,
-        order_items.billing_amount,
-        CONCAT_WS(' ', client.comp_first_name, client.comp_middle_name, client.comp_last_name) AS company_name,
-        product.general_name,
-        product.chemical_size,
-        product.pp,
-        product.sp
+        orders.payment_method,
+        orders.total_amount,
+        orders.advance,
+        orders.due,
+        CONCAT_WS(' ', client.comp_first_name, client.comp_middle_name, client.comp_last_name) AS company_name
     FROM 
         orders
-    LEFT JOIN order_items ON orders.order_id = order_items.order_id
     LEFT JOIN client ON orders.client_id = client.id
-    LEFT JOIN product ON order_items.batch_code = product.batch_code
     ORDER BY orders.date
 ";
 
@@ -80,19 +100,23 @@ if (!$result) {
                             <th>Order ID</th>
                             <th>Order Date</th>
                             <th>Party Name</th>
-                            <th>Product Batch Code</th>
-                            <th>Product Name</th>
+                            <!-- <th>Product Batch Code</th> -->
+                            <!-- <th>Product Name</th>
                             <th>Size</th>
-                            <th>Quantity</th>
+                            <th>Quantity</th> -->
                             <th>Order Type</th>
-                            <th>Price per Unit</th>
+                            <!-- <th>Price per Unit</th>
                             <th>Selling Price</th>
                             <th>Discount</th>
                             <th>CGST</th>
                             <th>SGST</th>
                             <th>IGST</th>
                             <th>Freight</th>
-                            <th>Billing Amount</th>
+                            <th>Billing Amount</th> -->
+                            <th>Payment Method</th>
+                            <th>Total Amount</th>
+                            <th>Advance</th>
+                            <th>Due</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -106,19 +130,22 @@ if (!$result) {
                                 echo "<td>" . htmlspecialchars($row['order_id']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['date']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['company_name']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['batch_code']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['general_name']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['chemical_size']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['quantity']) . "</td>";
+                                //echo "<td>" . htmlspecialchars($row['batch_code']) . "</td>";
+                                //echo "<td>" . htmlspecialchars($row['general_name']) . "</td>";
+                                //echo "<td>" . htmlspecialchars($row['chemical_size']) . "</td>";
+                                //echo "<td>" . htmlspecialchars($row['quantity']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['type']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['pp']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['sp']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['discount']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['cgst']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['sgst']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['igst']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['freight']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['billing_amount']) . "</td>";
+                                //echo "<td>" . htmlspecialchars($row['pp']) . "</td>";
+                                //echo "<td>" . htmlspecialchars($row['sp']) . "</td>";
+                                //echo "<td>" . htmlspecialchars($row['discount']) . "</td>";
+                                //echo "<td>" . htmlspecialchars($row['cgst']) . "</td>";
+                                //echo "<td>" . htmlspecialchars($row['igst']) . "</td>";
+                                //echo "<td>" . htmlspecialchars($row['freight']) . "</td>";
+                                //echo "<td>" . htmlspecialchars($row['billing_amount']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['payment_method']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['total_amount']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['advance']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['due']) . "</td>";
                             }
                         } else {
                             echo "<tr><td colspan='22'>No orders found.</td></tr>";

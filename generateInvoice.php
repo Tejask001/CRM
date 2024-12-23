@@ -18,7 +18,7 @@ if ($conn->connect_error) {
 }
 
 // Get the order ID from the URL
-$order_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$order_id = isset($_GET['id']) ? $_GET['id'] : '';
 
 // Fetch all order items for the given order ID
 $sql = "
@@ -50,8 +50,9 @@ $sql = "
     LEFT JOIN order_items ON orders.order_id = order_items.order_id
     LEFT JOIN client ON orders.client_id = client.id
     LEFT JOIN product ON order_items.batch_code = product.batch_code
-    WHERE orders.order_id = $order_id
+    WHERE orders.order_id = '$order_id'
 ";
+
 
 $result = $conn->query($sql);
 if ($result->num_rows === 0) {
@@ -108,7 +109,7 @@ $pdf->Cell(135, 10, 'Company Name: ' . ($order['company_name'] ?? 'N/A'), 0, 0, 
 $pdf->SetFont('Arial', '', 12);
 
 // Right Column Content: Company Details
-$pdf->Cell(135, 10, 'Company Name: Amba', 0, 1, 'R');
+$pdf->Cell(135, 10, 'Company Name: Amba Associats', 0, 1, 'R');
 
 $pdf->Cell(135, 10, 'GST No: ' . ($order['gst_no'] ?? 'N/A'), 0, 0, 'L');
 $pdf->Cell(135, 10, 'GST No: 12345678909876', 0, 1, 'R');
