@@ -12,7 +12,7 @@ if ($conn->connect_error) {
 
 // Generate a unique order_id
 $order_id = "ORD" . time();
-$order_type = "Sale";
+$order_type = "Purchase";
 
 // Fetch products for the dropdown
 $products_result = $conn->query("
@@ -62,7 +62,6 @@ while ($row = $products_result->fetch_assoc()) {
         }
 
         .read-only {
-            /* background-color: #EFEEE4; */
             border: 1px solid #EFEEE4;
         }
 
@@ -76,11 +75,6 @@ while ($row = $products_result->fetch_assoc()) {
             border: 1px solid #848884;
         }
 
-        /* .billing-amount {
-            background-color: #fce8b2;
-            border: 1px solid #f9d68a;
-        } */
-
         .profit {
             color: green;
         }
@@ -89,22 +83,22 @@ while ($row = $products_result->fetch_assoc()) {
 
 <body>
     <div class="container mt-5">
-        <h2 class="mb-4">Add Client Order</h2>
-        <form id="addOrderForm" action="saveClientOrder.php" method="post">
+        <h2 class="mb-4">Add Supplier Order</h2>
+        <form id="addOrderForm" action="saveSupplierOrder.php" method="post">
             <!-- Hidden fields for order_id and order_type -->
             <input type="hidden" name="order_id" value="<?php echo $order_id; ?>">
             <input type="hidden" name="order_type" value="<?php echo $order_type; ?>">
 
-            <!-- Client and Payment Method Selection -->
+            <!-- Supplier and Payment Method Selection -->
             <div class="row mb-4" style="z-index: 2; position: sticky; top: 0;background: var(--bs-gray-100);">
                 <div class="row mb-4">
                     <div class="mb-3 col-md-3">
-                        <label for="client_id" class="form-label">Client</label>
-                        <select id="client_id" name="client_id" class="form-select to-fill" required>
-                            <option value="">Select Client</option>
+                        <label for="supplier_id" class="form-label">Supplier</label>
+                        <select id="supplier_id" name="supplier_id" class="form-select to-fill" required>
+                            <option value="">Select Supplier</option>
                             <?php
-                            $clients_result = $conn->query("SELECT id, CONCAT(comp_first_name, ' ', comp_middle_name, ' ', comp_last_name) AS company_name FROM client");
-                            while ($row = $clients_result->fetch_assoc()) {
+                            $supplier_result = $conn->query("SELECT id, CONCAT(comp_first_name, ' ', comp_middle_name, ' ', comp_last_name) AS company_name FROM supplier");
+                            while ($row = $supplier_result->fetch_assoc()) {
                                 echo "<option value='{$row['id']}'>{$row['company_name']}</option>";
                             }
                             ?>

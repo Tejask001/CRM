@@ -45,22 +45,28 @@ if ($conn->connect_error) {
 
 // Fetch order details
 $sql = "
-    SELECT 
-        orders.id,
-        orders.order_id,
-        orders.date,
-        orders.type,
-        orders.client_id,
-        orders.supplier_id,
-        orders.payment_method,
-        orders.total_amount,
-        orders.advance,
-        orders.due,
-        CONCAT_WS(' ', client.comp_first_name, client.comp_middle_name, client.comp_last_name) AS company_name
-    FROM 
-        orders
-    LEFT JOIN client ON orders.client_id = client.id
-    ORDER BY orders.date
+   SELECT 
+    orders.id,
+    orders.order_id,
+    orders.date,
+    orders.type,
+    orders.client_id,
+    orders.supplier_id,
+    orders.payment_method,
+    orders.total_amount,
+    orders.advance,
+    orders.due,
+    CASE 
+        WHEN client.id IS NOT NULL THEN CONCAT_WS(' ', client.comp_first_name, client.comp_middle_name, client.comp_last_name)
+        WHEN supplier.id IS NOT NULL THEN CONCAT_WS(' ', supplier.comp_first_name, supplier.comp_middle_name, supplier.comp_last_name)
+        ELSE 'Unknown'
+    END AS party_name
+FROM 
+    orders
+LEFT JOIN client ON orders.client_id = client.id
+LEFT JOIN supplier ON orders.supplier_id = supplier.id
+ORDER BY orders.date;
+
 ";
 
 $result = $conn->query($sql);
@@ -92,6 +98,7 @@ if (!$result) {
         <div id="main" class="col-9">
             <h2 class="mt-4 mb-4">Order Details</h2>
             <a href="./addForms/orders/addClientOrder.php"><button type="button" class="btn btn-primary mb-4">Add New Client Order</button></a>
+            <a href="./addForms/orders/addSupplierOrder.php"><button type="button" class="btn btn-secondary mb-4">Add New Supplier Order</button></a>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="table-dark">
@@ -129,7 +136,7 @@ if (!$result) {
                                 echo "<td><a href='generateInvoice.php?id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-danger'>Invoice</button></a></td>";
                                 echo "<td>" . htmlspecialchars($row['order_id']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['date']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['company_name']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['party_name']) . "</td>";
                                 //echo "<td>" . htmlspecialchars($row['batch_code']) . "</td>";
                                 //echo "<td>" . htmlspecialchars($row['general_name']) . "</td>";
                                 //echo "<td>" . htmlspecialchars($row['chemical_size']) . "</td>";
