@@ -98,7 +98,7 @@ while ($row = $products_result->fetch_assoc()) {
 
             <!-- Client and Payment Method Selection -->
             <div class="row mb-4" style="position: sticky; top: 0;background: var(--bs-gray-100);">
-                <div class="mb-3 col-md-4">
+                <div class="mb-3 col-md-3">
                     <label for="client_id" class="form-label">Client</label>
                     <select id="client_id" name="client_id" class="form-select to-fill" required>
                         <option value="">Select Client</option>
@@ -109,6 +109,10 @@ while ($row = $products_result->fetch_assoc()) {
                         }
                         ?>
                     </select>
+                </div>
+                <div class="mb-3 col-md-2">
+                    <label for="payment_date" class="form-label">Payment Date</label>
+                    <input type="date" id="payment_date" name="payment_date" class="form-control to-fill" required>
                 </div>
                 <div class="col-md-2">
                     <label for="payment_method" class="form-label">Payment Method</label>
@@ -173,9 +177,16 @@ while ($row = $products_result->fetch_assoc()) {
                                 <input type="number" name="selling_price_per_unit[]" class="form-control selling-price-per-unit read-only" readonly>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <label for="quantity" class="form-label">Quantity</label>
                             <input type="number" name="quantity[]" class="form-control quantity to-fill" min="1" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="freight" class="form-label">Freight Charges</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" name="freight[]" class="form-control freight to-fill" min="0" required>
+                            </div>
                         </div>
                     </div>
 
@@ -222,13 +233,6 @@ while ($row = $products_result->fetch_assoc()) {
 
                     <!-- Product Row 3 -->
                     <div class="row mb-5">
-                        <div class="col-md-2">
-                            <label for="freight" class="form-label">Freight Charges</label>
-                            <div class="input-group">
-                                <span class="input-group-text">₹</span>
-                                <input type="number" name="freight[]" class="form-control freight to-fill" min="0" required>
-                            </div>
-                        </div>
                         <div class="col-md-2">
                             <label for="billing_amount" class="form-label">Billing Amount</label>
                             <div class="input-group">

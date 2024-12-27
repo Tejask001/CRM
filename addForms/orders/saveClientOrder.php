@@ -14,6 +14,7 @@ if ($conn->connect_error) {
 $order_id = $_POST['order_id'];
 $client_id = $_POST['client_id'];
 $payment_method = $_POST['payment_method'];
+$payment_date = $_POST['payment_date'];
 $advance = $_POST['advance'];
 $due = $_POST['due'];
 $batch_codes = $_POST['batch_code'];
@@ -55,8 +56,8 @@ for ($i = 0; $i < count($batch_codes); $i++) {
 $supplier_id = NULL;
 
 // Prepare the SQL query by directly inserting the values into the statement
-$order_sql = "INSERT INTO orders (order_id, type, client_id, supplier_id, payment_method, advance, due, total_amount,date) 
- VALUES ('$order_id', '$order_type', $client_id, NULL, '$payment_method', $advance, $due, $total_amount, NOW())";
+$order_sql = "INSERT INTO orders (order_id, type, client_id, supplier_id, payment_method, payment_date, advance, due, total_amount,date) 
+ VALUES ('$order_id', '$order_type', $client_id, NULL, '$payment_method', '$payment_date', $advance, $due, $total_amount, NOW())";
 if (!$conn->query($order_sql)) {
     die("Error inserting order: " . $conn->error);
 }

@@ -102,7 +102,7 @@ $summary = $summaryResult->fetch_assoc();
             <?php include("sidebar.php") ?>
         </div>
         <div class="col-9">
-            <h2 class="mb-4">Revenue Reports</h2>
+            <h2 class="mb-4 mt-4">Revenue Reports</h2>
 
             <!-- Revenue Summary Cards -->
             <div class="row mb-4">

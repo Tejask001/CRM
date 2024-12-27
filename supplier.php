@@ -100,7 +100,7 @@ $result = $conn->query($sql);
     <a style=\"margin-bottom: 5px;\" href='./updateForms/editSupplier.php?trader_id=" . urlencode($row['trader_id']) . "'>
         <button type='button' class='btn btn-danger'>Edit</button>
     </a>
-    <a href='./clientDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
+    <a href='./supplierDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
         <button type='button' class='btn btn-primary'>Details</button>
     </a>
 </td>";
