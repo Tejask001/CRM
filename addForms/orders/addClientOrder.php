@@ -83,7 +83,6 @@ while ($row = $products_result->fetch_assoc()) {
 
         .profit {
             color: green;
-            border: 1px solid #848884;
         }
     </style>
 </head>
@@ -98,45 +97,53 @@ while ($row = $products_result->fetch_assoc()) {
 
             <!-- Client and Payment Method Selection -->
             <div class="row mb-4" style="position: sticky; top: 0;background: var(--bs-gray-100);">
-                <div class="mb-3 col-md-3">
-                    <label for="client_id" class="form-label">Client</label>
-                    <select id="client_id" name="client_id" class="form-select to-fill" required>
-                        <option value="">Select Client</option>
-                        <?php
-                        $clients_result = $conn->query("SELECT id, CONCAT(comp_first_name, ' ', comp_middle_name, ' ', comp_last_name) AS company_name FROM client");
-                        while ($row = $clients_result->fetch_assoc()) {
-                            echo "<option value='{$row['id']}'>{$row['company_name']}</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="mb-3 col-md-2">
-                    <label for="payment_date" class="form-label">Payment Date</label>
-                    <input type="date" id="payment_date" name="payment_date" class="form-control to-fill" required>
-                </div>
-                <div class="col-md-2">
-                    <label for="payment_method" class="form-label">Payment Method</label>
-                    <select name="payment_method" class="form-select payment-method to-fill" required>
-                        <option value="">Select</option>
-                        <option value="upi">UPI</option>
-                        <option value="cash">Cash</option>
-                        <option value="debit-card">Debit Card</option>
-                        <option value="credit-card">Credit Card</option>
-                        <option value="net-banking">Net Banking</option>
-                    </select>
-                </div>
-                <div class="mb-3 col-md-2">
-                    <label for="advance" class="form-label">Advance</label>
-                    <div class="input-group">
-                        <span class="input-group-text">₹</span>
-                        <input type="number" id="advance" name="advance" class="form-control to-fill" min="0" required>
+                <div class="row mb-4">
+                    <div class="mb-3 col-md-3">
+                        <label for="client_id" class="form-label">Client</label>
+                        <select id="client_id" name="client_id" class="form-select to-fill" required>
+                            <option value="">Select Client</option>
+                            <?php
+                            $clients_result = $conn->query("SELECT id, CONCAT(comp_first_name, ' ', comp_middle_name, ' ', comp_last_name) AS company_name FROM client");
+                            while ($row = $clients_result->fetch_assoc()) {
+                                echo "<option value='{$row['id']}'>{$row['company_name']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mb-3 col-md-2">
+                        <label for="order_date" class="form-label">Order Date</label>
+                        <input type="date" id="order_date" name="order_date" class="form-control to-fill" required>
+                    </div>
+                    <div class="mb-3 col-md-2">
+                        <label for="payment_date" class="form-label">Payment Date</label>
+                        <input type="date" id="payment_date" name="payment_date" class="form-control to-fill" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="payment_method" class="form-label">Payment Method</label>
+                        <select name="payment_method" class="form-select payment-method to-fill" required>
+                            <option value="">Select</option>
+                            <option value="upi">UPI</option>
+                            <option value="cash">Cash</option>
+                            <option value="debit-card">Debit Card</option>
+                            <option value="credit-card">Credit Card</option>
+                            <option value="net-banking">Net Banking</option>
+                        </select>
                     </div>
                 </div>
-                <div class="mb-3 col-md-2">
-                    <label for="due" class="form-label">Due</label>
-                    <div class="input-group">
-                        <span class="input-group-text">₹</span>
-                        <input type="number" id="due" name="due" class="form-control due read-only" readonly>
+                <div class="row mb-4">
+                    <div class="mb-3 col-md-2">
+                        <label for="advance" class="form-label">Advance</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₹</span>
+                            <input type="number" id="advance" name="advance" class="form-control to-fill" min="0" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-md-2">
+                        <label for="due" class="form-label">Due</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₹</span>
+                            <input type="number" id="due" name="due" class="form-control due read-only" readonly>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -182,19 +189,23 @@ while ($row = $products_result->fetch_assoc()) {
                             <input type="number" name="quantity[]" class="form-control quantity to-fill" min="1" required>
                         </div>
                         <div class="col-md-2">
-                            <label for="freight" class="form-label">Freight Charges</label>
+                            <label for="discount" class="form-label">Discount</label>
                             <div class="input-group">
-                                <span class="input-group-text">₹</span>
-                                <input type="number" name="freight[]" class="form-control freight to-fill" min="0" required>
+                                <input type="number" name="discount[]" class="form-control discount to-fill" min="0" required>
+                                <span class="input-group-text">%</span>
                             </div>
                         </div>
+
                     </div>
 
                     <!-- Product Row 2 -->
                     <div class="row mb-3">
                         <div class="col-md-2">
-                            <label for="discount" class="form-label">Discount (%)</label>
-                            <input type="number" name="discount[]" class="form-control discount to-fill" min="0" required>
+                            <label for="freight" class="form-label">Freight Charges</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" name="freight[]" class="form-control freight to-fill" min="0" required>
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <label for="tax_type" class="form-label">Tax Type</label>

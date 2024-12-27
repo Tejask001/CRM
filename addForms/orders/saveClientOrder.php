@@ -13,6 +13,7 @@ if ($conn->connect_error) {
 // Get the posted data
 $order_id = $_POST['order_id'];
 $client_id = $_POST['client_id'];
+$order_date = $_POST['order_date'];
 $payment_method = $_POST['payment_method'];
 $payment_date = $_POST['payment_date'];
 $advance = $_POST['advance'];
@@ -57,7 +58,7 @@ $supplier_id = NULL;
 
 // Prepare the SQL query by directly inserting the values into the statement
 $order_sql = "INSERT INTO orders (order_id, type, client_id, supplier_id, payment_method, payment_date, advance, due, total_amount,date) 
- VALUES ('$order_id', '$order_type', $client_id, NULL, '$payment_method', '$payment_date', $advance, $due, $total_amount, NOW())";
+ VALUES ('$order_id', '$order_type', $client_id, NULL, '$payment_method', '$payment_date', $advance, $due, $total_amount, '$order_date')";
 if (!$conn->query($order_sql)) {
     die("Error inserting order: " . $conn->error);
 }
