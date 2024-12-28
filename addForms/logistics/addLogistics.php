@@ -30,40 +30,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $client_driver_phone = $_POST['client_driver_phone'];
         $client_driver_gst_no = $_POST['client_driver_gst_no'];
         $transfer_date = $_POST['transfer_date'];
-    } else {
-        $client_vehicle_no = NULL;
-        $client_driver_name = NULL;
-        $client_driver_phone = NULL;
-        $client_driver_gst_no = NULL;
-        $transfer_date = NULL;
-    }
 
-    // Validate required fields
-    if ($order_id && $vehicle_no && $driver_name && $driver_phone && $driver_gst_no && $estimated_delivery_date) {
-        // If transfer_date is NULL, set it to SQL's NULL keyword
-        if ($transfer_date === "") {
-            $transfer_date = "NULL";
-        } else {
-            $transfer_date = "'$transfer_date'";
-        }
 
-        // Build SQL query
         $sql = "INSERT INTO logistics (
             order_id, vehicle_no, driver_name, driver_phone, driver_gst_no, estimated_delivery_date, is_transferred, client_vehicle_no, client_driver_name, client_driver_phone, client_driver_gst_no, transfer_date
         ) VALUES (
-            '$order_id', '$vehicle_no', '$driver_name', '$driver_phone', '$driver_gst_no', '$estimated_delivery_date', '$is_transferred', '$client_vehicle_no', '$client_driver_name', '$client_driver_phone', '$client_driver_gst_no', $transfer_date
+            '$order_id', '$vehicle_no', '$driver_name', '$driver_phone', '$driver_gst_no', '$estimated_delivery_date', '$is_transferred', '$client_vehicle_no', '$client_driver_name', '$client_driver_phone', '$client_driver_gst_no', '$transfer_date'
         )";
-
-        // Execute query
-        if ($conn->query($sql) === TRUE) {
-            echo "<script>alert('Logistics details saved successfully!');</script>";
-        } else {
-            echo "<script>alert('Error saving logistics details: " . $conn->error . "');</script>";
-        }
     } else {
-        echo "<script>alert('Please fill in all required fields.');</script>";
+
+        $sql = "INSERT INTO logistics (
+            order_id, vehicle_no, driver_name, driver_phone, driver_gst_no, estimated_delivery_date, is_transferred
+        ) VALUES (
+            '$order_id', '$vehicle_no', '$driver_name', '$driver_phone', '$driver_gst_no', '$estimated_delivery_date', '$is_transferred'
+        )";
+    }
+
+    // Execute query
+    if ($conn->query($sql) === TRUE) {
+        echo "<script>alert('Logistics details saved successfully!');history.back();</script>";
+    } else {
+        echo "<script>alert('Error saving logistics details: " . $conn->error . "');</script>";
     }
 }
+
 ?>
 
 <!DOCTYPE html>

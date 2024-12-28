@@ -21,7 +21,6 @@ $sql = "
         vehicle_no,
         driver_name,
         driver_gst_no,
-        order_placement_date,
         estimated_delivery_date,
         is_transferred,
         client_vehicle_no,
@@ -67,7 +66,6 @@ $result = $conn->query($sql);
                             <th>Vehicle No</th>
                             <th>Driver Name</th>
                             <th>Driver GST No</th>
-                            <th>Order Placement Date</th>
                             <th>Estimated Delivery Date</th>
                             <th>Is Transferred</th>
                             <th>Client Vehicle No</th>
@@ -87,14 +85,12 @@ $result = $conn->query($sql);
                                 echo "<td>" . htmlspecialchars($row['vehicle_no']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['driver_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['driver_gst_no']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['order_placement_date']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['estimated_delivery_date']) . "</td>";
-                                echo "<td>" . ($row['is_transferred'] ? 'Yes' : 'No') . "</td>";
-                                echo "<td>" . ($row['is_transferred'] ? htmlspecialchars($row['client_vehicle_no']) : 'NA') . "</td>";
-                                echo "<td>" . ($row['is_transferred'] ? htmlspecialchars($row['client_driver_name']) : 'NA') . "</td>";
-                                echo "<td>" . ($row['is_transferred'] ? htmlspecialchars($row['client_driver_gst_no']) : 'NA') . "</td>";
-                                echo "<td>" . ($row['is_transferred'] ? htmlspecialchars($row['transfer_date']) : 'NA') . "</td>";
-                                echo "</tr>";
+                                echo "<td>" . ($row['is_transferred'] === 'yes' ? 'Yes' : 'No') . "</td>";
+                                echo "<td>" . ($row['is_transferred'] ? htmlspecialchars($row['client_vehicle_no'] ?? '') : 'NA') . "</td>";
+                                echo "<td>" . ($row['is_transferred'] ? htmlspecialchars($row['client_driver_name'] ?? '') : 'NA') . "</td>";
+                                echo "<td>" . ($row['is_transferred'] ? htmlspecialchars($row['client_driver_gst_no'] ?? '') : 'NA') . "</td>";
+                                echo "<td>" . ($row['is_transferred'] ? htmlspecialchars($row['transfer_date'] ?? '') : 'NA') . "</td>";
                             }
                         } else {
                             echo "<tr><td colspan='12'>No Logistics Details Found.</td></tr>";
