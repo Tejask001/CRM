@@ -20,39 +20,84 @@ if ($conn->connect_error) {
 // Get the order ID from the URL
 $order_id = isset($_GET['id']) ? $_GET['id'] : '';
 
-// Fetch all order items for the given order ID
-$sql = "
-    SELECT  
-        orders.order_id,
-        orders.date,
-        order_items.batch_code,
-        order_items.quantity,
-        orders.type,
-        orders.client_id,
-        orders.supplier_id,
-        orders.payment_method,
-        orders.payment_date,
-        order_items.discount,
-        order_items.freight,
-        order_items.cgst,
-        order_items.sgst,
-        order_items.igst,
-        order_items.billing_amount,
-        CONCAT_WS(' ', client.comp_first_name, client.comp_middle_name, client.comp_last_name) AS company_name,
-        client.comp_address,
-        client.gst_no,
-        client.manager_phone,
-        product.general_name,
-        product.chemical_size,
-        product.pp,
-        product.sp
-    FROM 
-        orders
-    LEFT JOIN order_items ON orders.order_id = order_items.order_id
-    LEFT JOIN client ON orders.client_id = client.id
-    LEFT JOIN product ON order_items.batch_code = product.batch_code
-    WHERE orders.order_id = '$order_id'
-";
+// Determine the order type
+$type_sql = "SELECT type FROM orders WHERE order_id = '$order_id'";
+$type_result = $conn->query($type_sql);
+if ($type_result->num_rows === 0) {
+    die("Invalid order ID or order type not found.");
+}
+
+$order_type = $type_result->fetch_assoc()['type'];
+
+// Adjust query based on order type
+if ($order_type === 'Purchase') {
+    $sql = "
+        SELECT  
+            orders.order_id,
+            orders.date,
+            order_items.batch_code,
+            order_items.quantity,
+            orders.type,
+            orders.client_id,
+            orders.supplier_id,
+            orders.payment_method,
+            orders.payment_date,
+            order_items.discount,
+            order_items.freight,
+            order_items.cgst,
+            order_items.sgst,
+            order_items.igst,
+            order_items.billing_amount,
+            CONCAT_WS(' ', supplier.comp_first_name, supplier.comp_middle_name, supplier.comp_last_name) AS company_name,
+            supplier.comp_address,
+            supplier.gst_no,
+            supplier.manager_phone,
+            product.general_name,
+            product.chemical_size,
+            product.pp,
+            product.sp
+        FROM 
+            orders
+        LEFT JOIN order_items ON orders.order_id = order_items.order_id
+        LEFT JOIN supplier ON orders.supplier_id = supplier.id
+        LEFT JOIN product ON order_items.batch_code = product.batch_code
+        WHERE orders.order_id = '$order_id'
+    ";
+} else {
+    $sql = "
+        SELECT  
+            orders.order_id,
+            orders.date,
+            order_items.batch_code,
+            order_items.quantity,
+            orders.type,
+            orders.client_id,
+            orders.supplier_id,
+            orders.payment_method,
+            orders.payment_date,
+            order_items.discount,
+            order_items.freight,
+            order_items.cgst,
+            order_items.sgst,
+            order_items.igst,
+            order_items.billing_amount,
+            CONCAT_WS(' ', client.comp_first_name, client.comp_middle_name, client.comp_last_name) AS company_name,
+            client.comp_address,
+            client.gst_no,
+            client.manager_phone,
+            product.general_name,
+            product.chemical_size,
+            product.pp,
+            product.sp
+        FROM 
+            orders
+        LEFT JOIN order_items ON orders.order_id = order_items.order_id
+        LEFT JOIN client ON orders.client_id = client.id
+        LEFT JOIN product ON order_items.batch_code = product.batch_code
+        WHERE orders.order_id = '$order_id'
+    ";
+}
+
 
 
 $result = $conn->query($sql);
