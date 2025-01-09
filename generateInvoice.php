@@ -31,6 +31,7 @@ $sql = "
         orders.client_id,
         orders.supplier_id,
         orders.payment_method,
+        orders.payment_date,
         order_items.discount,
         order_items.freight,
         order_items.cgst,
@@ -76,77 +77,85 @@ $item_number = 1;
 // Initialize FPDF with Landscape orientation
 $pdf = new FPDF('L', 'mm', 'A4'); // Landscape mode
 $pdf->AddPage();
-$pdf->SetFont('Arial', 'B', 14);
 
-// Invoice Header
-$pdf->Cell(270, 10, 'Invoice', 1, 1, 'C'); // Adjust the width to fit the page in landscape
-$pdf->Ln(10);
+$pdf->SetFont('Arial', 'B', 11);
 
-// Client Details
-$order_date = new DateTime($order['date']);
-// $pdf->SetFont('Arial', 'B', 12);
-// $pdf->Cell(135, 10, 'Customer Details ', 0, 1);
-// $pdf->Cell(135, 10, 'Company Name: ' . ($order['company_name'] ?? 'N/A'), 0, 1);
-// $pdf->Cell(135, 10, 'GST No: ' . ($order['gst_no'] ?? 'N/A'), 0, 1);
-// $pdf->Cell(135, 10, 'Company Address: ' . ($order['comp_address'] ?? 'N/A'), 0, 1);
-// $pdf->Cell(135, 10, 'Manager Phone: +91-' . ($order['manager_phone'] ?? 'N/A'), 0, 1);
-// $pdf->Cell(135, 10, 'Order Date: ' . ($order_date ? $order_date->format('d/m/Y') : 'N/A'), 0, 1);
-// $pdf->Ln(10);
+$pdf->Cell(135, 5, 'LOGO', 0, 0, 'L');
+$pdf->Cell(135, 5, 'Dealer Details', 0, 1, 'R');
 
-// Client and Company Details (Two Columns)
-$pdf->SetFont('Arial', 'B', 12);
-
-// Left Column: Customer Details
-$pdf->Cell(135, 10, 'Customer Details', 0, 0, 'L');
-$pdf->SetFont('Arial', 'B', 12);
-
-// Right Column: Company Details
-$pdf->Cell(135, 10, 'Dealer Details', 0, 1, 'R');
-
-// Left Column Content: Customer Details
-$pdf->SetFont('Arial', '', 12);
-$pdf->Cell(135, 10, 'Company Name: ' . ($order['company_name'] ?? 'N/A'), 0, 0, 'L');
-$pdf->SetFont('Arial', '', 12);
-
-// Right Column Content: Company Details
-$pdf->Cell(135, 10, 'Company Name: Amba Associats', 0, 1, 'R');
-
-$pdf->Cell(135, 10, 'GST No: ' . ($order['gst_no'] ?? 'N/A'), 0, 0, 'L');
-$pdf->Cell(135, 10, 'GST No: 12345678909876', 0, 1, 'R');
-
-$pdf->Cell(135, 10, 'Company Address: ' . ($order['comp_address'] ?? 'N/A'), 0, 0, 'L');
-$pdf->Cell(135, 10, 'Address: Faridabad', 0, 1, 'R');
-
-$pdf->Cell(135, 10, 'Manager Phone: +91-' . ($order['manager_phone'] ?? 'N/A'), 0, 0, 'L');
-$pdf->Cell(135, 10, 'Phone: +91-9876543210', 0, 1, 'R');
-
-$pdf->Cell(135, 10, 'Order Date: ' . ($order_date ? $order_date->format('d/m/Y') : 'N/A'), 0, 0, 'L');
-$pdf->Cell(135, 10, '', 0, 1, 'R'); // Empty right cell to align layout
-
-$pdf->Cell(135, 10, 'Payment Method: ' . ($order['payment_method'] ?? 'N/A'), 0, 0, 'L');
-
-
-$pdf->Ln(15); // Add spacing after details
-
-
-// Table: Order Details (Header)
-$pdf->SetFont('Arial', 'B', 10);
-$pdf->Cell(20, 10, 'Item No', 1, 0, 'C');
-$pdf->Cell(50, 10, 'Item Name', 1, 0, 'C');
-// $pdf->Cell(30, 10, 'Batch Code', 1, 0, 'C');
-$pdf->Cell(25, 10, 'Price/Unit', 1, 0, 'C');
-$pdf->Cell(20, 10, 'Quantity', 1, 0, 'C');
-$pdf->Cell(20, 10, 'Discount', 1, 0, 'C');
-$pdf->Cell(25, 10, 'Freight', 1, 0, 'C');
-// $pdf->Cell(25, 10, 'Subtotal', 1, 0, 'C');
-$pdf->Cell(25, 10, 'CGST', 1, 0, 'C');
-$pdf->Cell(25, 10, 'SGST', 1, 0, 'C');
-$pdf->Cell(25, 10, 'IGST', 1, 0, 'C');
-$pdf->Cell(40, 10, 'Subtotal After Tax', 1, 1, 'C');
 
 $pdf->SetFont('Arial', '', 10);
 
+$pdf->Cell(135, 5, '', 0, 0, 'L');
+$pdf->Cell(135, 5, 'Company Name: Amba Associats', 0, 1, 'R');
+
+$pdf->Cell(135, 5, '', 0, 0, 'L');
+$pdf->Cell(135, 5, 'Phone: +91-9876543210', 0, 1, 'R');
+
+$pdf->Cell(135, 5, '', 0, 0, 'L');
+$pdf->Cell(135, 5, 'Address: Faridabad', 0, 1, 'R');
+
+$pdf->Cell(135, 5, '', 0, 0, 'L');
+$pdf->Cell(135, 5, 'GST No: 12345678909876', 0, 1, 'R');
+$pdf->Ln(5);
+
+$order_date = new DateTime($order['date']);
+
+$pdf->SetFont('Arial', 'B', 14);
+// Invoice Header
+$pdf->Cell(270, 10, 'Order Invoice', 1, 1, 'C'); // Adjust the width to fit the page in landscape
+$pdf->Ln(3);
+$pdf->SetFont('Arial', 'B', 11);
+$pdf->Cell(270, 5, 'Order Date: ' . ($order_date ? $order_date->format('d/m/Y') : 'N/A'), 0, 0, 'L');
+$pdf->Ln(8);
+
+// Client Details
+
+// Client and Company Details (Two Columns)
+$pdf->SetFont('Arial', 'B', 11);
+
+// Left Column: Customer Details
+$pdf->Cell(135, 5, 'Customer Details', 0, 0, 'L');
+$pdf->Cell(135, 5, '', 0, 1, 'R');
+$pdf->SetFont('Arial', 'B', 10);
+
+// Left Column Content: Customer Details
+$pdf->SetFont('Arial', '', 10);
+$pdf->Cell(135, 5, 'Company Name: ' . ($order['company_name'] ?? 'N/A'), 0, 0, 'L');
+$pdf->Cell(135, 5, '', 0, 1, 'R');
+
+$pdf->Cell(135, 5, 'Manager Phone: +91-' . ($order['manager_phone'] ?? 'N/A'), 0, 0, 'L');
+$pdf->Cell(135, 5, '', 0, 1, 'R');
+
+$pdf->Cell(135, 5, 'Company Address: ' . ($order['comp_address'] ?? 'N/A'), 0, 0, 'L');
+$pdf->Cell(135, 5, '', 0, 1, 'R');
+
+$pdf->Cell(135, 5, 'GST No: ' . ($order['gst_no'] ?? 'N/A'), 0, 0, 'L');
+$pdf->Cell(135, 5, '', 0, 1, 'R');
+
+$pdf->Ln(8); // Add spacing after details
+
+
+// Table: Order Details (Header)
+$pdf->SetFont('Arial', 'B', 8);
+$pdf->Cell(20, 5, 'Item No', 1, 0, 'C');
+$pdf->Cell(50, 5, 'Item Name', 1, 0, 'C');
+// $pdf->Cell(30, 10, 'Batch Code', 1, 0, 'C');
+$pdf->Cell(25, 5, 'Price/Unit', 1, 0, 'C');
+$pdf->Cell(20, 5, 'Quantity', 1, 0, 'C');
+$pdf->Cell(20, 5, 'Discount', 1, 0, 'C');
+$pdf->Cell(25, 5, 'Freight', 1, 0, 'C');
+// $pdf->Cell(25, 10, 'Subtotal', 1, 0, 'C');
+$pdf->Cell(25, 5, 'CGST', 1, 0, 'C');
+$pdf->Cell(25, 5, 'SGST', 1, 0, 'C');
+$pdf->Cell(25, 5, 'IGST', 1, 0, 'C');
+$pdf->Cell(40, 5, 'Subtotal After Tax', 1, 1, 'C');
+
+$pdf->SetFont('Arial', '', 8);
+
 $freight_charge = $order['freight'] ?? 0;
+$payment_date = $order['payment_date'] ?? null;
+$payment_method = $order['payment_method'] ?? 'N/A';
 
 // Loop through all items
 do {
@@ -168,34 +177,51 @@ do {
     $total_tax_igst += $igst;
     $subtotal += $subtotal_item;
 
-    $pdf->Cell(20, 10, $item_number++, 1, 0, 'C');
-    $pdf->Cell(50, 10, $order['general_name'] ?? 'N/A', 1, 0, 'C');
+    $pdf->Cell(20, 5, $item_number++, 1, 0, 'C');
+    $pdf->Cell(50, 5, $order['general_name'] ?? 'N/A', 1, 0, 'C');
     // $pdf->Cell(30, 10, $order['batch_code'] ?? 'N/A', 1, 0, 'C');
-    $pdf->Cell(25, 10, number_format($price, 2), 1, 0, 'C');
-    $pdf->Cell(20, 10, $quantity, 1, 0, 'C');
-    $pdf->Cell(20, 10, number_format($discount, 2) . '%', 1, 0, 'C');
-    $pdf->Cell(25, 10, number_format($freight_charge, 2), 1, 0, 'C');
+    $pdf->Cell(25, 5, number_format($price, 2), 1, 0, 'C');
+    $pdf->Cell(20, 5, $quantity, 1, 0, 'C');
+    $pdf->Cell(20, 5, number_format($discount, 2) . '%', 1, 0, 'C');
+    $pdf->Cell(25, 5, number_format($freight_charge, 2), 1, 0, 'C');
     // $pdf->Cell(25, 10, number_format($subtotal_item, 2), 1, 0, 'C');
-    $pdf->Cell(25, 10, number_format($cgst, 2), 1, 0, 'C');
-    $pdf->Cell(25, 10, number_format($sgst, 2), 1, 0, 'C');
-    $pdf->Cell(25, 10, number_format($igst, 2), 1, 0, 'C');
-    $pdf->Cell(40, 10, number_format($subtotal_after_tax, 2), 1, 1, 'C');
+    $pdf->Cell(25, 5, number_format($cgst, 2), 1, 0, 'C');
+    $pdf->Cell(25, 5, number_format($sgst, 2), 1, 0, 'C');
+    $pdf->Cell(25, 5, number_format($igst, 2), 1, 0, 'C');
+    $pdf->Cell(40, 5, number_format($subtotal_after_tax, 2), 1, 1, 'C');
 } while ($order = $result->fetch_assoc());
 
 // Calculate Grand Total
 $grand_total = $subtotal + $total_tax_cgst + $total_tax_sgst + $total_tax_igst;
-$pdf->Cell(275, 10, 'Grand Total: INR ' . number_format($grand_total, 2), 1, 1, 'R');
+$pdf->Cell(275, 5, 'Grand Total: INR ' . number_format($grand_total, 2), 1, 1, 'R');
 
 // Convert Grand Total to Words
 function convertNumberToWords($num)
 {
     $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-    return ucfirst($f->format($num));
+    return ucwords($f->format($num));
 }
 
 $pdf->Ln(10);
-$pdf->SetFont('Arial', 'I', 12);
-$pdf->MultiCell(200, 10, 'Amount in Words: ' . convertNumberToWords($grand_total) . ' only', 0, 'L');
+$pdf->SetFont('Arial', 'B', 10);
+$pdf->MultiCell(200, 5, 'Total Amount (In Words) :' . convertNumberToWords($grand_total) . ' Only', 0, 'L');
+
+// Add payment details section
+$pdf->Ln(10);
+$pdf->SetFont('Arial', 'B', 10);
+$pdf->Cell(270, 10, 'Payment Details', 0, 1, 'L'); // Payment details header
+
+$pdf->SetFont('Arial', 'B', 8);
+// Table headers for payment details
+$pdf->Cell(135, 5, 'Payment Date', 1, 0, 'C');
+$pdf->Cell(135, 5, 'Payment Method', 1, 1, 'C');
+
+$pdf->SetFont('Arial', '', 8);
+// Payment details values
+
+$pdf->Cell(135, 5, ($payment_date ? (new DateTime($order['payment_date']))->format('d/m/Y') : 'N/A'), 1, 0, 'C');
+$pdf->Cell(135, 5, ($payment_method ?? 'N/A'), 1, 1, 'C');
+
 
 // Output PDF
 ob_clean(); // Clear output buffer to avoid output issues

@@ -96,9 +96,9 @@ $result = $conn->query($sql);
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
-                                echo "<td style=\"display: flex; flex-direction: column; align-items: center; padding: 10px;\">
-    <a style=\"margin-bottom: 5px;\" href='./updateForms/editSupplier.php?trader_id=" . urlencode($row['trader_id']) . "'>
-        <button type='button' class='btn btn-danger'>Edit</button>
+                                echo "<td>
+    <a href='./updateForms/editSupplier.php?trader_id=" . urlencode($row['trader_id']) . "'>
+        <button  style=\"margin-bottom: 5px;\" type='button' class='btn btn-danger'>Edit</button>
     </a>
     <a href='./clientDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
         <button type='button' class='btn btn-primary'>Details</button>
