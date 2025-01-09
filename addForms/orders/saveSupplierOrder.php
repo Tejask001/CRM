@@ -88,7 +88,7 @@ for ($i = 0; $i < count($batch_codes); $i++) {
     }
 }
 
-$revenue_sql = "INSERT INTO revenue (order_id, client_id, supplier_id, total_amount, amount_received, amount_remaining, amount_paid, total_revenue) VALUES ('$order_id', NULL, $supplier_id, $total_amount, 0, $due, $advance, $advance)";
+$revenue_sql = "INSERT INTO revenue (order_id, client_id, supplier_id, total_amount_client, amount_received, due_client, total_amount_supplier, amount_paid, due_supplier) VALUES ('$order_id', NULL, $supplier_id, 0, 0, 0, $total_amount, $advance, $due)";
 if (!$conn->query($revenue_sql)) {
     die("Error inserting order: " . $conn->error);
 }

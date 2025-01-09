@@ -53,11 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $sql = "
     SELECT 
         revenue.order_id,
-        revenue.total_amount,
+        revenue.total_amount_client,
         revenue.amount_received,
-        revenue.amount_remaining,
+        revenue.due_client,
+        revenue.total_amount_supplier,
         revenue.amount_paid,
-        revenue.total_revenue,
+        revenue.due_supplier,
         orders.date
     FROM 
         revenue
@@ -70,10 +71,10 @@ $result = $conn->query($sql);
 // Fetch revenue summary
 $summarySql = "
     SELECT 
-        SUM(revenue.total_amount - revenue.amount_paid) AS gross_profit,
-        SUM(revenue.amount_received - revenue.amount_paid) AS net_profit,
+        SUM(revenue.total_amount_client - revenue.total_amount_supplier) AS gross_profit,
+        SUM(revenue.amount_received -  revenue.amount_paid) AS net_profit,
         SUM(revenue.amount_received) AS net_amount_credited,
-        SUM(revenue.amount_remaining) AS net_amount_due
+        SUM(revenue.due_client) AS net_amount_due
     FROM 
         revenue
     LEFT JOIN orders ON revenue.order_id = orders.order_id
@@ -188,9 +189,9 @@ $summary = $summaryResult->fetch_assoc();
                             <th>Order Type</th>
                             <th>Total Amount</th>
                             <th>Amount Received</th>
-                            <th>Amount Remaining</th>
+                            <th>Due Client</th>
                             <th>Amount Paid</th>
-                            <th>Total Revenue</th>
+                            <th>Due Supplier</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -203,11 +204,11 @@ $summary = $summaryResult->fetch_assoc();
                                 echo "<td class='text-center'>" . htmlspecialchars($row['order_id']) . "</td>";
                                 echo "<td class='text-center'>" . htmlspecialchars($row['date']) . "</td>";
                                 echo "<td class='text-center $orderColor'>" . htmlspecialchars($orderType) . "</td>";
-                                echo "<td class='text-center'>" . htmlspecialchars($row['total_amount']) . "</td>";
+                                echo "<td class='text-center'>" . htmlspecialchars($row['total_amount_client']) . "</td>";
                                 echo "<td class='text-center'>" . htmlspecialchars($row['amount_received']) . "</td>";
-                                echo "<td class='text-center'>" . htmlspecialchars($row['amount_remaining']) . "</td>";
+                                echo "<td class='text-center'>" . htmlspecialchars($row['due_client']) . "</td>";
                                 echo "<td class='text-center'>" . htmlspecialchars($row['amount_paid']) . "</td>";
-                                echo "<td class='text-center'>" . htmlspecialchars($row['total_revenue']) . "</td>";
+                                echo "<td class='text-center'>" . htmlspecialchars($row['due_supplier']) . "</td>";
                                 echo "</tr>";
                             }
                         } else {
