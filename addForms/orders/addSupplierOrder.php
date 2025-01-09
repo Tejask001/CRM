@@ -245,13 +245,6 @@ while ($row = $products_result->fetch_assoc()) {
                                 <input type="number" name="billing_amount[]" class="form-control billing-amount" readonly>
                             </div>
                         </div>
-                        <!-- <div class="col-md-2">
-                            <label for="profit" class="form-label">Profit</label>
-                            <div class="input-group">
-                                <span class="input-group-text">₹</span>
-                                <input type="number" name="profit[]" class="form-control profit" readonly>
-                            </div>
-                        </div> -->
                         <div class="col-md-3 d-flex align-items-end">
                             <div class="d-flex align-items-end">
                                 <button type="button" class="btn btn-danger remove-row">Remove Item</button>
@@ -291,7 +284,7 @@ while ($row = $products_result->fetch_assoc()) {
 
             // Function to calculate billing amount and other fields
             function calculateBilling(row) {
-                const pricePerUnit = parseFloat(row.find('.selling-price-per-unit').val()) || 0;
+                const pricePerUnit = parseFloat(row.find('.cost-price-per-unit').val()) || 0;
                 const quantity = parseFloat(row.find('.quantity').val()) || 0;
                 const discount = parseFloat(row.find('.discount').val()) || 0;
                 const freight = parseFloat(row.find('.freight').val()) || 0;
