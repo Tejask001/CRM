@@ -70,9 +70,10 @@ $result = $conn->query($sql);
 // Fetch revenue summary
 $summarySql = "
     SELECT 
-        SUM(revenue.total_revenue) AS total_revenue,
         SUM(revenue.total_amount - revenue.amount_paid) AS gross_profit,
-        SUM(revenue.amount_received - revenue.amount_paid) AS net_profit
+        SUM(revenue.amount_received - revenue.amount_paid) AS net_profit,
+        SUM(revenue.amount_received) AS net_amount_credited,
+        SUM(revenue.amount_remaining) AS net_amount_due
     FROM 
         revenue
     LEFT JOIN orders ON revenue.order_id = orders.order_id
@@ -106,18 +107,8 @@ $summary = $summaryResult->fetch_assoc();
 
             <!-- Revenue Summary Cards -->
             <div class="row mb-4">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="card text-white bg-primary">
-                        <div class="card-body">
-                            <h5 class="card-title">Total Revenue</h5>
-                            <p class="card-text fs-4">
-                                ₹<?php echo number_format($summary['total_revenue'] ?? 0, 2); ?>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card text-white bg-success">
                         <div class="card-body">
                             <h5 class="card-title">Gross Profit</h5>
                             <p class="card-text fs-4">
@@ -126,12 +117,32 @@ $summary = $summaryResult->fetch_assoc();
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card text-white bg-info">
+                <div class="col-md-3">
+                    <div class="card text-white bg-success">
                         <div class="card-body">
                             <h5 class="card-title">Net Profit</h5>
                             <p class="card-text fs-4">
                                 ₹<?php echo number_format($summary['net_profit'] ?? 0, 2); ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-secondary">
+                        <div class="card-body">
+                            <h5 class="card-title">Net Amount Credited</h5>
+                            <p class="card-text fs-4">
+                                ₹<?php echo number_format($summary['net_amount_credited'] ?? 0, 2); ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-danger">
+                        <div class="card-body">
+                            <h5 class="card-title">Net Amount Due</h5>
+                            <p class="card-text fs-4">
+                                ₹<?php echo number_format($summary['net_amount_due n'] ?? 0, 2); ?>
                             </p>
                         </div>
                     </div>
