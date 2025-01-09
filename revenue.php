@@ -204,7 +204,7 @@ $summary = $summaryResult->fetch_assoc();
                                 echo "<td class='text-center'>" . htmlspecialchars($row['order_id']) . "</td>";
                                 echo "<td class='text-center'>" . htmlspecialchars($row['date']) . "</td>";
                                 echo "<td class='text-center $orderColor'>" . htmlspecialchars($orderType) . "</td>";
-                                echo "<td class='text-center'>" . htmlspecialchars($row['total_amount_client']) . "</td>";
+                                echo "<td class='text-center'>" . ($row['amount_paid'] === '0' ? htmlspecialchars($row['total_amount_client']) : htmlspecialchars($row['total_amount_supplier'])) . "</td>";
                                 echo "<td class='text-center'>" . htmlspecialchars($row['amount_received']) . "</td>";
                                 echo "<td class='text-center'>" . htmlspecialchars($row['due_client']) . "</td>";
                                 echo "<td class='text-center'>" . htmlspecialchars($row['amount_paid']) . "</td>";
