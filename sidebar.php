@@ -1,8 +1,56 @@
+<style>
+    #sidebar {
+        width: 100%;
+        background-color: #1e293b;
+    }
+
+    #sidebar img {
+        width: 100px;
+    }
+
+    #sidebar h4 {
+        font-size: 32px;
+        margin-bottom: 40px;
+    }
+
+    #sidebar .list-group-item {
+        border: 0;
+        border-radius: 5px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 2.5px;
+        margin-bottom: 2.5px;
+        width: 90%;
+        /* padding: 9px 20px; */
+        font-size: 22px;
+        background-color: var(--bs-dark-rgb);
+        color: white;
+    }
+
+    #sidebar .list-group-item:hover {
+        /* background-color: var(--bs-secondary);
+    color: white; */
+        cursor: pointer;
+    }
+
+    #sidebar .list-group-item.active {
+        background-color: #0284c7;
+        color: white;
+    }
+
+    #sidebar a {
+        text-decoration: none;
+    }
+
+    #sidebar svg {
+        margin-right: 20px;
+    }
+</style>
 <!-- Sidebar -->
-<div id="sidebar" class="col-2 d-flex flex-column bg-dark text-white vh-100 p-0">
+<div id="sidebar" class="col-2 d-flex flex-column text-white vh-100 p-0">
     <div class="text-center py-3">
         <img src="https://via.placeholder.com/80" alt="Logo" class="img-fluid rounded-circle mb-2">
-        <h4>Amba Associats</h4>
+        <h4>Amba Associates</h4>
     </div>
     <ul class="list-group list-group-flush">
         <a href="revenue.php">

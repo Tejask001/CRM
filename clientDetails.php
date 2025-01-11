@@ -43,28 +43,67 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <title>Client Details</title>
     <style>
         body {
-            background-color: var(--bs-gray-100);
+            background-color: #f7f8fa;
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4a4a4a;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            letter-spacing: 1.2px;
         }
 
         .card {
-            border: 1px solid;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-body {
+            padding: 20px;
         }
 
         .card-title {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: bold;
+            margin-bottom: 1rem;
+            color: #0056b3;
         }
 
         .card-text {
             font-size: 1rem;
             color: #555;
+            line-height: 1.6;
+        }
+
+        .card-text strong {
+            color: #333;
+        }
+
+        .alert {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            border-radius: 8px;
         }
     </style>
-
 </head>
 
 <body>
