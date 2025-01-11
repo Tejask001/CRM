@@ -113,7 +113,12 @@ $summary = $summaryResult->fetch_assoc();
                         <div class="card-body">
                             <h5 class="card-title">Gross Profit</h5>
                             <p class="card-text fs-4">
-                                ₹<?php echo number_format($summary['gross_profit'] ?? 0, 2); ?>
+                                <?php
+                                $grossProfit = $summary['gross_profit'] ?? 0;
+                                $rupees = floor($grossProfit); // Integer part
+                                $paise = round(($grossProfit - $rupees) * 100); // Fractional part
+                                echo "₹" . number_format($rupees) . " and " . $paise . "p";
+                                ?>
                             </p>
                         </div>
                     </div>
@@ -123,7 +128,12 @@ $summary = $summaryResult->fetch_assoc();
                         <div class="card-body">
                             <h5 class="card-title">Net Profit</h5>
                             <p class="card-text fs-4">
-                                ₹<?php echo number_format($summary['net_profit'] ?? 0, 2); ?>
+                                <?php
+                                $netProfit = $summary['net_profit'] ?? 0;
+                                $rupees = floor($netProfit); // Integer part
+                                $paise = round(($netProfit - $rupees) * 100); // Fractional part
+                                echo "₹" . number_format($rupees) . " and " . $paise . "p";
+                                ?>
                             </p>
                         </div>
                     </div>
@@ -133,7 +143,12 @@ $summary = $summaryResult->fetch_assoc();
                         <div class="card-body">
                             <h5 class="card-title">Net Amount Credited</h5>
                             <p class="card-text fs-4">
-                                ₹<?php echo number_format($summary['net_amount_credited'] ?? 0, 2); ?>
+                                <?php
+                                $netAmountCredited = $summary['net_amount_credited'] ?? 0;
+                                $rupees = floor($netAmountCredited); // Integer part
+                                $paise = round(($netAmountCredited - $rupees) * 100); // Fractional part
+                                echo "₹" . number_format($rupees) . " and " . $paise . "p";
+                                ?>
                             </p>
                         </div>
                     </div>
@@ -143,7 +158,12 @@ $summary = $summaryResult->fetch_assoc();
                         <div class="card-body">
                             <h5 class="card-title">Net Amount Due</h5>
                             <p class="card-text fs-4">
-                                ₹<?php echo number_format($summary['net_amount_due n'] ?? 0, 2); ?>
+                                <?php
+                                $netAmountDue = $summary['net_amount_due'] ?? 0;
+                                $rupees = floor($netAmountDue); // Integer part
+                                $paise = round(($netAmountDue - $rupees) * 100); // Fractional part
+                                echo "₹" . number_format($rupees) . " and " . $paise . "p";
+                                ?>
                             </p>
                         </div>
                     </div>
