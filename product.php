@@ -162,6 +162,7 @@ $result = $conn->query($sql);
                 <table class="table table-striped">
                     <thead class="table-dark">
                         <tr>
+                            <th>Actions</th>
                             <th>Product Code</th>
                             <th>Batch Code</th>
                             <th>General Name</th>
@@ -180,6 +181,7 @@ $result = $conn->query($sql);
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
+                                echo "<td><a href='./updateForms/product/updateProduct.php?batch_code=" . urlencode($row['batch_code']) . "'><button>Update</button></a></td>";
                                 echo "<td>" . htmlspecialchars($row['product_code']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['batch_code']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['general_name']) . "</td>";

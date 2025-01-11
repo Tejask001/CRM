@@ -1,0 +1,48 @@
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "root";
+$dbname = "amba_associats";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    $supplier_id = $_POST['supplier_id'];
+
+    $product_code = $_POST['product_code'];
+    $batch_code = $_POST['batch_code'];
+    $general_name = $_POST['general_name'];
+    $chemical_name = $_POST['chemical_name'];
+    $chemical_size = $_POST['chemical_size'];
+    $purchase_price = $_POST['purchase_price'];
+    $selling_price = $_POST['selling_price'];
+    $margin_price = $_POST['margin_price'];
+    $product_life = $_POST['product_life'];
+
+
+    $conn->begin_transaction();
+
+    try {
+        // Insert into products table
+        $sql = "UPDATE product SET product_code='$product_code', general_name='$general_name', chemical_name='$chemical_name', chemical_size='$chemical_size', pp=$purchase_price, sp=$selling_price, mrgp=$margin_price, product_life=$product_life, batch_code='$batch_code', supplier_id=$supplier_id WHERE batch_code='$batch_code'";
+
+        if (!$conn->query($sql)) {
+            throw new Exception("Error inserting product: " . $conn->error);
+        }
+
+        // Commit transaction
+        $conn->commit();
+        echo "Products and stock updated successfully!";
+    } catch (Exception $e) {
+        // Rollback transaction in case of error
+        $conn->rollback();
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+$conn->close();
