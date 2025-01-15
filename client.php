@@ -1,17 +1,8 @@
 <?php
-// Connect to the database
-$servername = "localhost"; // Update this with your server name
-$username = "root"; // Update this with your username
-$password = "root"; // Update this with your password
-$dbname = "amba_associats"; // Your database name
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+require 'auth.php'; // auth check
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require 'config.php'; // database connection
 
 // Fetch supplier details
 $sql = "

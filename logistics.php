@@ -1,17 +1,7 @@
 <?php
-// Connect to the database
-$servername = "localhost"; // Update with your server name
-$username = "root"; // Update with your username
-$password = "root"; // Update with your password
-$dbname = "amba_associats"; // Your database name
+require 'auth.php'; // auth check
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require 'config.php'; // database connection
 
 // Fetch logistics details
 $sql = "

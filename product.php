@@ -1,17 +1,7 @@
 <?php
-// Connect to the database
-$servername = "localhost"; // Update with your server name
-$username = "root"; // Update with your username
-$password = "root"; // Update with your password
-$dbname = "amba_associats"; // Your database name
+require 'auth.php'; // auth check
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require 'config.php'; // database connection
 
 // Fetch product details
 $sql = "
@@ -181,7 +171,7 @@ $result = $conn->query($sql);
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
-                                echo "<td><a href='./updateForms/product/updateProduct.php?batch_code=" . urlencode($row['batch_code']) . "'><button>Update</button></a></td>";
+                                echo "<td><a href='./updateForms/product/updateProduct.php?batch_code=" . urlencode($row['batch_code']) . "'><button type='button' class='btn btn-danger'>Update</button></a></td>";
                                 echo "<td>" . htmlspecialchars($row['product_code']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['batch_code']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['general_name']) . "</td>";

@@ -49,8 +49,8 @@
 <!-- Sidebar -->
 <div id="sidebar" class="col-2 d-flex flex-column text-white vh-100 p-0">
     <div class="text-center py-3">
-        <img src="https://via.placeholder.com/80" alt="Logo" class="img-fluid rounded-circle mb-2">
-        <h4>Amba Associates</h4>
+        <img src="./assets/images/logo.jpeg" alt="Logo" class="img-fluid mb-4 mt-4" style="width: 200px;">
+        <!-- <h4>Amba Associates</h4> -->
     </div>
     <ul class="list-group list-group-flush">
         <a href="revenue.php">
@@ -104,4 +104,11 @@
             </li>
         </a>
     </ul>
+
+    <div class="logout" style="margin: 60px auto 0 auto;">
+        <a href="logout.php"><button class="btn btn-danger">Logout <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
+                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
+                </svg></button></a>
+    </div>
 </div>

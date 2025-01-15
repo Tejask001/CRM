@@ -1,17 +1,7 @@
 <?php
-// Connect to the database
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "amba_associats";
+require 'auth.php'; // auth check
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require 'config.php'; // database connection
 
 // Get the trader_id from the query string
 $trader_id = isset($_GET['trader_id']) ? intval($_GET['trader_id']) : 0;
