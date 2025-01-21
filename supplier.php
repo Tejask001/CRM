@@ -191,33 +191,22 @@ $result = $conn->query($sql);
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
-                                echo "<td><a href='./updateForms/editSupplier.php?trader_id=" . urlencode($row['trader_id']) . "'>
+                                echo "<td><a href='./updateForms/supplier/updateSupplierDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
         <button style=\"margin-bottom: 5px;\" type='button' class='btn btn-danger'>Edit</button>
     </a>
     <a href='./supplierDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
         <button type='button' class='btn btn-primary'>Details</button>
     </a>
 </td>";
-
-                                // echo "<td>" . htmlspecialchars($row['full_name']) . "</td>";
-                                // echo "<td>" . htmlspecialchars($row['phone']) . "</td>";
-                                // echo "<td>" . htmlspecialchars($row['email']) . "</td>";
-                                // echo "<td>" . htmlspecialchars($row['address']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['company_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['comp_type']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['comp_address']) . "</td>";
-                                // echo "<td>" . htmlspecialchars($row['website']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['manager_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['manager_phone']) . "</td>";
-                                // echo "<td>" . htmlspecialchars($row['manager_email']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['chemical_license']) . "</td>";
-                                // echo "<td>" . htmlspecialchars($row['comp_email']) . "</td>";
-                                // echo "<td>" . htmlspecialchars($row['comp_address']) . "</td>";
-                                // echo "<td>" . htmlspecialchars($row['trader_id']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['gst_no']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['pan_no']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['tan_no']) . "</td>";
-                                // echo "<td>" . htmlspecialchars($row['remarks']) . "</td>";
                                 echo "</tr>";
                             }
                         } else {

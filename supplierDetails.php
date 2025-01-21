@@ -71,7 +71,7 @@ $conn->close();
             font-size: 1.5rem;
             font-weight: bold;
             margin-bottom: 1rem;
-            color: #0056b3;
+            color: #0284c7;
         }
 
         .card-text {

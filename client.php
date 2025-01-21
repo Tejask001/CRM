@@ -184,7 +184,7 @@ $result = $conn->query($sql);
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
                                 echo "<td>
-    <a href='./updateForms/editSupplier.php?trader_id=" . urlencode($row['trader_id']) . "'>
+    <a href='./updateForms/client/updateClientDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
         <button  style=\"margin-bottom: 5px;\" type='button' class='btn btn-danger'>Edit</button>
     </a>
     <a href='./clientDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>

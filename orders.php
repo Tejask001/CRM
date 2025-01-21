@@ -184,8 +184,9 @@ if (!$result) {
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
-                                echo "<td><a href='generateOrderInvoice.php?id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-danger'>Invoice</button></a> 
-                                <a href='./updateForms/orders/updateClientOrder.php?order_id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-primary'>Edit</button></a>
+                                echo "<td>
+                                 <a href='./updateForms/orders/updateClientOrder.php?order_id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-primary mb-1'>Edit</button></a>
+                                <a href='generateOrderInvoice.php?id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-danger'>Invoice</button></a> 
                                 </td>";
                                 echo "<td>" . htmlspecialchars($row['order_id']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['date']) . "</td>";
