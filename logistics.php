@@ -154,7 +154,7 @@ $result = $conn->query($sql);
                 <table class="table table-striped">
                     <thead class="table-dark">
                         <tr>
-                            <th>ID</th>
+                            <th>Actions</th>
                             <th>Order ID</th>
                             <th>Vehicle No</th>
                             <th>Driver Name</th>
@@ -173,7 +173,8 @@ $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
-                                echo "<td>" . htmlspecialchars($row['id']) . "</td>";
+                                echo "<td><a href='./updateForms/logistics/updateLogistics.php?order_id=" . urlencode($row['order_id']) . "'>
+        <button type='button' class='btn btn-danger'>Update</button></a></td>";
                                 echo "<td>" . htmlspecialchars($row['order_id']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['vehicle_no']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['driver_name']) . "</td>";

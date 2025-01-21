@@ -1,15 +1,7 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "amba_associats";
+require '../../auth.php'; // auth check
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+require '../../config.php';
 // Get the batch code from the URL
 $batch_code = isset($_GET['batch_code']) ? $_GET['batch_code'] : '';
 

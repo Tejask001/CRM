@@ -1,8 +1,19 @@
 <?php
-// Database connection (adjust as per your DB setup)
-require "../../config.php";
-// Fetch logistics details
-$orderIds = $conn->query("SELECT DISTINCT order_id FROM logistics");
+require '../../auth.php'; // auth check
+require '../../config.php';
+
+$order_id = isset($_GET['order_id']) ? $_GET['order_id'] : null;
+$logisticsDetails = null; // Initialize to null
+
+if ($order_id) {
+    // Fetch logistics details using PHP
+    $sql = "SELECT * FROM logistics WHERE order_id = '$order_id'";
+    $result = $conn->query($sql);
+
+    if ($result && $result->num_rows > 0) {
+        $logisticsDetails = $result->fetch_assoc();
+    }
+}
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -41,18 +52,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             driver_phone = '$driver_phone', 
             driver_gst_no = '$driver_gst_no', 
             estimated_delivery_date = '$estimated_delivery_date', 
-            is_transferred = '$is_transferred'
+            is_transferred = 'no',
+            client_vehicle_no = null, 
+            client_driver_name = null, 
+            client_driver_phone = null, 
+            client_driver_gst_no = null, 
+            transfer_date = null
             WHERE order_id = '$order_id'";
     }
 
     if ($conn->query($sql) === TRUE) {
-        echo "<script>alert('Logistics details updated successfully!');history.back();</script>";
+        echo "<script>alert('Logistics details updated successfully!');
+         location.replace('http://localhost:8888/amba/logistics.php');
+        </script>";
     } else {
         echo "<script>alert('Error updating logistics details: " . $conn->error . "');</script>";
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,74 +84,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <div class="container mt-5">
+
         <form method="POST" action="updateLogistics.php">
             <h1 class="mb-4">Update Logistics Details</h1>
-            <div class="col-md-3 mb-3">
-                <label for="orderSelect" class="form-label">Select Order ID</label>
-                <select id="orderSelect" name="order_id" class="form-select">
-                    <option value="">Select an Order</option>
-                    <?php while ($row = $orderIds->fetch_assoc()) { ?>
-                        <option value="<?php echo $row['order_id']; ?>">
-                            <?php echo $row['order_id']; ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </div>
+            <!-- Hidden input to store the order ID -->
+            <input type="hidden" name="order_id" id="order_id" value="<?php echo $order_id; ?>">
 
             <!-- Form for logistics details -->
-            <div id="logisticsDetails" style="display: none;">
+            <div id="logisticsDetails">
                 <div class="row mb-3">
                     <div class="col-md-2">
                         <label for="vehicle_no" class="form-label">Vehicle Number</label>
-                        <input type="text" id="vehicle_no" name="vehicle_no" class="form-control">
+                        <input type="text" id="vehicle_no" name="vehicle_no" class="form-control" value="<?php echo $logisticsDetails ? $logisticsDetails['vehicle_no'] : ''; ?>">
                     </div>
                     <div class="col-md-2">
                         <label for="driver_name" class="form-label">Driver Name</label>
-                        <input type="text" id="driver_name" name="driver_name" class="form-control">
+                        <input type="text" id="driver_name" name="driver_name" class="form-control" value="<?php echo $logisticsDetails ? $logisticsDetails['driver_name'] : ''; ?>">
                     </div>
                     <div class="col-md-2">
                         <label for="driver_phone" class="form-label">Driver Phone</label>
-                        <input type="text" id="driver_phone" name="driver_phone" class="form-control">
+                        <input type="text" id="driver_phone" name="driver_phone" class="form-control" value="<?php echo $logisticsDetails ? $logisticsDetails['driver_phone'] : ''; ?>">
                     </div>
                     <div class="col-md-2">
                         <label for="driver_gst_no" class="form-label">Driver GST No</label>
-                        <input type="text" id="driver_gst_no" name="driver_gst_no" class="form-control">
+                        <input type="text" id="driver_gst_no" name="driver_gst_no" class="form-control" value="<?php echo $logisticsDetails ? $logisticsDetails['driver_gst_no'] : ''; ?>">
                     </div>
                     <div class="col-md-2">
                         <label for="estimated_date" class="form-label">Estimated Delivery Date</label>
-                        <input type="date" id="estimated_date" name="estimated_date" class="form-control">
+                        <input type="date" id="estimated_date" name="estimated_date" class="form-control" value="<?php echo $logisticsDetails ? $logisticsDetails['estimated_delivery_date'] : ''; ?>">
                     </div>
                     <div class="col-md-2">
                         <label for="is_transferred" class="form-label">Freight Transferred</label>
                         <select id="is_transferred" name="is_transferred" class="form-select">
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
+                            <option value="no" <?php echo ($logisticsDetails && $logisticsDetails['is_transferred'] === 'no') ? 'selected' : ''; ?>>No</option>
+                            <option value="yes" <?php echo ($logisticsDetails && $logisticsDetails['is_transferred'] === 'yes') ? 'selected' : ''; ?>>Yes</option>
                         </select>
                     </div>
                 </div>
 
                 <!-- Additional fields for transferred freight -->
-                <div id="transferFields" style="display: none;">
+                <div id="transferFields" style="display: <?php echo ($logisticsDetails && $logisticsDetails['is_transferred'] === 'yes') ? 'block' : 'none'; ?>;">
                     <div class="row mb-3">
                         <div class="col-md-3">
                             <label for="client_vehicle_no" class="form-label">Client Vehicle Number</label>
-                            <input type="text" id="client_vehicle_no" name="client_vehicle_no" class="form-control">
+                            <input type="text" id="client_vehicle_no" name="client_vehicle_no" class="form-control" value="<?php echo $logisticsDetails ? $logisticsDetails['client_vehicle_no'] : ''; ?>">
                         </div>
                         <div class="col-md-2">
                             <label for="client_driver_name" class="form-label">Client Driver Name</label>
-                            <input type="text" id="client_driver_name" name="client_driver_name" class="form-control">
+                            <input type="text" id="client_driver_name" name="client_driver_name" class="form-control" value="<?php echo $logisticsDetails ? $logisticsDetails['client_driver_name'] : ''; ?>">
                         </div>
                         <div class="col-md-2">
                             <label for="client_driver_phone" class="form-label">Client Driver Phone</label>
-                            <input type="text" id="client_driver_phone" name="client_driver_phone" class="form-control">
+                            <input type="text" id="client_driver_phone" name="client_driver_phone" class="form-control" value="<?php echo $logisticsDetails ? $logisticsDetails['client_driver_phone'] : ''; ?>">
                         </div>
                         <div class="col-md-2">
                             <label for="client_driver_gst_no" class="form-label">Client Driver GST No</label>
-                            <input type="text" id="client_driver_gst_no" name="client_driver_gst_no" class="form-control">
+                            <input type="text" id="client_driver_gst_no" name="client_driver_gst_no" class="form-control" value="<?php echo $logisticsDetails ? $logisticsDetails['client_driver_gst_no'] : ''; ?>">
                         </div>
                         <div class="col-md-2">
                             <label for="transfer_date" class="form-label">Transfer Date</label>
-                            <input type="date" id="transfer_date" name="transfer_date" class="form-control">
+                            <input type="date" id="transfer_date" name="transfer_date" class="form-control" value="<?php echo $logisticsDetails ? $logisticsDetails['transfer_date'] : ''; ?>">
                         </div>
                     </div>
                 </div>
@@ -145,50 +154,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script>
-        // Add event listener to toggle transfer fields based on is_transferred selection
+        // JavaScript for toggling transfer fields
         document.getElementById('is_transferred').addEventListener('change', function() {
             const transferFields = document.getElementById('transferFields');
             if (this.value === 'yes') {
                 transferFields.style.display = 'block';
             } else {
                 transferFields.style.display = 'none';
-                // Clear transfer fields when "No" is selected
-                document.getElementById('client_vehicle_no').value = '';
-                document.getElementById('client_driver_name').value = '';
-                document.getElementById('client_driver_phone').value = '';
-                document.getElementById('client_driver_gst_no').value = '';
-                document.getElementById('transfer_date').value = '';
-            }
-        });
-
-        // Existing orderSelect change event listener
-        document.getElementById('orderSelect').addEventListener('change', function() {
-            const orderId = this.value;
-            if (orderId) {
-                fetch(`getLogisticDetails.php?order_id=${orderId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('vehicle_no').value = data.vehicle_no;
-                        document.getElementById('driver_name').value = data.driver_name;
-                        document.getElementById('driver_phone').value = data.driver_phone;
-                        document.getElementById('driver_gst_no').value = data.driver_gst_no;
-                        document.getElementById('estimated_date').value = data.estimated_delivery_date;
-                        document.getElementById('is_transferred').value = data.is_transferred;
-
-                        if (data.is_transferred === 'yes') {
-                            document.getElementById('transferFields').style.display = 'block';
-                            document.getElementById('client_vehicle_no').value = data.client_vehicle_no;
-                            document.getElementById('client_driver_name').value = data.client_driver_name;
-                            document.getElementById('client_driver_phone').value = data.client_driver_phone;
-                            document.getElementById('client_driver_gst_no').value = data.client_driver_gst_no;
-                            document.getElementById('transfer_date').value = data.transfer_date;
-                        } else {
-                            document.getElementById('transferFields').style.display = 'none';
-                        }
-                        document.getElementById('logisticsDetails').style.display = 'block';
-                    });
-            } else {
-                document.getElementById('logisticsDetails').style.display = 'none';
             }
         });
     </script>

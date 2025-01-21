@@ -3,13 +3,9 @@
 if (isset($_GET['trader_id'])) {
     $trader_id = $_GET['trader_id'];
 
-    // Connect to the database
-    $username = "root"; // Update this with your username
-    $servername = "localhost"; // Update this with your server name
-    $dbname = "amba_associats"; // Your database name
-    $password = "root"; // Update this with your password
+    require '../../auth.php'; // auth check
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    require '../../config.php';
 
     // Fetch supplier data
     $sql = "SELECT * FROM supplier WHERE trader_id = ?";

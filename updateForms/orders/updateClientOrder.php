@@ -1,14 +1,7 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "amba_associats";
+require '../../auth.php'; // auth check
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require '../../config.php';
 
 // Get the order_id from the URL parameter
 $order_id = isset($_GET['order_id']) ? $_GET['order_id'] : null;

@@ -3,16 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$server = "localhost";
-$username = "root";
-$password = "root";
+require '../../auth.php'; // auth check
 
-// Create a database connection
-$con = mysqli_connect($server, $username, $password);
-// Check for connection success
-if (!$con) {
-    die("Connection to this database failed due to " . mysqli_connect_error());
-}
+require '../../config.php';
 
 $errors = []; // Array to store validation error messages
 

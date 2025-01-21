@@ -164,24 +164,15 @@ $result = $conn->query($sql);
                     <thead class="table-dark">
                         <tr>
                             <th>Actions</th>
-                            <!-- <th>Client Name</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Address</th> -->
                             <th>Company Name</th>
                             <th>Company Type</th>
                             <th>Company Address</th>
-                            <!-- <th>Company Website</th> -->
                             <th>Manager Name</th>
                             <th>Manager Phone</th>
-                            <!-- <th>Manager Email</th> -->
                             <th>Chemical License</th>
-                            <!-- <th>Company Email</th> -->
-                            <!-- <th>Trader ID</th> -->
                             <th>GST No</th>
                             <th>PAN No</th>
                             <th>TAN No</th>
-                            <!-- <th>Remarks</th> -->
                         </tr>
                     </thead>
                     <tbody>

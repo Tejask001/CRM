@@ -1,15 +1,6 @@
 <?php
-// Database connection (adjust as per your DB setup)
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "amba_associats";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require '../../config.php';
 
 if (isset($_GET['order_id'])) {
     $order_id = $conn->real_escape_string($_GET['order_id']);

@@ -3,18 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Connect to the database
-$servername = "localhost"; // Update this with your server name
-$username = "root"; // Update this with your username
-$password = "root"; // Update this with your password
-$dbname = "amba_associats"; // Your database name
+require '../../auth.php'; // auth check
 
-// Create connection
-$con = new mysqli($servername, $username, $password, $dbname);
-// Check for connection success
-if ($con->connect_error) {
-    die("Connection to this database failed due to " . $con->connect_error);
-}
+require '../../config.php';
 
 $errors = []; // Array to store validation error messages
 // Check if form was submitted
@@ -153,11 +144,10 @@ remarks = '$remarks'
 WHERE trader_id = '$comp_trader_id'";
 
         // Execute the query
-        if ($con->query($sql) === true) {
+        if ($conn->query($sql) === true) {
             echo json_encode(['success' => true, 'message' => 'Submission Successful']);
         } else {
-            //echo json_encode(['success' => false, 'message' => 'Database error: ' . strip_tags($con->error)]);
-            echo "$con->error";
+            echo "$conn->error";
         }
         //echo json_encode(['success' => true, 'message' => 'Submission Successful']);
     } else {

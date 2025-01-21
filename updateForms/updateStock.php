@@ -76,6 +76,11 @@ $conn->close();
             background-color: var(--bs-gray-100);
         }
 
+        .btn-primary {
+            border-color: #0284c7;
+            background-color: #0284c7;
+        }
+
         .form-label {
             font-weight: bold;
             color: #333;
@@ -136,7 +141,7 @@ $conn->close();
 
             <!-- Add Row and Submit Buttons -->
             <button type="button" class="btn btn-secondary mb-4 w-25" id="addRow">Add Item</button>
-            <button type="submit" class="btn btn-success mx-2 mb-4 w-25">Save</button>
+            <button type="submit" class="btn btn-primary mx-2 mb-4 w-25">Save</button>
         </form>
     </div>
 
