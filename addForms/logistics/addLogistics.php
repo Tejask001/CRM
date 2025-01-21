@@ -41,7 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Execute query
     if ($conn->query($sql) === TRUE) {
-        echo "<script>alert('Logistics details saved successfully!');history.back();</script>";
+        echo "<script>alert('Logistics details saved successfully!');
+         location.replace('http://localhost:8888/amba/logistics.php');
+         </script>";
     } else {
         echo "<script>alert('Error saving logistics details: " . $conn->error . "');</script>";
     }

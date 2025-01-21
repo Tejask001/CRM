@@ -39,6 +39,7 @@ $result = $conn->query($sql);
             border-collapse: collapse;
             background-color: #ffffff;
             /* White background for the table */
+            width: 100%;
         }
 
         /* Header Styling (lighter color) */
@@ -55,6 +56,12 @@ $result = $conn->query($sql);
             text-align: center;
             padding: 12px;
             background-color: #0284c7;
+            /* Adjust width for table headings */
+            min-width: 120px;
+        }
+
+        .table thead th:first-child {
+            min-width: 85px;
         }
 
         /* Table body styling */
@@ -149,7 +156,8 @@ $result = $conn->query($sql);
         <!-- Main Content -->
         <div id="main" class="col-9">
             <h2 class="mb-4 mt-4">Logistics Details</h2>
-            <a href="./addForms/logistics/addLogistics.php"><button type="button" class="btn btn-primary mb-4">Add New Logistics</button></a>
+            <a href="./addForms/logistics/addLogistics.php"><button type="button" class="btn btn-primary mb-4">Add New
+                    Logistics</button></a>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="table-dark">
@@ -158,12 +166,12 @@ $result = $conn->query($sql);
                             <th>Order ID</th>
                             <th>Vehicle No</th>
                             <th>Driver Name</th>
-                            <th>Driver GST No</th>
-                            <th>Estimated Delivery Date</th>
+                            <th>Driver GST</th>
+                            <th>Estimated Delivery</th>
                             <th>Is Transferred</th>
-                            <th>Client Vehicle No</th>
-                            <th>Client Driver Name</th>
-                            <th>Client Driver GST No</th>
+                            <th>Client Vehicle</th>
+                            <th>Client Driver</th>
+                            <th>Client Driver GST</th>
                             <th>Transfer Date</th>
                         </tr>
                     </thead>

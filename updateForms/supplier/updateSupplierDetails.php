@@ -39,7 +39,7 @@ if (isset($_GET['trader_id'])) {
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin-top: 30px;
             padding: 30px;
             border-radius: 10px;
@@ -269,7 +269,7 @@ if (isset($_GET['trader_id'])) {
 
             <div class="row mb-3">
                 <div class="col-md-3">
-                    <label for="comp-chemical-license">Supplier's Chemical License *</label>
+                    <label for="comp-chemical-license">Supplier Chemical License *</label>
                     <input type="text" class="form-control" id="comp-chemical-license" name="comp-chemical-license"
                         placeholder="Chemical License"
                         value="<?php echo htmlspecialchars($row['chemical_license']); ?>" pattern="^[A-Za-z0-9]+$"

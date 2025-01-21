@@ -79,7 +79,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Logistics</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom styles for this page -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            /* Light grey background */
+        }
+
+        .container {
+            background-color: #ffffff;
+            /* White background for container */
+            border-radius: 10px;
+            /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow */
+            padding: 30px;
+        }
+
+        h1 {
+            color: #0284c7;
+            /* Primary color for headings */
+            font-weight: bold;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .form-control,
+        .form-select {
+            border: 1px solid #ced4da;
+            /* Light grey border */
+            border-radius: 5px;
+            /* Rounded corners */
+            padding: 8px 12px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #0284c7;
+            /* Primary color on focus */
+            box-shadow: 0 0 0 0.2rem rgba(2, 132, 199, 0.25);
+            /* Primary color glow effect */
+        }
+
+        .btn-primary {
+            background-color: #0284c7;
+            /* Primary color for button */
+            border-color: #0284c7;
+            border-radius: 8px;
+            /* Rounded corners */
+            padding: 10px 20px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            /* Smooth transition on hover */
+        }
+
+        .btn-primary:hover {
+            background-color: #025ea1;
+            /* Darker shade on hover */
+            border-color: #025ea1;
+        }
+    </style>
 </head>
 
 <body>
@@ -153,6 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // JavaScript for toggling transfer fields
         document.getElementById('is_transferred').addEventListener('change', function() {
