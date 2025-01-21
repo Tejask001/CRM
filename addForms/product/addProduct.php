@@ -26,6 +26,10 @@ if ($conn->connect_error) {
             background-color: var(--bs-gray-100);
         }
 
+        h1 {
+            color: #0284c7;
+        }
+
         .form-label {
             font-weight: bold;
             color: #333;
@@ -40,6 +44,11 @@ if ($conn->connect_error) {
             border: 1.75px solid #848884;
         }
 
+        .btn-primary {
+            background-color: #0284c7;
+            border-color: #0284c7;
+        }
+
         .cgst,
         .sgst,
         .igst {
@@ -51,7 +60,7 @@ if ($conn->connect_error) {
 
 <body>
     <div class="container mt-5">
-        <h2 class="mb-4">Add Product</h2>
+        <h1 class="mb-4">Add Product</h1>
         <form id="addOrderForm" action="saveProduct.php" method="post">
             <!-- Hidden fields for order_id and order_type -->
 

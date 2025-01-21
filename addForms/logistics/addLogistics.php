@@ -70,6 +70,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: var(--bs-gray-100);
         }
 
+        h1 {
+            color: #0284c7;
+        }
+
+        .btn-primary {
+            background-color: #0284c7;
+            border-color: #0284c7;
+        }
+
+        .btn-primary:hover {
+            background-color: #0284c7;
+            border-color: #0284c7;
+        }
+
         .form-label {
             font-weight: bold;
             color: #333;
@@ -95,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container mt-5">
         <form method="POST" action="addLogistics.php">
-            <h2 class="mb-4">Order Details</h2>
+            <h1 class="mb-4">Order Details</h1>
             <!-- Dropdown to select Order ID -->
             <div class="col-md-3 mb-3">
                 <label for="orderSelect" class="form-label">Select Order ID</label>
@@ -188,7 +202,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="date" name="transfer_date" class="form-control to-fill">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success mx-2 mb-4">Save</button>
+                        <button type="submit" class="btn btn-primary mx-2 mb-4 w-25">Save</button>
                     </div>
                 </div>
             </div>
