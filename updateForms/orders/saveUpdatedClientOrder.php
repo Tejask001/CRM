@@ -23,6 +23,7 @@ try {
     $order_type = $_POST['order_type'];
 
     // CGST, SGST, IGST, and Billing Amount
+    $tax_percent = isset($_POST['tax_percent']) ? $_POST['tax_percent'] : [];
     $cgst = isset($_POST['cgst']) ? $_POST['cgst'] : [];
     $sgst = isset($_POST['sgst']) ? $_POST['sgst'] : [];
     $igst = isset($_POST['igst']) ? $_POST['igst'] : [];
@@ -65,13 +66,14 @@ try {
         $discount = $discounts[$i];
         $freight = $freights[$i];
         $price_per_unit = $prices_per_unit[$i];
+        $tax_percent_value = $tax_percent[$i];
         $cgst_value = isset($cgst[$i]) ? $cgst[$i] : 0;
         $sgst_value = isset($sgst[$i]) ? $sgst[$i] : 0;
         $igst_value = isset($igst[$i]) ? $igst[$i] : 0;
         $billing_amount_value = isset($billing_amount[$i]) ? $billing_amount[$i] : 0;
 
-        $insert_item_sql = "INSERT INTO order_items (order_id, batch_code, quantity, discount, cgst, sgst, igst, freight, billing_amount) 
-                             VALUES ('$order_id', '$batch_code', $quantity, $discount, $cgst_value, $sgst_value, $igst_value, $freight, $billing_amount_value)";
+        $insert_item_sql = "INSERT INTO order_items (order_id, batch_code, quantity, discount, tax_percent, cgst, sgst, igst, freight, billing_amount) 
+                             VALUES ('$order_id', '$batch_code', $quantity, $discount,$tax_percent_value, $cgst_value, $sgst_value, $igst_value, $freight, $billing_amount_value)";
         if (!$conn->query($insert_item_sql)) {
             throw new Exception("Error inserting updated order item: " . $conn->error);
         }
@@ -97,7 +99,9 @@ try {
 
     // Commit transaction
     $conn->commit();
-    echo "Order updated successfully!";
+    echo "<script>alert('Stock Updated successfully!');
+    location.replace('http://localhost:8888/amba/orders.php');
+    </script>";
 } catch (Exception $e) {
     // Rollback transaction on error
     $conn->rollback();

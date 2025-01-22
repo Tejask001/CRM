@@ -35,7 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Redirect or show a success message after updating the stock
-    echo "<script>alert('Stock updated successfully!'); window.location.href = 'updateStock.php';</script>";
+    echo "<script>alert('Stock Updated successfully!');
+    location.replace('http://localhost:8888/amba/stock.php');
+    </script>";
 }
 
 // Fetch products for the dropdown

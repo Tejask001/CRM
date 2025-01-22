@@ -22,6 +22,7 @@ $client_id = null;
 $total_amount = $advance + $due;
 
 // CGST, SGST, IGST, and Billing Amount
+$tax_percent = isset($_POST['tax_percent']) ? $_POST['tax_percent'] : [];
 $cgst = isset($_POST['cgst']) ? $_POST['cgst'] : [];
 $sgst = isset($_POST['sgst']) ? $_POST['sgst'] : [];
 $igst = isset($_POST['igst']) ? $_POST['igst'] : [];
@@ -31,19 +32,6 @@ $billing_amount = isset($_POST['billing_amount']) ? $_POST['billing_amount'] : [
 for ($i = 0; $i < count($batch_codes); $i++) {
     $batch_code = $batch_codes[$i];
     $quantity = $quantities[$i];
-
-    // Query to check stock availability
-    $stock_query = "SELECT quantity FROM stock WHERE batch_code = '$batch_code'";
-    $stock_result = $conn->query($stock_query);
-
-    if ($stock_result->num_rows > 0) {
-        $stock = $stock_result->fetch_assoc();
-        if ($stock['quantity'] < $quantity) {
-            die("Error: Not enough stock available for batch code $batch_code. Available quantity: {$stock['quantity']}, Requested quantity: $quantity.");
-        }
-    } else {
-        die("Error: No stock found for batch code $batch_code.");
-    }
 }
 
 // Prepare the SQL query by directly inserting the values into the statement
@@ -59,6 +47,7 @@ for ($i = 0; $i < count($batch_codes); $i++) {
     $discount = $discounts[$i];
     $freight = $freights[$i];
     $price_per_unit = $prices_per_unit[$i];
+    $tax_percent_value = $tax_percent[$i];
     $cgst_value = isset($cgst[$i]) ? $cgst[$i] : 0;
     $sgst_value = isset($sgst[$i]) ? $sgst[$i] : 0;
     $igst_value = isset($igst[$i]) ? $igst[$i] : 0;
@@ -68,7 +57,7 @@ for ($i = 0; $i < count($batch_codes); $i++) {
     $client_id = NULL; // You may want to set this based on conditions
 
     //update payment table
-    $order_items_sql = "INSERT INTO order_items (order_id, batch_code, quantity, discount, cgst, sgst, igst, freight, billing_amount) VALUES ('$order_id', '$batch_code', $quantity, $discount, $cgst_value, $sgst_value, $igst_value, $freight, $billing_amount_value)";
+    $order_items_sql = "INSERT INTO order_items (order_id, batch_code, quantity, discount, tax_percent, cgst, sgst, igst, freight, billing_amount) VALUES ('$order_id', '$batch_code', $quantity, $discount, $tax_percent_value, $cgst_value, $sgst_value, $igst_value, $freight, $billing_amount_value)";
     if (!$conn->query($order_items_sql)) {
         die("Error inserting order: " . $conn->error);
     }
@@ -85,6 +74,8 @@ if (!$conn->query($revenue_sql)) {
     die("Error inserting order: " . $conn->error);
 }
 
-echo "Order saved successfully!";
+echo "<script>alert('Order Saved successfully!');
+location.replace('http://localhost:8888/amba/orders.php');
+</script>";
 
 $conn->close();

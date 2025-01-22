@@ -203,7 +203,7 @@ if (!$result) {
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
                                 echo "<td>
-                                 <a href='./updateForms/orders/updateClientOrder.php?order_id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-primary mb-1'>Edit</button></a>
+                                 <a href='./updateForms/orders/updateClientOrder.php?order_id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-primary mb-1'>Update</button></a>
                                 <a href='generateOrderInvoice.php?id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-success mb-1'>Invoice</button></a> 
                                 <button type='button' class='btn btn-danger delete-btn' data-order-id='" . htmlspecialchars($row['order_id']) . "'>Delete</button>
                                 </td>";
