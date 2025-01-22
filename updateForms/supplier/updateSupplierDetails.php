@@ -59,6 +59,11 @@ if (isset($_GET['trader_id'])) {
             color: #343a40;
         }
 
+        .btn-primary {
+            background-color: #0284c7;
+            border-color: #0284c7;
+        }
+
         .form-control,
         .form-select {
             border: 1px solid #ced4da;
@@ -329,11 +334,11 @@ if (isset($_GET['trader_id'])) {
             <!-- Submit Button -->
 
             <div class="row mt-4">
-                <div class="col-md-6 text-center">
-                    <button type="submit" class="btn btn-success w-50">Submit</button>
+                <div class="col-md-6 mb-3 d-grid">
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
-                <div class="col-md-6 text-center">
-                    <button type="reset" class="btn btn-outline-dark w-50">Reset</button>
+                <div class="col-md-6 mb-3 d-grid">
+                    <button type="reset" class="btn btn-secondary">Reset</button>
                 </div>
             </div>
         </form>
