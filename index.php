@@ -49,52 +49,110 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             align-items: center;
             height: 100vh;
             background-color: #f8fafc;
+            /* Light background */
             margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Professional font */
         }
 
         .login-container {
             background-color: #fff;
-            padding: 3rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
+            /* White container */
+            padding: 4rem 3rem;
+            /* Increased padding */
+            border-radius: 15px;
+            /* More rounded corners */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            /* More pronounced shadow */
+            max-width: 450px;
+            /* Increased max-width */
             width: 100%;
         }
 
         .login-container .logo {
             display: flex;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            /* Increased margin */
+        }
+
+        .login-container .logo img {
+            width: 250px;
+            /* Increased logo size */
         }
 
         .login-container h2 {
             color: #0284c7;
+            /* Primary color for heading */
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            /* Increased margin */
+            font-weight: 600;
+            /* Make heading bolder */
         }
 
         .login-container .form-control {
-            border-radius: 8px;
+            border-radius: 10px;
+            /* More rounded inputs */
             margin-bottom: 1.5rem;
-            height: 50px;
+            height: 55px;
+            /* Increased input height */
+            font-size: 1rem;
+            /* Larger font size */
+            border: 1px solid #ced4da;
+            /* Lighter border color */
+            padding: 0.5rem 1rem;
+            /* More padding */
+        }
+
+        .login-container .form-control:focus {
+            border-color: #86b7fe;
+            /* Lighter blue border on focus */
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(2, 132, 199, 0.25);
+            /* Primary color shadow on focus */
         }
 
         .login-container .btn-primary {
-            height: 50px;
-            width: 40px;
+            height: 55px;
+            /* Increased button height */
+            width: 100%;
+            /* Button takes full width */
             background-color: #0284c7;
+            /* Primary color for button */
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
+            /* More rounded button */
+            font-size: 1.1rem;
+            /* Larger font size */
+            font-weight: 500;
+            /* Bolder font weight */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Add a subtle shadow */
+            transition: all 0.3s ease;
+            /* Smooth transition for hover effects */
         }
 
         .login-container .btn-primary:hover {
-            background-color: #0369a1;
+            background-color: #025ea1;
+            /* Darker shade of primary color on hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            /* More pronounced shadow on hover */
         }
 
         .login-container .error-message {
-            color: red;
+            color: #dc3545;
+            /* Red color for error */
+            background-color: #f8d7da;
+            /* Light red background */
+            border: 1px solid #f5c6cb;
+            /* Light red border */
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            /* Slightly smaller font size */
         }
     </style>
 </head>
@@ -102,14 +160,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="login-container">
         <div class="logo w-100">
-            <img src="./assets/images/logo.jpeg" style="width: 200px;">
+            <img src="./assets/images/logo.jpeg" alt="Company Logo">
         </div>
         <h2>Login</h2>
-        <?php if (!empty($error)) echo "<p class='error-message'>$error</p>"; ?>
+        <?php if (!empty($error))
+            echo "<p class='error-message'>$error</p>"; ?>
         <form method="post">
             <input type="text" name="username" class="form-control" placeholder="Username" required>
             <input type="password" name="password" class="form-control" placeholder="Password" required>
-            <button type="submit" class="btn btn-primary w-100">Login</button>
+            <button type="submit" class="btn btn-primary">Login</button>
         </form>
     </div>
 
