@@ -9,7 +9,7 @@ $conn->begin_transaction();
 try {
     // Get the posted data
     $order_id = $_POST['order_id'];
-    $client_id = $_POST['client_id'];
+    $supplier_id = $_POST['supplier_id'];
     $order_date = $_POST['order_date'];
     $payment_method = $_POST['payment_method'];
     $payment_date = $_POST['payment_date'];
@@ -41,7 +41,7 @@ try {
 
     // Update the orders table
     $update_order_sql = "UPDATE orders SET 
-                            client_id = $client_id, 
+                            supplier_id = $supplier_id, 
                             payment_method = '$payment_method', 
                             payment_date = '$payment_date', 
                             advance = $advance, 
@@ -88,10 +88,10 @@ try {
 
     // Update revenue
     $update_revenue_sql = "UPDATE revenue SET 
-                                client_id = $client_id,
-                                total_amount_client = $total_amount,
+                                supplier_id = $supplier_id,
+                                total_amount_supplier = $total_amount,
                                 amount_received = $advance,
-                                due_client = $due
+                                due_supplier = $due
                             WHERE order_id = '$order_id'";
     if (!$conn->query($update_revenue_sql)) {
         throw new Exception("Error updating revenue: " . $conn->error);

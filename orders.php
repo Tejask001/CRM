@@ -202,11 +202,18 @@ if (!$result) {
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
-                                echo "<td>
-                                 <a href='./updateForms/orders/updateClientOrder.php?order_id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-primary mb-1'>Update</button></a>
-                                <a href='generateOrderInvoice.php?id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-success mb-1'>Invoice</button></a> 
-                                <button type='button' class='btn btn-danger delete-btn' data-order-id='" . htmlspecialchars($row['order_id']) . "'>Delete</button>
-                                </td>";
+                                echo "<td>";
+
+                                // Update button with conditional link based on order type
+                                if ($row['type'] == "Sale") {
+                                    echo "<a href='./updateForms/orders/updateClientOrder.php?order_id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-primary mb-1'>Update</button></a>";
+                                } else { // Assuming "Purchase" is the only other option
+                                    echo "<a href='./updateForms/orders/updateSupplierOrder.php?order_id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-primary mb-1'>Update</button></a>";
+                                }
+
+                                echo "<a href='generateOrderInvoice.php?id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-success mb-1'>Invoice</button></a> 
+        <button type='button' class='btn btn-danger delete-btn' data-order-id='" . htmlspecialchars($row['order_id']) . "'>Delete</button>
+        </td>";
                                 echo "<td>" . htmlspecialchars($row['order_id']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['date']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['party_name']) . "</td>";
