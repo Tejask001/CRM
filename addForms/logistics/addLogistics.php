@@ -208,7 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h4>Order Information</h4>
                 <div class="order-info" style="display: flex;">
                     <p><strong>Date:</strong> <span id="orderDate"></span></p>
-                    <p style="margin-left: 20px;"><strong>Client Name:</strong> <span id="clientName"></span></p>
+                    <p style="margin-left: 20px;"><strong>Party Name:</strong> <span id="partyName"></span></p>
                 </div>
                 <h5>Products in the Order</h5>
                 <table class="table table-bordered table-striped">
@@ -302,7 +302,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         dataType: 'json',
                         success: function(data) {
                             $('#orderDate').text(data.order_date);
-                            $('#clientName').text(data.client_name);
+                            $('#partyName').text(data.party_name);
 
                             const productList = $('#productList');
                             productList.empty();
