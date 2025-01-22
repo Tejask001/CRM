@@ -14,17 +14,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 
     if ($user && password_verify($enteredPassword, $user['password_hash'])) {
-        // Password is correct, proceed with deletion (using MySQLi)
-        $deleteStmt = $conn->prepare("DELETE FROM orders WHERE order_id = ?");
-        $deleteStmt->bind_param("s", $order_id);
-        $deleteStmt->execute();
+        // Password is correct, proceed with deletion and stock update
 
-        if ($deleteStmt->affected_rows > 0) {
-            echo json_encode(['success' => true, 'message' => 'Order deleted successfully.']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to delete order. No order found with the given order ID.']);
+        // Start a transaction to ensure data consistency
+        $conn->begin_transaction();
+
+        try {
+            // 1. Fetch order items and quantities for the given order_id
+            $fetchItemsStmt = $conn->prepare("SELECT oi.batch_code, oi.quantity FROM order_items oi WHERE oi.order_id = ?");
+            $fetchItemsStmt->bind_param("s", $order_id);
+            $fetchItemsStmt->execute();
+            $itemsResult = $fetchItemsStmt->get_result();
+
+            // 2. Update stock quantities based on fetched order items
+            while ($item = $itemsResult->fetch_assoc()) {
+                $updateStockStmt = $conn->prepare("UPDATE stock SET quantity = quantity + ? WHERE batch_code = ?");
+                $updateStockStmt->bind_param("is", $item['quantity'], $item['batch_code']);
+                $updateStockStmt->execute();
+
+                if ($updateStockStmt->affected_rows === 0) {
+                    throw new Exception("Failed to update stock for batch code: " . $item['batch_code']);
+                }
+
+                $updateStockStmt->close();
+            }
+            $fetchItemsStmt->close();
+
+            // 3. Delete the order from the orders table
+            $deleteStmt = $conn->prepare("DELETE FROM orders WHERE order_id = ?");
+            $deleteStmt->bind_param("s", $order_id);
+            $deleteStmt->execute();
+
+            if ($deleteStmt->affected_rows > 0) {
+                // Commit the transaction if everything was successful
+                $conn->commit();
+                echo json_encode(['success' => true, 'message' => 'Order deleted and stock updated successfully.']);
+            } else {
+                throw new Exception("Failed to delete order. No order found with the given order ID.");
+            }
+            $deleteStmt->close();
+        } catch (Exception $e) {
+            // Rollback the transaction if any error occurred
+            $conn->rollback();
+            echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
         }
-        $deleteStmt->close();
     } else {
         // Invalid password
         echo json_encode(['success' => false, 'message' => 'Invalid password.']);
