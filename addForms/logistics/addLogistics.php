@@ -50,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,44 +58,128 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logistics Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
+        :root {
+            --bs-primary-rgb: 2, 132, 199;
+            /* Define the primary color variable */
+        }
+
         body {
-            background-color: var(--bs-gray-100);
+            background-color: #f8f9fa;
+            /* Light gray background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Professional font */
+        }
+
+        .container {
+            max-width: 1300px;
+        }
+
+        h1,
+        h2,
+        h4,
+        h5 {
+            color: #0284c7;
+            /* Primary color for headings */
+            font-weight: 600;
+            margin-bottom: 20px !important;
+            /* More space below the title */
         }
 
         h1 {
-            color: #0284c7;
+            text-align: center;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #343a40;
+            /* Dark gray for labels */
+        }
+
+        .form-select,
+        .form-control {
+            border-radius: 0.375rem;
+            /* Rounded corners for inputs */
+            border: 1px solid #ced4da;
+            /* Subtle border color */
+            padding: 0.5rem 0.75rem;
+            /* Comfortable padding */
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            /* Smooth transition for focus */
+        }
+
+        .form-select:focus,
+        .form-control:focus {
+            border-color: #86b7fe;
+            /* Lighter blue border on focus */
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(2, 132, 199, 0.25);
+            /* Primary color shadow on focus */
         }
 
         .btn-primary {
             background-color: #0284c7;
             border-color: #0284c7;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Add a subtle shadow */
+            transition: all 0.3s ease;
+            /* Smooth transition for hover effects */
         }
 
         .btn-primary:hover {
-            background-color: #0284c7;
-            border-color: #0284c7;
-        }
-
-        .form-label {
-            font-weight: bold;
-            color: #333;
+            background-color: #025ea1;
+            /* Darker shade on hover */
+            border-color: #025ea1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            /* More pronounced shadow on hover */
         }
 
         .logistics-card {
-            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* More pronounced shadow */
             background-color: white;
-            border: 2px solid var(--bs-primary);
+            border: none;
+            /* Remove border */
+            border-radius: 0.5rem;
+            /* Larger rounded corners */
+            padding: 20px;
+            /* More padding */
+            margin-bottom: 20px !important;
+            /* More space between items */
+        }
+
+        .order-info p {
+            margin-bottom: 0;
+        }
+
+        .table {
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .table th {
+            background-color: #e9ecef;
+            /* Light gray background for table header */
+            border-bottom: 2px solid #dee2e6;
+            /* Slightly darker border for header */
+            font-weight: 600;
+            color: #343a40;
+        }
+
+        .table td {
+            border-top: 1px solid #dee2e6;
         }
 
         .read-only {
-            /* background-color: #EFEEE4; */
-            border: 1px solid #EFEEE4;
+            background-color: #e9ecef;
+            /* Light gray background for read-only fields */
         }
 
         .to-fill {
-            border: 1.75px solid #848884;
+            border: 1.75px solid #0284c7;
+            /* Primary color for fields to be filled */
         }
     </style>
 </head>
@@ -106,27 +189,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST" action="addLogistics.php">
             <h1 class="mb-4">Order Details</h1>
             <!-- Dropdown to select Order ID -->
-            <div class="col-md-3 mb-3">
-                <label for="orderSelect" class="form-label">Select Order ID</label>
-                <select id="orderSelect" name="order_id" class="form-select">
-                    <option value="">Select an Order</option>
-                    <?php while ($row = $orderIds->fetch_assoc()) { ?>
-                        <option value="<?php echo $row['order_id']; ?>">
-                            <?php echo $row['order_id']; ?>
-                        </option>
-                    <?php } ?>
-                </select>
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <label for="orderSelect" class="form-label">Select Order ID</label>
+                    <select id="orderSelect" name="order_id" class="form-select to-fill">
+                        <option value="">Select an Order</option>
+                        <?php while ($row = $orderIds->fetch_assoc()) { ?>
+                            <option value="<?php echo $row['order_id']; ?>">
+                                <?php echo $row['order_id']; ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </div>
             </div>
 
             <!-- Display Order Details -->
-            <div id="orderDetails" style="display: none;">
+            <div id="orderDetails" style="display: none;" class="logistics-card">
                 <h4>Order Information</h4>
                 <div class="order-info" style="display: flex;">
                     <p><strong>Date:</strong> <span id="orderDate"></span></p>
                     <p style="margin-left: 20px;"><strong>Client Name:</strong> <span id="clientName"></span></p>
                 </div>
                 <h5>Products in the Order</h5>
-                <table class="table table-bordered">
+                <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>Batch Code</th>
@@ -137,7 +222,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <tbody id="productList">
                     </tbody>
                 </table>
-
 
                 <!-- Order Items Container -->
                 <div id="logisticsContainer">
@@ -161,12 +245,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="text" name="driver_gst_no" class="form-control to-fill" required>
                             </div>
                             <div class="col-md-2">
-                                <label for="estimated_date" class="form-label">Estimate Delivery Date*</label>
+                                <label for="estimated_date" class="form-label">Delivery Date*</label>
                                 <input type="date" name="estimated_date" class="form-control to-fill" required>
                             </div>
                             <div class="col-md-2">
                                 <label for="is_transferred" class="form-label">Freight Transferred?*</label>
-                                <select id="freightTransferred" name="is_transferred" class="form-select to-fill" required>
+                                <select id="freightTransferred" name="is_transferred" class="form-select to-fill"
+                                    required>
                                     <option value="">Select</option>
                                     <option value="no">No</option>
                                     <option value="yes">Yes</option>
@@ -185,7 +270,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="text" name="client_driver_name" class="form-control to-fill">
                             </div>
                             <div class="col-md-2">
-                                <label for="client_driver_phone" class="form-label">Client Driver Phone No</label>
+                                <label for="client_driver_phone" class="form-label">Client Driver Phone</label>
                                 <input type="text" name="client_driver_phone" class="form-control to-fill">
                             </div>
                             <div class="col-md-2">
@@ -205,44 +290,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script>
-        document.getElementById('orderSelect').addEventListener('change', function() {
-            const orderId = this.value;
+        $(document).ready(function() {
+            $('#orderSelect').change(function() {
+                const orderId = $(this).val();
 
-            if (orderId) {
-                // Fetch order details from the server
-                fetch(`getOrderDetails.php?order_id=${orderId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('orderDate').textContent = data.order_date;
-                        document.getElementById('clientName').textContent = data.client_name;
+                if (orderId) {
+                    // Fetch order details from the server
+                    $.ajax({
+                        url: `getOrderDetails.php?order_id=${orderId}`,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $('#orderDate').text(data.order_date);
+                            $('#clientName').text(data.client_name);
 
-                        const productList = document.getElementById('productList');
-                        productList.innerHTML = '';
+                            const productList = $('#productList');
+                            productList.empty();
 
-                        data.products.forEach(product => {
-                            const row = `<tr>
-                            <td>${product.batch_code}</td>
-                            <td>${product.general_name}</td>
-                            <td>${product.quantity}</td>
-                        </tr>`;
-                            productList.innerHTML += row;
-                        });
+                            $.each(data.products, function(index, product) {
+                                const row = `<tr>
+                                <td>${product.batch_code}</td>
+                                <td>${product.general_name}</td>
+                                <td>${product.quantity}</td>
+                            </tr>`;
+                                productList.append(row);
+                            });
 
-                        document.getElementById('orderDetails').style.display = 'block';
-                        document.getElementById('freightTransferred').addEventListener('change', function() {
-                            const productRow2 = document.getElementById('row2');
-                            if (this.value === 'yes') {
-                                productRow2.style.display = 'flex'; // Show the row
-                            } else {
-                                productRow2.style.display = 'none'; // Hide the row
-                            }
-                        });
+                            $('#orderDetails').show();
+                        },
+                        error: function(error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                } else {
+                    $('#orderDetails').hide();
+                }
+            });
 
-                    })
-                    .catch(error => console.error('Error:', error));
-            } else {
-                document.getElementById('orderDetails').style.display = 'none';
-            }
+            $(document).on('change', '#freightTransferred', function() {
+                const productRow2 = $('#row2');
+                if ($(this).val() === 'yes') {
+                    productRow2.show(); // Show the row
+                } else {
+                    productRow2.hide(); // Hide the row
+                }
+            });
         });
     </script>
 </body>
