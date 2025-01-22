@@ -15,38 +15,136 @@ require '../../config.php';
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
+        :root {
+            --bs-primary-rgb: 2, 132, 199;
+            /* Define the primary color variable */
+        }
+
         body {
-            background-color: var(--bs-gray-100);
+            background-color: #f8f9fa;
+            /* Light gray background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Professional font */
+        }
+
+        .container {
+            max-width: 1200px;
         }
 
         h1 {
             color: #0284c7;
+            /* Primary color for headings */
+            font-weight: 600;
+            margin-bottom: 30px !important;
+            /* More space below the title */
+            text-align: center;
         }
 
         .form-label {
-            font-weight: bold;
-            color: #333;
+            font-weight: 600;
+            color: #343a40;
+            /* Dark gray for labels */
+        }
+
+        .form-select,
+        .form-control {
+            border-radius: 0.375rem;
+            /* Rounded corners for inputs */
+            border: 1px solid #ced4da;
+            /* Subtle border color */
+            padding: 0.5rem 0.75rem;
+            /* Comfortable padding */
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            /* Smooth transition for focus */
+        }
+
+        .form-select:focus,
+        .form-control:focus {
+            border-color: #86b7fe;
+            /* Lighter blue border on focus */
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(2, 132, 199, 0.25);
+            /* Primary color shadow on focus */
+        }
+
+        .input-group-text {
+            background-color: #e9ecef;
+            /* Light gray background for input group text */
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            /* Rounded corners */
+            font-weight: 500;
+        }
+
+        .order-item {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* More pronounced shadow */
+            background-color: white;
+            border: none;
+            /* Remove border */
+            border-radius: 0.5rem;
+            /* Larger rounded corners */
+            padding: 20px;
+            /* More padding */
+            margin-bottom: 20px !important;
+            /* More space between items */
         }
 
         .read-only {
-            background-color: #EFEEE4;
-            border: 1px solid #EFEEE4;
+            background-color: #e9ecef;
+            /* Light gray background for read-only fields */
         }
 
         .to-fill {
-            border: 1.75px solid #848884;
+            border: 1.75px solid #0284c7;
+            /* Primary color for fields to be filled */
         }
 
         .btn-primary {
             background-color: #0284c7;
             border-color: #0284c7;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Add a subtle shadow */
+            transition: all 0.3s ease;
+            /* Smooth transition for hover effects */
         }
 
-        .cgst,
-        .sgst,
-        .igst {
-            background-color: #fac6c5;
-            border: 1px solid #fac6c5;
+        .btn-primary:hover {
+            background-color: #025ea1;
+            /* Darker shade on hover */
+            border-color: #025ea1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            /* More pronounced shadow on hover */
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            /* Gray secondary color */
+            border-color: #6c757d;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Add a subtle shadow */
+            transition: all 0.3s ease;
+            /* Smooth transition for hover effects */
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            /* Darker shade of gray on hover */
+            border-color: #5a6268;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            /* More pronounced shadow on hover */
+        }
+
+        .btn-danger {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Add a subtle shadow */
+            transition: all 0.3s ease;
+            /* Smooth transition for hover effects */
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            /* More pronounced shadow on hover */
         }
     </style>
 </head>
@@ -55,9 +153,7 @@ require '../../config.php';
     <div class="container mt-5">
         <h1 class="mb-4">Add Product</h1>
         <form id="addOrderForm" action="saveProduct.php" method="post">
-            <!-- Hidden fields for order_id and order_type -->
-
-            <!-- Client and Payment Method Selection -->
+            <!-- Supplier Selection -->
             <div class="row mb-4">
                 <div class="mb-3 col-md-3">
                     <label for="supplier_id" class="form-label">Supplier</label>
@@ -75,82 +171,68 @@ require '../../config.php';
 
             <!-- Product Items Container -->
             <div id="itemsContainer">
-                <div class="order-item py-4 px-4 mb-4" style="
-                        box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px; background-color: white;
-                        ">
+                <div class="order-item py-4 px-4 mb-4">
                     <!-- Product Row 1 -->
                     <div class="row mb-3">
-
                         <div class="col-md-2">
                             <label for="product_id" class="form-label">Product Id</label>
                             <input type="text" name="product_id[]" class="form-control product-id to-fill" required>
                         </div>
-
                         <div class="col-md-2">
                             <label for="batch_code" class="form-label">Batch Code</label>
                             <input type="text" name="batch_code[]" class="form-control to-fill" required>
                         </div>
-
                         <div class="col-md-2">
                             <label for="general_name" class="form-label">General Name</label>
                             <input type="text" name="general_name[]" class="form-control to-fill" required>
                         </div>
-
                         <div class="col-md-2">
                             <label for="chemical_name" class="form-label">Chemical Name</label>
                             <input type="text" name="chemical_name[]" class="form-control to-fill" required>
                         </div>
-
                         <div class="col-md-2">
                             <label for="size" class="form-label">Chemical Size</label>
                             <input type="text" name="size[]" class="form-control to-fill" required>
                         </div>
-
                     </div>
 
                     <!-- Product Row 2 -->
                     <div class="row mb-3">
-
                         <div class="col-md-2">
                             <label for="purchase_price" class="form-label">Purchase Price</label>
                             <div class="input-group">
                                 <span class="input-group-text">₹</span>
-                                <input type="number" name="purchase_price[]" class="form-control purchase-price to-fill" min="0" required>
+                                <input type="number" name="purchase_price[]"
+                                    class="form-control purchase-price to-fill" min="0" required>
                             </div>
                         </div>
-
                         <div class="col-md-2">
                             <label for="selling_price" class="form-label">Selling Price</label>
                             <div class="input-group">
                                 <span class="input-group-text">₹</span>
-                                <input type="number" name="selling_price[]" class="form-control selling-price to-fill" min="0" required>
+                                <input type="number" name="selling_price[]" class="form-control selling-price to-fill"
+                                    min="0" required>
                             </div>
                         </div>
-
                         <div class="col-md-2">
                             <label for="margin" class="form-label">Margin</label>
                             <div class="input-group">
                                 <span class="input-group-text">₹</span>
-                                <input type="number" name="margin[]" class="form-control margin to-fill" min="0" readonly>
+                                <input type="number" name="margin[]" class="form-control margin to-fill" min="0"
+                                    readonly>
                             </div>
                         </div>
-
                         <div class="col-md-2">
                             <label for="product_life" class="form-label">Shelf Life (in months)</label>
                             <input type="number" name="product_life[]" class="form-control to-fill" min="0" required>
                         </div>
-
                         <div class="col-md-2">
                             <label for="stock" class="form-label">Stock Quantity</label>
                             <input type="number" name="stock[]" class="form-control to-fill" min="0" required>
                         </div>
-
                         <div class="col-md-2 d-flex align-items-end">
-                            <div class="col-md-1 d-flex align-items-end">
-                                <button type="button" class="btn btn-danger remove-row">Remove</button>
-                            </div>
+                            <button type="button" class="btn btn-danger remove-row">Remove</button>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -166,7 +248,7 @@ require '../../config.php';
             // Add a new row
             $('#addRow').click(function() {
                 const newOrderItem = `
-                <div class="order-item py-4 px-4 mb-4" style="box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px; background-color: white;">
+                <div class="order-item py-4 px-4 mb-4">
                     <!-- Product Row 1 -->
                     <div class="row mb-3">
                         <div class="col-md-2">
@@ -222,9 +304,7 @@ require '../../config.php';
                             <input type="number" name="stock[]" class="form-control to-fill" min="0" required>
                         </div>
                         <div class="col-md-2 d-flex align-items-end">
-                            <div class="col-md-1 d-flex align-items-end">
-                                <button type="button" class="btn btn-danger remove-row">Remove</button>
-                            </div>
+                            <button type="button" class="btn btn-danger remove-row">Remove</button>
                         </div>
                     </div>
                 </div>`;
@@ -273,7 +353,9 @@ require '../../config.php';
             });
         });
     </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

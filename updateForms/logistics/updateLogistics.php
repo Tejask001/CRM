@@ -100,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: #0284c7;
             /* Primary color for headings */
             font-weight: bold;
+            text-align: center;
         }
 
         .form-label {

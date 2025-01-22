@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container mt-5">
         <form method="POST" action="addLogistics.php">
-            <h1 class="mb-4">Order Details</h1>
+            <h1 class="mb-4">Add Logistics Details</h1>
             <!-- Dropdown to select Order ID -->
             <div class="row mb-4">
                 <div class="col-md-4">

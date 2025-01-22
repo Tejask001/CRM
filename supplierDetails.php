@@ -42,12 +42,10 @@ $conn->close();
         }
 
         h1 {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #4a4a4a;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            letter-spacing: 1.2px;
+            color: #0284c7;
+            margin-bottom: 30px;
+            font-weight: 600;
+            text-align: center;
         }
 
         .card {

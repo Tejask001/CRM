@@ -197,6 +197,7 @@ function test_input($data)
             color: #0284c7;
             margin-bottom: 30px;
             font-weight: 600;
+            text-align: center;
         }
 
         label {
