@@ -38,37 +38,153 @@ while ($row = $products_result->fetch_assoc()) {
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
+        :root {
+            --bs-primary-rgb: 2, 132, 199;
+            /* Define the primary color variable */
+        }
+
         body {
-            background-color: var(--bs-gray-100);
+            background-color: #f8f9fa;
+            /* Light gray background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Professional font */
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        h2 {
+            color: #0284c7;
+            /* Primary color for headings */
+            font-weight: 600;
+            margin-bottom: 30px !important;
+            /* More space below the title */
+            text-align: center;
         }
 
         .form-label {
-            font-weight: bold;
-            color: #333;
+            font-weight: 600;
+            color: #343a40;
+            /* Dark gray for labels */
+        }
+
+        .form-select,
+        .form-control {
+            border-radius: 0.375rem;
+            /* Rounded corners for inputs */
+            border: 1px solid #ced4da;
+            /* Subtle border color */
+            padding: 0.5rem 0.75rem;
+            /* Comfortable padding */
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            /* Smooth transition for focus */
+        }
+
+        .form-select:focus,
+        .form-control:focus {
+            border-color: #86b7fe;
+            /* Lighter blue border on focus */
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(2, 132, 199, 0.25);
+            /* Primary color shadow on focus */
+        }
+
+        .input-group-text {
+            background-color: #e9ecef;
+            /* Light gray background for input group text */
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+            /* Rounded corners */
+            font-weight: 500;
         }
 
         .order-item {
-            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* More pronounced shadow */
             background-color: white;
-            border: 2px solid var(--bs-primary);
+            border: none;
+            /* Remove border */
+            border-radius: 0.5rem;
+            /* Larger rounded corners */
+            padding: 20px;
+            /* More padding */
+            margin-bottom: 20px !important;
+            /* More space between items */
         }
 
         .read-only {
-            border: 1px solid #EFEEE4;
+            background-color: #e9ecef;
+            /* Light gray background for read-only fields */
         }
 
         .to-fill {
-            border: 1.75px solid #848884;
+            border: 1.75px solid #0284c7;
+            /* Primary color for fields to be filled */
         }
 
-
         .due {
-            color: red;
-            border: 1px solid #848884;
+            color: #dc3545;
+            /* Red color for due amount */
+            font-weight: 600;
         }
 
         .profit {
-            color: green;
+            color: #28a745;
+            /* Green color for profit */
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background-color: #0284c7;
+            border-color: #0284c7;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Add a subtle shadow */
+            transition: all 0.3s ease;
+            /* Smooth transition for hover effects */
+        }
+
+        .btn-primary:hover {
+            background-color: #025ea1;
+            /* Darker shade on hover */
+            border-color: #025ea1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            /* More pronounced shadow on hover */
+        }
+
+        .btn-danger {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Add a subtle shadow */
+            transition: all 0.3s ease;
+            /* Smooth transition for hover effects */
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            /* More pronounced shadow on hover */
+        }
+
+        .btn-success {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Add a subtle shadow */
+            transition: all 0.3s ease;
+            /* Smooth transition for hover effects */
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            /* More pronounced shadow on hover */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .order-item {
+                padding: 15px;
+            }
         }
     </style>
 </head>
@@ -247,8 +363,8 @@ while ($row = $products_result->fetch_assoc()) {
             </div>
 
             <!-- Add Row and Submit Buttons -->
-            <button type="button" class="btn btn-primary mb-4" id="addRow">Add Item</button>
-            <button type="submit" class="btn btn-success mx-2 mb-4">Save Order</button>
+            <button type="button" class="btn btn-secondary mb-4" id="addRow">Add Item</button>
+            <button type="submit" class="btn btn-primary mx-2 mb-4">Save Order</button>
         </form>
     </div>
 
@@ -289,10 +405,6 @@ while ($row = $products_result->fetch_assoc()) {
                 const totalDiscount = (discount / 100) * itemTotal;
                 const itemTotalAfterDiscount = itemTotal - totalDiscount;
 
-                // --- Profit Calculation (BEFORE TAX) ---
-                const itemCost = costPerUnit * quantity;
-                const grossProfit = itemTotalAfterDiscount - (itemCost);
-
                 // Calculate total after freight (for tax calculation)
                 const totalAfterFreight = itemTotalAfterDiscount + freight;
 
@@ -314,7 +426,6 @@ while ($row = $products_result->fetch_assoc()) {
                 row.find('.sgst').val(sgst.toFixed(2));
                 row.find('.igst').val(igst.toFixed(2));
                 row.find('.billing-amount').val(billingAmount.toFixed(2));
-                row.find('.profit').val(grossProfit.toFixed(2)); // Update profit field
 
                 calculateDue();
             }
@@ -468,6 +579,9 @@ while ($row = $products_result->fetch_assoc()) {
             calculateDue();
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

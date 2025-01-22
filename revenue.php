@@ -44,6 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $sql = "
     SELECT 
         revenue.order_id,
+        revenue.client_id,
+        revenue.supplier_id,
         revenue.total_amount_client,
         revenue.amount_received,
         revenue.due_client,
@@ -312,8 +314,8 @@ $summary = $summaryResult->fetch_assoc();
                         <?php
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
-                                $orderType = $row['amount_paid'] === '0' ? 'Sale' : 'Purchase';
-                                $orderColor = $row['amount_paid'] === '0' ? 'text-success' : 'text-danger';
+                                $orderType = $row['supplier_id'] === null ? 'Sale' : 'Purchase';
+                                $orderColor = $row['supplier_id'] === null ? 'text-success' : 'text-danger';
                                 echo "<tr>";
                                 echo "<td class='text-center'>" . htmlspecialchars($row['order_id']) . "</td>";
                                 echo "<td class='text-center'>" . htmlspecialchars($row['date']) . "</td>";

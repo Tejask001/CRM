@@ -7,7 +7,6 @@ require '../../auth.php'; // auth check
 
 require '../../config.php';
 
-
 $errors = []; // Array to store validation error messages
 
 // Check if form was submitted
@@ -15,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     header('Content-Type: application/json'); // Only for POST requests
 
-    // Clclient variables
+    // Client variables
     $client_first_name = test_input($_POST['client-first-name']);
     $client_middle_name = test_input($_POST['client-middle-name']);
     $client_last_name = test_input($_POST['client-last-name']);
@@ -162,8 +161,6 @@ function test_input($data)
 }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -207,58 +204,9 @@ function test_input($data)
             color: #343a40;
         }
 
-        .form-control {
-            border-radius: 5px;
-            border: 1px solid #ced4da;
-            padding: 10px 15px;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-
-        .form-control:focus {
-            border-color: #0284c7;
-            box-shadow: 0 0 0 0.2rem rgba(2, 132, 199, 0.25);
-            outline: none;
-        }
-
-        .form-select {
-            border-radius: 5px;
-            border: 1px solid #ced4da;
-            padding: 10px 15px;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-
-        .form-select:focus {
-            border-color: #0284c7;
-            box-shadow: 0 0 0 0.2rem rgba(2, 132, 199, 0.25);
-            outline: none;
-        }
-
         .btn-primary {
             background-color: #0284c7;
             border-color: #0284c7;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: 500;
-            transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-        }
-
-        .btn-primary:hover {
-            background-color: #025ea8;
-            border-color: #025ea8;
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
-            border-color: #6c757d;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: 500;
-            transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-        }
-
-        .btn-secondary:hover {
-            background-color: #545b62;
-            border-color: #4e545b;
         }
 
         .invalid-feedback {
