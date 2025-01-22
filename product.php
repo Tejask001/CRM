@@ -133,6 +133,25 @@ $result = $conn->query($sql);
             background-color: #c82333;
             border-color: #bd2130;
         }
+
+        /* Modal Styles */
+        .modal-content {
+            border-radius: 10px;
+        }
+
+        .modal-header {
+            background-color: #0284c7;
+            color: white;
+            border-bottom: none;
+        }
+
+        .modal-title {
+            font-weight: bold;
+        }
+
+        .modal-footer {
+            border-top: none;
+        }
     </style>
 
 </head>
@@ -147,7 +166,8 @@ $result = $conn->query($sql);
         <!-- Main Content -->
         <div id="main" class="col-9">
             <h2 class="mb-4 mt-4">Product Details</h2>
-            <a href="./addForms/product/addProduct.php"><button type="button" class="btn btn-primary mb-4">Add New Product</button></a>
+            <a href="./addForms/product/addProduct.php"><button type="button" class="btn btn-primary mb-4">Add New
+                    Product</button></a>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="table-dark">
@@ -171,7 +191,10 @@ $result = $conn->query($sql);
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
-                                echo "<td><a href='./updateForms/product/updateProduct.php?batch_code=" . urlencode($row['batch_code']) . "'><button type='button' class='btn btn-danger'>Update</button></a></td>";
+                                echo "<td>
+                                        <a href='./updateForms/product/updateProduct.php?batch_code=" . urlencode($row['batch_code']) . "'><button type='button' class='btn btn-primary mb-2'>Update</button></a>
+                                        <button type='button' class='btn btn-danger delete-btn' data-batch-code='" . htmlspecialchars($row['batch_code']) . "'>Delete</button>
+                                      </td>";
                                 echo "<td>" . htmlspecialchars($row['product_code']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['batch_code']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['general_name']) . "</td>";
@@ -195,9 +218,73 @@ $result = $conn->query($sql);
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this product?</p>
+                    <input type="password" id="password" class="form-control" placeholder="Enter your password"
+                        required>
+                    <input type="hidden" id="deleteBatchCode">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            const confirmDeleteBtn = document.getElementById('confirmDelete');
+            let batchCodeToDelete = null;
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    batchCodeToDelete = this.dataset.batchCode;
+                    document.getElementById('deleteBatchCode').value = batchCodeToDelete;
+                    deleteModal.show();
+                });
+            });
+
+            confirmDeleteBtn.addEventListener('click', function() {
+                const enteredPassword = document.getElementById('password').value;
+                const batchCode = document.getElementById('deleteBatchCode').value;
+
+                // AJAX request to server-side script for password verification and deletion
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'deleteProduct.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            alert('Product deleted successfully.');
+                            location.reload(); // Reload the page to reflect changes
+                        } else {
+                            alert(response.message);
+                        }
+                    } else {
+                        alert('An error occurred.');
+                    }
+                    deleteModal.hide();
+                };
+                xhr.send('batch_code=' + encodeURIComponent(batchCode) + '&password=' + encodeURIComponent(enteredPassword));
+            });
+        });
+    </script>
+
 </body>
 
 </html>
