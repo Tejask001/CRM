@@ -6,16 +6,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Connect to the database
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "amba_associats";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require 'auth.php'; // Make sure this includes necessary session checks
+require 'config.php'; // Ensure this file uses MySQLi for the database connection
 
 // Get the order ID from the URL
 $order_id = isset($_GET['id']) ? $_GET['id'] : '';
@@ -125,7 +118,25 @@ $pdf->AddPage();
 
 $pdf->SetFont('Arial', 'B', 11);
 
-$pdf->Cell(135, 5, 'LOGO', 0, 0, 'L');
+// --- Logo Image ---
+$logoPath = './assets/images/logo.jpeg'; // Path to your logo image
+$logoX = 10;          // X-coordinate for the logo
+$logoY = 10;          // Y-coordinate for the logo
+$logoWidth = 30;      // Width of the logo (adjust as needed)
+
+// Check if the logo file exists
+if (file_exists($logoPath)) {
+    $pdf->Image($logoPath, $logoX, $logoY, $logoWidth);
+} else {
+    // Handle error (e.g., display a message or use a default image)
+    $pdf->SetFont('Arial', 'B', 11);
+    $pdf->Cell(135, 5, 'Logo Not Found', 0, 0, 'L');
+}
+
+// Adjust cell position to account for the logo space
+$pdf->SetXY($logoX + $logoWidth + 105, $logoY); // Move to the right of the logo
+// --- Dealer Details ---
+$pdf->SetFont('Arial', 'B', 11);
 $pdf->Cell(135, 5, 'Dealer Details', 0, 1, 'R');
 
 
@@ -206,14 +217,14 @@ $payment_method = $order['payment_method'] ?? 'N/A';
 do {
     $quantity = $order['quantity'] ?? 0;
     $price = $order['sp'] ?? 0;
-    $discount = $order['discount'] ?? 0;
+    $discount_percent = $order['discount'] ?? 0;
     $cgst = $order['cgst'] ?? 0;
     $sgst = $order['sgst'] ?? 0;
     $igst = $order['igst'] ?? 0;
 
     $item_total = $quantity * $price;
-    $discount_amount = ($item_total * $discount) / 100;
-    $subtotal_item = $item_total - $discount_amount + $freight;
+    $discount_amount = ($item_total * $discount_percent) / 100;
+    $subtotal_item = $item_total - $discount_amount + $freight_charge;
 
     $subtotal_after_tax = $subtotal_item + $cgst + $sgst + $igst;
 
@@ -227,7 +238,7 @@ do {
     // $pdf->Cell(30, 10, $order['batch_code'] ?? 'N/A', 1, 0, 'C');
     $pdf->Cell(25, 5, number_format($price, 2), 1, 0, 'C');
     $pdf->Cell(20, 5, $quantity, 1, 0, 'C');
-    $pdf->Cell(20, 5, number_format($discount, 2) . '%', 1, 0, 'C');
+    $pdf->Cell(20, 5, number_format($discount_percent, 2) . '%', 1, 0, 'C');
     $pdf->Cell(25, 5, number_format($freight_charge, 2), 1, 0, 'C');
     // $pdf->Cell(25, 10, number_format($subtotal_item, 2), 1, 0, 'C');
     $pdf->Cell(25, 5, number_format($cgst, 2), 1, 0, 'C');

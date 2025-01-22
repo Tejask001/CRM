@@ -99,7 +99,7 @@ try {
 
     // Commit transaction
     $conn->commit();
-    echo "<script>alert('Stock Updated successfully!');
+    echo "<script>alert('Order Updated successfully!');
     location.replace('http://localhost:8888/amba/orders.php');
     </script>";
 } catch (Exception $e) {

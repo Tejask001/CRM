@@ -294,6 +294,7 @@ while ($row = $products_result->fetch_assoc()) {
             // Function to calculate billing amount and other fields
             function calculateBilling(row) {
                 const pricePerUnit = parseFloat(row.find('.selling-price-per-unit').val()) || 0;
+                const costPerUnit = parseFloat(row.find('.cost-price-per-unit').val()) || 0;
                 const quantity = parseFloat(row.find('.quantity').val()) || 0;
                 const discount = parseFloat(row.find('.discount').val()) || 0;
                 const freight = parseFloat(row.find('.freight').val()) || 0;
@@ -304,6 +305,12 @@ while ($row = $products_result->fetch_assoc()) {
                 const itemTotal = pricePerUnit * quantity;
                 const totalDiscount = (discount / 100) * itemTotal;
                 const itemTotalAfterDiscount = itemTotal - totalDiscount;
+
+                // --- Profit Calculation (BEFORE TAX) ---
+                const itemCost = costPerUnit * quantity;
+                const grossProfit = itemTotalAfterDiscount - (itemCost);
+
+                // Calculate total after freight (for tax calculation)
                 const totalAfterFreight = itemTotalAfterDiscount + freight;
 
                 let cgst = 0,
@@ -315,21 +322,19 @@ while ($row = $products_result->fetch_assoc()) {
                     igst = (taxAmount * totalAfterFreight) / 100;
                 }
 
-                // Calculate the billing amount
+                // Calculate the billing amount (AFTER TAX)
                 const taxTotal = cgst + sgst + igst;
                 const billingAmount = totalAfterFreight + taxTotal;
 
-                // Update the tax fields and billing amount
+                // Update the fields
                 row.find('.cgst').val(cgst.toFixed(2));
                 row.find('.sgst').val(sgst.toFixed(2));
                 row.find('.igst').val(igst.toFixed(2));
                 row.find('.billing-amount').val(billingAmount.toFixed(2));
-                row.find('.profit').val(totalAfterFreight.toFixed(2));
+                row.find('.profit').val(grossProfit.toFixed(2)); // Update profit field
 
-                // After updating billing amount, recalculate due
                 calculateDue();
             }
-
             // Event listener for changes in product selection
             $(document).on('change', '.product-select', function() {
                 const productData = $(this).val();
@@ -390,17 +395,28 @@ while ($row = $products_result->fetch_assoc()) {
                                 <input type="number" step="0.01" name="selling_price_per_unit[]" class="form-control selling-price-per-unit read-only" readonly>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <label for="quantity" class="form-label">Quantity</label>
                             <input type="number" step="0.01" name="quantity[]" class="form-control quantity to-fill" min="1" required>
                         </div>
+                        <div class="col-md-2">
+                            <label for="discount" class="form-label">Discount</label>
+                            <div class="input-group">
+                                <input type="number" step="0.01" name="discount[]" class="form-control discount to-fill" min="0" required>
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+
                     </div>
 
                     <!-- Product Row 2 -->
                     <div class="row mb-3">
                         <div class="col-md-2">
-                            <label for="discount" class="form-label">Discount (%)</label>
-                            <input type="number" step="0.01" name="discount[]" class="form-control discount to-fill" min="0" required>
+                            <label for="freight" class="form-label">Freight Charges</label>
+                            <div class="input-group">
+                                <span class="input-group-text">₹</span>
+                                <input type="number" step="0.01" name="freight[]" class="form-control freight to-fill" min="0" required>
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <label for="tax_type" class="form-label">Tax Type</label>
@@ -425,7 +441,7 @@ while ($row = $products_result->fetch_assoc()) {
                             <label for="sgst" class="form-label">SGST</label>
                             <div class="input-group">
                                 <span class="input-group-text">₹</span>
-                                <input type="number" step="0.01" step="0.01" step="0.01" name="sgst[]" class="form-control sgst" readonly>
+                                <input type="number" step="0.01" name="sgst[]" class="form-control sgst" readonly>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -439,13 +455,6 @@ while ($row = $products_result->fetch_assoc()) {
 
                     <!-- Product Row 3 -->
                     <div class="row mb-5">
-                        <div class="col-md-2">
-                            <label for="freight" class="form-label">Freight Charges</label>
-                            <div class="input-group">
-                                <span class="input-group-text">₹</span>
-                                <input type="number" step="0.01" name="freight[]" class="form-control freight to-fill" min="0" required>
-                            </div>
-                        </div>
                         <div class="col-md-2">
                             <label for="billing_amount" class="form-label">Billing Amount</label>
                             <div class="input-group">
