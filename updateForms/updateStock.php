@@ -1,3 +1,51 @@
+<?php
+require '../auth.php'; // auth check
+
+require '../config.php';
+// Update stock if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $products = $_POST['product'];
+    $quantities = $_POST['quantity'];
+    // Loop through all the products and update the stock
+    foreach ($products as $index => $productData) {
+        $product = json_decode($productData, true);  // Decode product JSON
+        $quantity = (int) $quantities[$index];  // Get the quantity for the product
+        $batch_code = $product['batch_code'];  // Get batch code for the product
+        // Prepare the query to update stock (assuming 'quantity' and 'batch_code' exist in 'stock' table)
+        $update_query = "UPDATE stock SET quantity = $quantity WHERE batch_code = '$batch_code'";
+        if ($conn->query($update_query) === TRUE) {
+            // If the update is successful, continue to the next iteration
+            continue;
+        } else {
+            echo "Error: " . $update_query . "<br>" . $conn->error;
+        }
+    }
+    // Redirect or show a success message after updating the stock
+    echo "<script>alert('Stock Updated successfully!');
+    location.replace('http://localhost:8888/amba/stock.php');
+    </script>";
+}
+// Fetch products for the dropdown
+$products_result = $conn->query("
+    SELECT 
+        product_code,
+        general_name,
+        chemical_name,
+        chemical_size,
+        pp,
+        sp,
+        mrgp,
+        product_life,
+        batch_code
+    FROM 
+        product
+");
+$products = [];
+while ($row = $products_result->fetch_assoc()) {
+    $products[] = $row;
+}
+$conn->close();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
