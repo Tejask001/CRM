@@ -207,12 +207,14 @@ if (!$result) {
                                 // Update button with conditional link based on order type
                                 if ($row['type'] == "Sale") {
                                     echo "<a href='./updateForms/orders/updateClientOrder.php?order_id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-primary mb-1'>Update</button></a>";
+                                    // Show invoice button only for "Sale" type
+                                    echo "<a href='generateOrderInvoice.php?id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-success mb-1'>Invoice</button></a>";
                                 } else { // Assuming "Purchase" is the only other option
                                     echo "<a href='./updateForms/orders/updateSupplierOrder.php?order_id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-primary mb-1'>Update</button></a>";
+                                    // Do not show invoice button for "Purchase" type
                                 }
 
-                                echo "<a href='generateOrderInvoice.php?id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-success mb-1'>Invoice</button></a> 
-        <button type='button' class='btn btn-danger delete-btn' data-order-id='" . htmlspecialchars($row['order_id']) . "'>Delete</button>
+                                echo "<button type='button' class='btn btn-danger delete-btn' data-order-id='" . htmlspecialchars($row['order_id']) . "'>Delete</button>
         </td>";
                                 echo "<td>" . htmlspecialchars($row['order_id']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['date']) . "</td>";
