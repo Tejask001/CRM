@@ -20,15 +20,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->begin_transaction();
 
         try {
-            // 1. Fetch order items and quantities for the given order_id
-            $fetchItemsStmt = $conn->prepare("SELECT oi.batch_code, oi.quantity FROM order_items oi WHERE oi.order_id = ?");
-            $fetchItemsStmt->bind_param("s", $order_id);
-            $fetchItemsStmt->execute();
-            $itemsResult = $fetchItemsStmt->get_result();
+            // 1. Fetch order type and items for the given order_id
+            $fetchOrderStmt = $conn->prepare("SELECT o.type, oi.batch_code, oi.quantity FROM orders o JOIN order_items oi ON o.order_id = oi.order_id WHERE o.order_id = ?");
+            $fetchOrderStmt->bind_param("s", $order_id);
+            $fetchOrderStmt->execute();
+            $orderResult = $fetchOrderStmt->get_result();
 
-            // 2. Update stock quantities based on fetched order items
-            while ($item = $itemsResult->fetch_assoc()) {
-                $updateStockStmt = $conn->prepare("UPDATE stock SET quantity = quantity + ? WHERE batch_code = ?");
+            // Check if order exists
+            if ($orderResult->num_rows === 0) {
+                throw new Exception("No order found with the given order ID.");
+            }
+
+            $orderType = null;
+            $itemsToUpdate = [];
+            while ($row = $orderResult->fetch_assoc()) {
+                if ($orderType === null) {
+                    $orderType = $row['type']; // Get the order type from the first row
+                }
+                $itemsToUpdate[] = ['batch_code' => $row['batch_code'], 'quantity' => $row['quantity']];
+            }
+            $fetchOrderStmt->close();
+
+            // 2. Update stock quantities based on order type and fetched items
+            foreach ($itemsToUpdate as $item) {
+                if ($orderType == "Sale") {
+                    // Add stock for Sale type
+                    $updateStockStmt = $conn->prepare("UPDATE stock SET quantity = quantity + ? WHERE batch_code = ?");
+                } elseif ($orderType == "Purchase") {
+                    // Subtract stock for Purchase type
+                    $updateStockStmt = $conn->prepare("UPDATE stock SET quantity = quantity - ? WHERE batch_code = ?");
+                } else {
+                    throw new Exception("Invalid order type: " . $orderType);
+                }
+
                 $updateStockStmt->bind_param("is", $item['quantity'], $item['batch_code']);
                 $updateStockStmt->execute();
 
@@ -38,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $updateStockStmt->close();
             }
-            $fetchItemsStmt->close();
 
             // 3. Delete the order from the orders table
             $deleteStmt = $conn->prepare("DELETE FROM orders WHERE order_id = ?");
